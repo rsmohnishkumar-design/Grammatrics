@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grammatrics — The Mega Grammar Learning Fest</title>
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link rel="icon" href="data:image/png;base64,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">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Grammatrics">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#14213D">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#14213D;
+    --navy-deep:#0D1729;
+    --parchment:#F8F4E9;
+    --gold:#C9A227;
+    --gold-soft:#E4CC7C;
+    --maroon:#7B2D26;
+    --ink:#22201B;
+    --line: rgba(201,162,39,0.35);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--parchment);
+    color:var(--ink);
+    font-family:'Source Serif 4', Georgia, serif;
+    line-height:1.6;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+
+  /* ---------- HEADER ---------- */
+  header.hero{
+    background: radial-gradient(120% 160% at 50% -10%, #1c2c4f 0%, var(--navy) 45%, var(--navy-deep) 100%);
+    color:var(--parchment);
+    text-align:center;
+    padding: 4.5rem 1.5rem 3.5rem;
+    border-bottom: 3px solid var(--gold);
+    position:relative;
+  }
+  header.hero::before, header.hero::after{
+    content:"";
+    position:absolute; left:50%; transform:translateX(-50%);
+    width:min(680px, 86%);
+    height:1px;
+    background:var(--line);
+  }
+  header.hero::before{ top:1.6rem; }
+  header.hero::after{ bottom:1.6rem; }
+  .eyebrow{
+    font-family:'Inter', sans-serif;
+    letter-spacing:0.32em;
+    font-size:0.72rem;
+    font-weight:600;
+    color:var(--gold-soft);
+    text-transform:uppercase;
+    margin-bottom:1.4rem;
+  }
+  h1.title{
+    font-family:'Playfair Display', serif;
+    font-weight:900;
+    letter-spacing:0.08em;
+    font-size:clamp(2.6rem, 7vw, 5.2rem);
+    text-transform:uppercase;
+    color:var(--parchment);
+    text-shadow: 0 2px 24px rgba(201,162,39,0.25);
+  }
+  .subtitle{
+    font-family:'Playfair Display', serif;
+    font-style:italic;
+    font-weight:600;
+    color:var(--gold-soft);
+    font-size:clamp(1.1rem, 2.6vw, 1.5rem);
+    margin-top:0.9rem;
+    letter-spacing:0.02em;
+  }
+  .school-line{
+    margin-top:1.6rem;
+    font-family:'Inter', sans-serif;
+    font-size:0.85rem;
+    color:rgba(248,244,233,0.7);
+    letter-spacing:0.04em;
+  }
+
+  /* ---------- LAUREL SIGNATURE ---------- */
+  .winners-heading-wrap{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:1.2rem;
+    margin: 4.2rem auto 0.6rem;
+    padding:0 1rem;
+  }
+  .laurel{ width:56px; height:56px; flex-shrink:0; opacity:0.85;}
+  .laurel.right{ transform: scaleX(-1);}
+  h2.winners-heading{
+    font-family:'Playfair Display', serif;
+    font-weight:700;
+    font-size:clamp(1.8rem, 4.4vw, 2.6rem);
+    color:var(--navy);
+    text-align:center;
+    letter-spacing:0.02em;
+  }
+  .winners-sub{
+    text-align:center;
+    font-family:'Inter', sans-serif;
+    font-size:0.9rem;
+    color:#6b6558;
+    letter-spacing:0.03em;
+    margin-bottom:2.6rem;
+  }
+
+  main{ max-width:1040px; margin:0 auto; padding: 0 1.5rem 4rem; }
+
+  /* ---------- WINNER CARDS ---------- */
+  .category-block{ margin-bottom:2.6rem; }
+  .category-title{
+    font-family:'Inter', sans-serif;
+    font-weight:700;
+    font-size:0.78rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--maroon);
+    border-bottom:1px solid rgba(123,45,38,0.25);
+    padding-bottom:0.6rem;
+    margin-bottom:1rem;
+  }
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(230px, 1fr));
+    gap:1rem;
+  }
+  .card{
+    background:#fff;
+    border:1px solid rgba(20,33,61,0.1);
+    border-top:4px solid var(--gold);
+    border-radius:2px;
+    padding:1.2rem 1.3rem;
+    position:relative;
+    box-shadow: 0 1px 3px rgba(20,33,61,0.06);
+  }
+  .card.place-2{ border-top-color:#9AA5B1; }
+  .card.place-3{ border-top-color:#B5651D; }
+  .place-tag{
+    font-family:'Inter', sans-serif;
+    font-size:0.68rem;
+    font-weight:700;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--gold);
+  }
+  .card.place-2 .place-tag{ color:#7C8794; }
+  .card.place-3 .place-tag{ color:#B5651D; }
+  .winner-name{
+    font-family:'Playfair Display', serif;
+    font-weight:700;
+    font-size:1.2rem;
+    margin:0.35rem 0 0.2rem;
+    color:var(--ink);
+  }
+  .winner-meta{
+    font-family:'Inter', sans-serif;
+    font-size:0.82rem;
+    color:#6b6558;
+  }
+  .card-actions{
+    display:none;
+    margin-top:0.8rem;
+    gap:0.5rem;
+  }
+  .admin-on .card-actions{ display:flex; }
+  .card-actions button{
+    font-family:'Inter', sans-serif;
+    font-size:0.72rem;
+    padding:0.3rem 0.6rem;
+    border-radius:3px;
+    border:1px solid rgba(20,33,61,0.2);
+    background:var(--parchment);
+    cursor:pointer;
+  }
+  .card-actions button.danger{ color:var(--maroon); border-color:rgba(123,45,38,0.35); }
+
+  .empty-state{
+    text-align:center;
+    padding:2.5rem 1rem;
+    color:#8a8375;
+    font-family:'Inter', sans-serif;
+    font-size:0.92rem;
+    border:1px dashed rgba(20,33,61,0.18);
+    border-radius:4px;
+  }
+
+  /* ---------- ADMIN PANEL ---------- */
+  .admin-toolbar{
+    max-width:1040px; margin:0 auto; padding:0 1.5rem;
+    display:flex; justify-content:flex-end; gap:0.6rem;
+    margin-top:1.5rem;
+  }
+  .pill-btn{
+    font-family:'Inter', sans-serif;
+    font-size:0.78rem;
+    font-weight:600;
+    letter-spacing:0.02em;
+    padding:0.55rem 1.1rem;
+    border-radius:999px;
+    border:1px solid var(--navy);
+    background:transparent;
+    color:var(--navy);
+    cursor:pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .pill-btn:hover{ background:var(--navy); color:var(--parchment); }
+  .pill-btn.primary{ background:var(--navy); color:var(--parchment); }
+  .pill-btn.primary:hover{ background:var(--navy-deep); }
+
+  .admin-panel{
+    max-width:1040px; margin:1.2rem auto 0; padding:0 1.5rem;
+    display:none;
+  }
+  .admin-on .admin-panel{ display:block; }
+  .panel-box{
+    background:#fff;
+    border:1px solid rgba(20,33,61,0.12);
+    border-left:4px solid var(--navy);
+    padding:1.3rem 1.4rem;
+    border-radius:3px;
+  }
+  .panel-box h3{
+    font-family:'Inter', sans-serif;
+    font-size:0.85rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--navy);
+    margin-bottom:1rem;
+  }
+  .form-row{ display:grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap:0.7rem; margin-bottom:0.7rem; }
+  .form-row label{ font-family:'Inter', sans-serif; font-size:0.72rem; color:#6b6558; display:block; margin-bottom:0.25rem; }
+  .form-row input, .form-row select{
+    width:100%;
+    font-family:'Inter', sans-serif;
+    font-size:0.9rem;
+    padding:0.5rem 0.6rem;
+    border:1px solid rgba(20,33,61,0.2);
+    border-radius:3px;
+    background:var(--parchment);
+  }
+  .signed-in-as{
+    font-family:'Inter', sans-serif;
+    font-size:0.78rem;
+    color:#6b6558;
+    margin-bottom:0.9rem;
+  }
+
+  /* ---------- MODAL (login) ---------- */
+  .modal-overlay{
+    display:none;
+    position:fixed; inset:0;
+    background:rgba(13,23,41,0.55);
+    align-items:center; justify-content:center;
+    padding:1rem; z-index:50;
+  }
+  .modal-overlay.open{ display:flex; }
+  .modal{
+    background:var(--parchment);
+    border-top:4px solid var(--gold);
+    border-radius:3px;
+    max-width:360px; width:100%;
+    padding:1.6rem 1.6rem 1.4rem;
+  }
+  .modal h3{
+    font-family:'Playfair Display', serif;
+    font-size:1.25rem;
+    margin-bottom:0.3rem;
+    color:var(--navy);
+  }
+  .modal p.hint{ font-family:'Inter', sans-serif; font-size:0.78rem; color:#8a8375; margin-bottom:1rem;}
+  .modal label{ font-family:'Inter', sans-serif; font-size:0.75rem; color:#6b6558; display:block; margin:0.6rem 0 0.25rem;}
+  .modal input{
+    width:100%; padding:0.55rem 0.6rem;
+    border:1px solid rgba(20,33,61,0.25); border-radius:3px;
+    font-family:'Inter', sans-serif; font-size:0.9rem;
+  }
+  .modal-actions{ display:flex; justify-content:flex-end; gap:0.6rem; margin-top:1.2rem; }
+  .error-text{ color:var(--maroon); font-family:'Inter', sans-serif; font-size:0.78rem; margin-top:0.5rem; display:none; }
+
+  footer{
+    text-align:center;
+    padding:2.4rem 1.5rem 3rem;
+    font-family:'Inter', sans-serif;
+    font-size:0.78rem;
+    color:#8a8375;
+    border-top:1px solid rgba(20,33,61,0.1);
+  }
+  footer a{ color:var(--navy); text-decoration:none; border-bottom:1px dotted var(--navy); }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Annual Inter-Grade Language Championship</div>
+  <h1 class="title">Grammatrics</h1>
+  <p class="subtitle">The Mega Grammar Learning Fest</p>
+  <p class="school-line">Velammal Annex &nbsp;·&nbsp; <span id="eventDateDisplay">Date to be announced</span></p>
+</header>
+
+<div class="admin-toolbar">
+  <button class="pill-btn" id="loginBtn">Coordinator Login</button>
+  <button class="pill-btn primary" id="logoutBtn" style="display:none;">Sign Out</button>
+</div>
+
+<div class="winners-heading-wrap">
+  <svg class="laurel" viewBox="0 0 100 100" fill="none"><path d="M20 90 C10 70 10 30 35 10" stroke="#C9A227" stroke-width="3" stroke-linecap="round"/><g stroke="#C9A227" stroke-width="2.5" stroke-linecap="round"><path d="M22 82 L10 78"/><path d="M18 70 L5 68"/><path d="M17 58 L4 58"/><path d="M18 46 L6 48"/><path d="M22 34 L11 38"/><path d="M28 23 L19 29"/></g></svg>
+  <h2 class="winners-heading">Winners&nbsp; 🏆</h2>
+  <svg class="laurel right" viewBox="0 0 100 100" fill="none"><path d="M20 90 C10 70 10 30 35 10" stroke="#C9A227" stroke-width="3" stroke-linecap="round"/><g stroke="#C9A227" stroke-width="2.5" stroke-linecap="round"><path d="M22 82 L10 78"/><path d="M18 70 L5 68"/><path d="M17 58 L4 58"/><path d="M18 46 L6 48"/><path d="M22 34 L11 38"/><path d="M28 23 L19 29"/></g></svg>
+</div>
+<p class="winners-sub">Results, as announced by the panel of judges</p>
+
+<div id="app" class="">
+  <div class="admin-panel" id="adminPanel">
+    <div class="panel-box" style="margin-bottom:1rem;">
+      <h3>Event Date</h3>
+      <form id="dateForm">
+        <div class="form-row">
+          <div>
+            <label for="f-event-date">Set Event Date</label>
+            <input type="date" id="f-event-date">
+          </div>
+        </div>
+        <button type="submit" class="pill-btn primary">Save Date</button>
+        <span id="dateSaveStatus" style="font-family:'Inter',sans-serif; font-size:0.78rem; margin-left:0.6rem;"></span>
+      </form>
+    </div>
+    <div class="panel-box">
+      <h3>Manage Results</h3>
+      <div class="signed-in-as" id="signedInAs"></div>
+      <form id="winnerForm">
+        <div class="form-row">
+          <div><label for="f-category">Category / Event</label><input id="f-category" required placeholder="e.g. Poetry Recitation — Grade 6"></div>
+          <div><label for="f-place">Position</label>
+            <select id="f-place">
+              <option value="1">1st Place</option>
+              <option value="2">2nd Place</option>
+              <option value="3">3rd Place</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div><label for="f-name">Winner Name</label><input id="f-name" required placeholder="Full name"></div>
+          <div><label for="f-class">Class / Section</label><input id="f-class" placeholder="e.g. VIII - B"></div>
+        </div>
+        <button type="submit" class="pill-btn primary" style="margin-top:0.4rem;">Add Result</button>
+      </form>
+    </div>
+  </div>
+
+  <main>
+    <div id="categoriesContainer"></div>
+    <div class="empty-state" id="emptyState" style="display:none;">
+      No results have been published yet. Once the coordinators add winners, they will appear here.
+    </div>
+  </main>
+</div>
+
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <h3>Coordinator Login</h3>
+    <p class="hint">Only the two authorized event coordinators may sign in to manage results.</p>
+    <label for="loginUser">Coordinator ID</label>
+    <input id="loginUser" autocomplete="username">
+    <label for="loginPass">Passcode</label>
+    <input id="loginPass" type="password" autocomplete="current-password">
+    <p class="error-text" id="loginError">Incorrect coordinator ID or passcode.</p>
+    <div class="modal-actions">
+      <button class="pill-btn" id="cancelLogin">Cancel</button>
+      <button class="pill-btn primary" id="submitLogin">Sign In</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Velammal Annex &nbsp;·&nbsp; Grammatrics Committee &nbsp;·&nbsp; Results are official once published by the coordinators.
+  <br><span style="opacity:0.6;">App build: v2 — event date editor</span>
+</footer>
+
+<script>
+/* =========================================================================
+   CONFIGURATION — edit before publishing
+   =========================================================================
+   1. Set the two coordinator credentials below. These are the ONLY two
+      people who can add, edit, or remove winners once this page is live.
+   2. Replace the school name / event date placeholders above in the HTML.
+   3. NOTE ON STORAGE: this page stores winners in the visitor's own browser
+      (localStorage) so it can run as a single, dependency-free HTML file
+      anywhere — Google Sites embed, GitHub Pages, school server, etc.
+      That means edits made by a coordinator on their device are saved on
+      that device/browser only, and are what that device will display.
+      For results that must appear identically to every visitor everywhere,
+      the coordinators should do the editing from the single "official"
+      browser/computer that serves as the source of truth, OR this can be
+      upgraded to a shared Google Sheet backend — ask if you'd like that.
+   ========================================================================= */
+  const COORDINATORS = [
+    { id: "coordinator1", passcode: "ChangeMe1!" },
+    { id: "coordinator2", passcode: "ChangeMe2!" }
+  ];
+  const STORAGE_KEY = "grammatrics_winners_v1";
+  const DATE_KEY = "grammatrics_event_date";
+  const SESSION_KEY = "grammatrics_session";
+
+  function loadEventDate(){
+    try{ return localStorage.getItem(DATE_KEY) || ""; }catch(e){ return ""; }
+  }
+  function saveEventDate(isoDate){
+    try{
+      localStorage.setItem(DATE_KEY, isoDate);
+      return true;
+    }catch(e){
+      console.error("Could not save event date:", e);
+      return false;
+    }
+  }
+  let eventDateValue = loadEventDate();
+  function formatDate(isoDate){
+    if(!isoDate) return "Date to be announced";
+    const d = new Date(isoDate + "T00:00:00");
+    return d.toLocaleDateString(undefined, { year:"numeric", month:"long", day:"numeric" });
+  }
+
+  // Seed data shown before any coordinator has added real results.
+  const SEED_WINNERS = [
+    { id: cryptoRandom(), category: "Spelling Bee — Grades 6-8", place: 1, name: "Sample Student Name", cls: "VII - A" },
+    { id: cryptoRandom(), category: "Spelling Bee — Grades 6-8", place: 2, name: "Sample Student Name", cls: "VI - C" },
+    { id: cryptoRandom(), category: "Debate — Senior Wing", place: 1, name: "Sample Student Name", cls: "X - B" }
+  ];
+
+  function cryptoRandom(){ return Math.random().toString(36).slice(2,10); }
+
+  function loadWinners(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return SEED_WINNERS.slice();
+      return JSON.parse(raw);
+    }catch(e){ return SEED_WINNERS.slice(); }
+  }
+  function saveWinners(list){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); }
+    catch(e){ console.error("Could not save results:", e); }
+  }
+
+  let winners = loadWinners();
+  let session = null;
+  try{ session = JSON.parse(sessionStorage.getItem(SESSION_KEY) || "null"); }catch(e){}
+
+  const appEl = document.getElementById("app");
+  const categoriesContainer = document.getElementById("categoriesContainer");
+  const emptyState = document.getElementById("emptyState");
+  const loginBtn = document.getElementById("loginBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const loginModal = document.getElementById("loginModal");
+  const signedInAs = document.getElementById("signedInAs");
+
+  function render(){
+    document.getElementById("eventDateDisplay").textContent = formatDate(eventDateValue);
+    const dateInput = document.getElementById("f-event-date");
+    if(dateInput) dateInput.value = eventDateValue;
+
+    // admin mode toggle
+    if(session){
+      appEl.classList.add("admin-on");
+      loginBtn.style.display = "none";
+      logoutBtn.style.display = "inline-block";
+      signedInAs.textContent = "Signed in as " + session.id;
+    } else {
+      appEl.classList.remove("admin-on");
+      loginBtn.style.display = "inline-block";
+      logoutBtn.style.display = "none";
+    }
+
+    categoriesContainer.innerHTML = "";
+    if(winners.length === 0){
+      emptyState.style.display = "block";
+      return;
+    }
+    emptyState.style.display = "none";
+
+    const byCategory = {};
+    winners.forEach(w => {
+      byCategory[w.category] = byCategory[w.category] || [];
+      byCategory[w.category].push(w);
+    });
+
+    Object.keys(byCategory).forEach(cat => {
+      const block = document.createElement("div");
+      block.className = "category-block";
+      const title = document.createElement("div");
+      title.className = "category-title";
+      title.textContent = cat;
+      block.appendChild(title);
+
+      const cardsWrap = document.createElement("div");
+      cardsWrap.className = "cards";
+
+      byCategory[cat].sort((a,b)=>a.place-b.place).forEach(w => {
+        const card = document.createElement("div");
+        card.className = "card place-" + w.place;
+        const placeLabel = w.place === 1 ? "1st Place" : w.place === 2 ? "2nd Place" : "3rd Place";
+        card.innerHTML = `
+          <div class="place-tag">${placeLabel}</div>
+          <div class="winner-name">${escapeHtml(w.name)}</div>
+          <div class="winner-meta">${escapeHtml(w.cls || "")}</div>
+          <div class="card-actions">
+            <button data-action="edit" data-id="${w.id}">Edit</button>
+            <button data-action="delete" data-id="${w.id}" class="danger">Remove</button>
+          </div>
+        `;
+        cardsWrap.appendChild(card);
+      });
+      block.appendChild(cardsWrap);
+      categoriesContainer.appendChild(block);
+    });
+  }
+
+  function escapeHtml(str){
+    const d = document.createElement("div");
+    d.textContent = str;
+    return d.innerHTML;
+  }
+
+  // ---- Login modal ----
+  loginBtn.addEventListener("click", () => {
+    document.getElementById("loginUser").value = "";
+    document.getElementById("loginPass").value = "";
+    document.getElementById("loginError").style.display = "none";
+    loginModal.classList.add("open");
+  });
+  document.getElementById("cancelLogin").addEventListener("click", () => loginModal.classList.remove("open"));
+  document.getElementById("submitLogin").addEventListener("click", () => {
+    const id = document.getElementById("loginUser").value.trim();
+    const pass = document.getElementById("loginPass").value;
+    const match = COORDINATORS.find(c => c.id === id && c.passcode === pass);
+    if(match){
+      session = { id: match.id };
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
+      loginModal.classList.remove("open");
+      render();
+    } else {
+      document.getElementById("loginError").style.display = "block";
+    }
+  });
+  logoutBtn.addEventListener("click", () => {
+    session = null;
+    sessionStorage.removeItem(SESSION_KEY);
+    render();
+  });
+
+  // ---- Event date ----
+  document.getElementById("dateForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    if(!session) return;
+    const val = document.getElementById("f-event-date").value;
+    const statusEl = document.getElementById("dateSaveStatus");
+    if(!val){
+      statusEl.textContent = "Pick a date first.";
+      statusEl.style.color = "#7B2D26";
+      return;
+    }
+    eventDateValue = val; // update immediately, regardless of storage outcome
+    const ok = saveEventDate(val);
+    statusEl.textContent = ok ? "Saved ✓" : "Shown here, but couldn't save permanently in this browser.";
+    statusEl.style.color = ok ? "#2f7a3e" : "#7B2D26";
+    render();
+  });
+
+  // ---- Add / edit / delete ----
+  document.getElementById("winnerForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    if(!session) return;
+    const category = document.getElementById("f-category").value.trim();
+    const place = parseInt(document.getElementById("f-place").value, 10);
+    const name = document.getElementById("f-name").value.trim();
+    const cls = document.getElementById("f-class").value.trim();
+    if(!category || !name) return;
+
+    const editingId = e.target.dataset.editingId;
+    if(editingId){
+      const idx = winners.findIndex(w => w.id === editingId);
+      if(idx > -1){ winners[idx] = { ...winners[idx], category, place, name, cls }; }
+      delete e.target.dataset.editingId;
+      e.target.querySelector("button[type=submit]").textContent = "Add Result";
+    } else {
+      winners.push({ id: cryptoRandom(), category, place, name, cls });
+    }
+    saveWinners(winners);
+    e.target.reset();
+    render();
+  });
+
+  categoriesContainer.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-action]");
+    if(!btn || !session) return;
+    const id = btn.dataset.id;
+    const w = winners.find(x => x.id === id);
+    if(!w) return;
+
+    if(btn.dataset.action === "delete"){
+      if(confirm(`Remove "${w.name}" (${w.category})? This cannot be undone.`)){
+        winners = winners.filter(x => x.id !== id);
+        saveWinners(winners);
+        render();
+      }
+    } else if(btn.dataset.action === "edit"){
+      document.getElementById("f-category").value = w.category;
+      document.getElementById("f-place").value = w.place;
+      document.getElementById("f-name").value = w.name;
+      document.getElementById("f-class").value = w.cls || "";
+      const form = document.getElementById("winnerForm");
+      form.dataset.editingId = id;
+      form.querySelector("button[type=submit]").textContent = "Save Changes";
+      document.getElementById("adminPanel").scrollIntoView({ behavior:"smooth", block:"start" });
+    }
+  });
+
+  render();
+</script>
+</body>
+</html>
