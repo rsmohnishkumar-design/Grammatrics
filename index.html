@@ -26,6 +26,17 @@
 .section{margin-top:28px}.section-head{margin:39px 2px 15px}.section-head h2{font-family:Manrope,sans-serif;font-size:1.72rem;letter-spacing:-.04em}.section-head p{color:var(--muted);font-size:.86rem;margin-top:3px}.challenge-card{background:var(--surface);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);padding:27px;max-width:820px;margin:auto}.progress-row{display:flex;justify-content:space-between;color:var(--muted);font-size:.79rem;margin-bottom:13px}.progress{height:8px;background:#edf0f6;border-radius:999px;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--primary),var(--primary2));border-radius:999px;transition:width .25s}.question-number{display:inline-flex;margin-top:21px;padding:6px 9px;border-radius:8px;background:var(--soft);color:var(--primary);font-size:.69rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.question{font-family:Manrope,sans-serif;font-size:clamp(1.2rem,3vw,1.72rem);font-weight:800;line-height:1.3;margin:10px 0 20px}.options{display:grid;gap:10px}.option{width:100%;text-align:left;border:1px solid var(--line);background:#f8faff;padding:15px 16px;border-radius:15px;border-left:4px solid transparent;color:var(--ink);transition:.15s;display:flex;align-items:center}.option:hover:not(:disabled){border-color:#c9c3ff;background:#f8f7ff;transform:translateX(2px)}.option.correct{background:var(--greenSoft);border-color:#b7e9d1;border-left-color:#23a16d}.option.wrong{background:var(--redSoft);border-color:#ffd0da;border-left-color:#d65b72}.option:disabled{cursor:default}.option-label{font-weight:800;margin-right:9px;color:var(--primary)}.opt-mark{margin-right:8px}.option.correct .opt-mark{color:var(--green)}.option.wrong .opt-mark{color:var(--red)}.answer-msg{min-height:28px;margin-top:13px;font-size:.89rem;font-weight:700}.success{color:var(--green)}.error{color:var(--red)}.challenge-actions{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:16px}.btn{border:0;border-radius:12px;padding:11px 16px;font-weight:700;transition:.15s;display:inline-flex;align-items:center;gap:7px;justify-content:center}.btn:hover:not(:disabled){transform:translateY(-1px)}.btn.primary{background:var(--primary);color:#fff}.btn.primary:hover:not(:disabled){background:#4c40df}.btn.secondary{background:#eef1f7;color:var(--ink)}.btn.giveup{background:#fff1d7;color:#875d00}.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
 .completion{text-align:center;padding:34px 10px}.completion-icon{width:60px;height:60px;border-radius:50%;background:var(--greenSoft);color:var(--green);display:grid;place-items:center;margin:0 auto 16px}.completion-icon .icon{width:28px;height:28px}.completion h3{font-family:Manrope,sans-serif;font-size:1.5rem;margin-bottom:8px}.completion p{color:var(--muted);margin-bottom:22px}
 .puzzle-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.puzzle{background:var(--surface);border:1px solid var(--line);border-radius:23px;padding:22px;box-shadow:0 12px 38px rgba(28,38,68,.06)}.puzzle-top{display:flex;align-items:center;gap:10px}.puzzle-symbol{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#e5f8fa;color:#1196a8}.puzzle-symbol .icon{width:18px;height:18px}.puzzle-tag{font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;color:#1196a8;font-weight:800}.puzzle h3{font-family:Manrope,sans-serif;margin:12px 0 7px}.puzzle p{color:var(--muted);font-size:.88rem}.puzzle button{margin-top:15px}.puzzle-answer{margin-top:12px;padding:11px 12px;border-radius:12px;background:#f3f5fa;color:#52617c;font-size:.84rem}
+/* Puzzle answer input */
+.puzzle-answer-label{display:block;margin-top:16px;margin-bottom:6px;font-size:.76rem;font-weight:800;color:var(--ink)}
+.puzzle-answer-input{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);transition:.15s}
+.puzzle-answer-input::placeholder{color:#9aa5b8}
+.puzzle-answer-input:focus{border-color:#bdb7ff;box-shadow:0 0 0 3px rgba(90,79,242,.08);outline:none}
+.puzzle-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:11px}
+.puzzle-actions .btn{margin-top:0}
+.puzzle-answer-msg{min-height:24px;margin-top:10px;font-size:.82rem;font-weight:700}
+.puzzle-answer-msg.success{color:var(--green)}
+.puzzle-answer-msg.error{color:var(--red)}
+@media(max-width:760px){.puzzle-actions{flex-direction:column}.puzzle-actions .btn{width:100%}}
 #participantsSection{display:none}.participants-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}.person{background:#fff;border:1px solid var(--line);border-radius:22px;padding:19px;text-align:center;box-shadow:0 10px 35px rgba(28,38,68,.06)}.person img,.avatar{width:96px;height:96px;border-radius:50%;margin:0 auto 11px}.person img{object-fit:cover;border:4px solid #efedff}.avatar{background:#eeeafe;display:grid;place-items:center;font-weight:800;color:var(--primary);font-size:1.5rem}.person h3{font-family:Manrope,sans-serif;font-size:1rem}.person p{font-size:.77rem;color:var(--muted);margin-top:2px}
 .empty{background:#fff;border:1px dashed #cfd6e4;border-radius:22px;padding:30px;text-align:center;color:var(--muted)}footer{text-align:center;color:#8a94a8;font-size:.77rem;padding:26px 18px 35px}
 .info-overlay,.login-overlay{position:fixed;inset:0;background:rgba(10,18,39,.64);backdrop-filter:blur(7px);display:none;align-items:center;justify-content:center;z-index:100;padding:18px}.info-overlay.open,.login-overlay.open{display:flex;animation:fadeIn .18s ease}@keyframes fadeIn{from{opacity:0}to{opacity:1}}.info-box{width:min(560px,100%);max-height:min(760px,90vh);overflow:auto;background:#fff;border-radius:28px;box-shadow:var(--shadowLg);padding:27px;position:relative;animation:riseIn .22s cubic-bezier(.2,.9,.3,1)}@keyframes riseIn{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}.info-icon{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:var(--soft);color:var(--primary);margin-bottom:15px}.info-icon .icon{width:24px;height:24px}.info-box h2{font-family:Manrope,sans-serif;font-size:1.55rem}.info-box .lead{color:var(--muted);margin-top:5px;font-size:.9rem}.info-list{display:grid;gap:10px;margin:19px 0}.info-step{display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start;padding:12px;border:1px solid var(--line);border-radius:14px;background:#fafbfe}.info-step b{width:28px;height:28px;display:grid;place-items:center;border-radius:9px;background:var(--soft);color:var(--primary);font-size:.75rem}.info-step p{font-size:.84rem;color:#52617c}.info-note{padding:13px 14px;border-radius:14px;background:#f3f5fa;color:#52617c;font-size:.81rem}.modal-close{position:absolute;top:17px;right:17px;width:38px;height:38px;border:0;border-radius:12px;background:#f0f2f7;color:var(--ink);display:grid;place-items:center}.info-action{margin-top:16px;width:100%}
@@ -48,30 +59,25 @@
 <p class="hero-note">Explore grammar, solve language puzzles and keep learning — one question at a time.</p>
 </div>
 </header>
-
 <div class="shell">
 <div class="nav-grid">
 <button class="nav-card" data-info="grammar"><div class="nav-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><h2>Grammar</h2><p>Learn by answering interactive grammar questions.</p></button>
 <button class="nav-card" data-info="puzzles"><div class="nav-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19.44 7.85c-.05.32.06.65.29.88l1.57 1.57c.47.47.7 1.09.7 1.7s-.23 1.23-.7 1.7l-1.61 1.61a.98.98 0 0 1-.84.28c-.47-.07-.8-.48-.97-.93a2.5 2.5 0 1 0-3.21 3.21c.45.17.86.5.93.97a.98.98 0 0 1-.28.84l-1.61 1.61a2.4 2.4 0 0 1-1.7.7 2.4 2.4 0 0 1-1.7-.7l-1.57-1.57a1.03 1.03 0 0 0-.88-.29c-.49.07-.84.5-1.02.97a2.5 2.5 0 1 1-3.24-3.24c.46-.18.9-.53.97-1.02a1.03 1.03 0 0 0-.29-.88L2.7 13.7A2.4 2.4 0 0 1 2 12c0-.62.24-1.23.7-1.7l1.53-1.53c.24-.24.58-.35.92-.3.51.07.88.53 1.07 1.01a2.5 2.5 0 1 0 3.26-3.26c-.48-.2-.93-.56-1.01-1.07-.05-.34.06-.68.3-.92l1.53-1.53A2.4 2.4 0 0 1 12 2c.62 0 1.23.24 1.7.7l1.57 1.57c.23.23.56.34.88.29.49-.07.84-.5 1.02-.97a2.5 2.5 0 1 1 3.24 3.24c-.46.18-.9.53-.97 1.02z"/></svg></div><h2>Puzzles</h2><p>Think, decode and solve language-based brain teasers.</p></button>
 </div>
-
 <section class="section" id="grammarSection">
 <div class="section-head"><h2>Grammar Challenge</h2><p>Choose the best answer. Give Up is available on every question.</p></div>
 <div id="grammarArea" class="challenge-card"><div class="empty">Loading grammar questions…</div></div>
 </section>
-
 <section class="section" id="puzzleSection">
 <div class="section-head"><h2>Grammar Puzzles</h2><p>Short language challenges designed to make practice more interesting.</p></div>
 <div id="puzzleArea" class="puzzle-grid"><div class="empty">Loading puzzles…</div></div>
 </section>
-
 <section class="section" id="participantsSection">
 <div class="section-head"><h2>Participants</h2><p>Meet the learners taking part.</p></div>
 <div id="participantsArea" class="participants-grid"></div>
 </section>
 </div>
 <footer><strong>Velammal Annex · Grammatrics</strong><br>The Mega Grammar Learning Fest</footer>
-
 <div class="info-overlay" id="infoOverlay">
 <div class="info-box">
 <button class="modal-close" id="closeInfo" aria-label="Close"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
@@ -79,7 +85,6 @@
 <div class="info-list" id="infoSteps"></div><div class="info-note" id="infoNote"></div>
 <button class="btn primary info-action" id="infoAction" style="display:none"></button>
 </div></div>
-
 <button id="secretHit" aria-label="Private coordinator access"></button>
 <div class="login-overlay" id="loginOverlay">
 <div class="login-box">
@@ -90,32 +95,25 @@
 <div class="login-status error" id="loginStatus"></div>
 <div class="login-actions"><button class="btn secondary" id="cancelLogin">Cancel</button><button class="btn primary" id="submitLogin">Enter Room</button></div>
 </div></div>
-
 <div class="admin" id="adminRoom">
 <div class="admin-inner">
 <div class="admin-top"><div class="admin-brand"><span class="brand-mark"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5.5 3.4 9.7 8 11 4.6-1.3 8-5.5 8-11V5z"/></svg></span><div><h2>Coordinator Room</h2><div class="admin-sub" id="signedInAs"></div></div></div><button class="btn secondary" id="logoutBtn">Sign Out</button></div>
-
 <div class="admin-card"><h3><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg> Due Date</h3><label>Current learning-set due date</label><input id="adminDueDate" type="date"><div class="admin-actions"><button class="btn primary" id="saveDueBtn">Save Due Date</button></div><div id="dueStatus" class="status"></div><div class="status">This date is what appears in the header "Due" indicator and the public Due Date info popup.</div></div>
-
 <div class="admin-card"><h3>Grammar Question</h3>
 <div class="admin-grid"><div><label>Question</label><textarea id="qText" placeholder="Write the grammar question…"></textarea></div><div><label>Correct option</label><select id="qCorrect"><option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option></select></div></div>
 <div class="admin-grid"><div><label>Option A</label><input id="q0"></div><div><label>Option B</label><input id="q1"></div><div><label>Option C</label><input id="q2"></div><div><label>Option D</label><input id="q3"></div></div>
 <div class="admin-actions"><button class="btn primary" id="saveQuestionBtn">Publish Question</button><button class="btn secondary" id="clearQuestionBtn">Clear</button></div><div class="status">Give Up is automatically enabled for every published question.</div><div id="questionStatus" class="status"></div></div>
-
 <div class="admin-card"><h3>Puzzle</h3><div class="admin-grid"><div><label>Title</label><input id="pTitle" placeholder="e.g. Fix the Sentence"></div><div><label>Type</label><select id="pType"><option>Word Puzzle</option><option>Grammar Fix</option><option>Sentence Builder</option><option>Vocabulary</option><option>Riddle</option></select></div></div>
 <label>Puzzle</label><textarea id="pText" placeholder="Write the puzzle or challenge…"></textarea><label>Answer / solution</label><input id="pAnswer" placeholder="Solution shown after the user tries it">
 <div class="admin-actions"><button class="btn primary" id="savePuzzleBtn">Publish Puzzle</button><button class="btn secondary" id="clearPuzzleBtn">Clear</button></div><div id="puzzleStatus" class="status"></div></div>
-
 <div class="admin-card"><h3><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 16.5V18"/><circle cx="9" cy="7.5" r="3.25"/><path d="M21 18v-1.5a3.25 3.25 0 0 0-2.4-3.14"/><path d="M14.7 4.13a3.25 3.25 0 0 1 0 6.24"/></svg> Participants</h3><p class="status">The public Participants section appears only when a participant has a name or image.</p>
 <div class="admin-grid"><div><label>Participant name (optional)</label><input id="participantName" placeholder="Full name"></div><div><label>Participant image (optional)</label><input id="participantImage" type="file" accept="image/*"><div class="upload-help"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 16.5v2A2.5 2.5 0 0 1 17.5 21h-11A2.5 2.5 0 0 1 4 18.5v-2"/><polyline points="16 8 12 4 8 8"/><line x1="12" y1="4" x2="12" y2="15"/></svg> Images are resized in the browser before saving — no Firebase Storage needed.</div><div class="preview-wrap" id="imagePreviewWrap"><img id="imagePreview" alt="Selected participant preview"></div></div></div>
 <div class="admin-actions"><button class="btn primary" id="saveParticipantBtn">Add Participant</button><button class="btn secondary" id="clearParticipantBtn">Clear</button></div><div id="participantStatus" class="status"></div></div>
-
 <div class="admin-card"><h3>Published Grammar Questions</h3><div id="questionTable" class="status">Loading…</div></div>
 <div class="admin-card"><h3>Published Puzzles</h3><div id="puzzleTable" class="status">Loading…</div></div>
 <div class="admin-card"><h3>Published Participants</h3><div id="participantTable" class="status">Loading…</div></div>
 <div class="admin-footer-note">Private access is only an entry mechanism. Firebase Authentication and Firestore Security Rules should enforce coordinator permissions.</div>
 </div></div>
-
 <script>
 const firebaseConfig={apiKey:"AIzaSyBzFCWvAYsDpcwAOvYOYeDhMZkVUK2QeR8",authDomain:"grammatrics.firebaseapp.com",projectId:"grammatrics",storageBucket:"grammatrics.firebasestorage.app",messagingSenderId:"342466303097",appId:"1:342466303097:web:4b4c1780ac02f03db370a8"};
 firebase.initializeApp(firebaseConfig);const auth=firebase.auth(),db=firebase.firestore();
@@ -154,10 +152,104 @@ function nextQuestion(){if(qIndex%questions.length===questions.length-1){renderC
 function renderCompletion(){const a=$("grammarArea");a.innerHTML=`<div class="completion"><div class="completion-icon">${icon("check")}</div><h3>Grammar Set Complete</h3><p>You scored ${score} out of ${questions.length}.</p><button class="btn primary" id="tryAgainBtn">Try Again</button></div>`;$("tryAgainBtn").onclick=()=>{qIndex=0;score=0;renderGrammar()}}
 
 function renderPuzzles(){
- const a=$("puzzleArea");if(!puzzles.length){a.innerHTML='<div class="empty">No puzzles have been published yet.</div>';return}
- a.innerHTML=puzzles.map((p,i)=>`<article class="puzzle"><div class="puzzle-top"><div class="puzzle-symbol"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19.44 7.85c-.05.32.06.65.29.88l1.57 1.57c.47.47.7 1.09.7 1.7s-.23 1.23-.7 1.7l-1.61 1.61a.98.98 0 0 1-.84.28c-.47-.07-.8-.48-.97-.93a2.5 2.5 0 1 0-3.21 3.21c.45.17.86.5.93.97a.98.98 0 0 1-.28.84l-1.61 1.61a2.4 2.4 0 0 1-1.7.7 2.4 2.4 0 0 1-1.7-.7l-1.57-1.57a1.03 1.03 0 0 0-.88-.29c-.49.07-.84.5-1.02.97a2.5 2.5 0 1 1-3.24-3.24c.46-.18.9-.53.97-1.02a1.03 1.03 0 0 0-.29-.88L2.7 13.7A2.4 2.4 0 0 1 2 12c0-.62.24-1.23.7-1.7l1.53-1.53c.24-.24.58-.35.92-.3.51.07.88.53 1.07 1.01a2.5 2.5 0 1 0 3.26-3.26c-.48-.2-.93-.56-1.01-1.07-.05-.34.06-.68.3-.92l1.53-1.53A2.4 2.4 0 0 1 12 2c.62 0 1.23.24 1.7.7l1.57 1.57c.23.23.56.34.88.29.49-.07.84-.5 1.02-.97a2.5 2.5 0 1 1 3.24 3.24c-.46.18-.9.53-.97 1.02z"/></svg></div><div class="puzzle-tag">${esc(p.type||"Puzzle")}</div></div><h3>${esc(p.title||"Grammar Puzzle")}</h3><p>${esc(p.text||"")}</p><button class="btn primary puzzle-answer-btn" data-index="${i}">Show Answer</button><div id="pa${i}" class="puzzle-answer" hidden></div></article>`).join("");
- a.querySelectorAll(".puzzle-answer-btn").forEach(b=>b.onclick=()=>{const i=+b.dataset.index,box=$("pa"+i);box.hidden=false;box.textContent="Answer: "+(puzzles[i].answer||"No answer published.");b.disabled=true;b.textContent="Answer Shown"});
+ const a=$("puzzleArea");
+ if(!puzzles.length){
+   a.innerHTML='<div class="empty">No puzzles have been published yet.</div>';
+   return;
+ }
+
+ a.innerHTML=puzzles.map((p,i)=>`
+ <article class="puzzle">
+   <div class="puzzle-top">
+     <div class="puzzle-symbol">
+       <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+         <path d="M19.44 7.85c-.05.32.06.65.29.88l1.57 1.57c.47.47.7 1.09.7 1.7s-.23 1.23-.7 1.7l-1.61 1.61a.98.98 0 0 1-.84.28c-.47-.07-.8-.48-.97-.93a2.5 2.5 0 1 0-3.21 3.21c.45.17.86.5.93.97a.98.98 0 0 1-.28.84l-1.61 1.61a2.4 2.4 0 0 1-1.7.7 2.4 2.4 0 0 1-1.7-.7l-1.57-1.57a1.03 1.03 0 0 0-.88-.29c-.49.07-.84.5-1.02.97a2.5 2.5 0 1 1-3.24-3.24c.46-.18.9-.53.97-1.02a1.03 1.03 0 0 0-.29-.88L2.7 13.7A2.4 2.4 0 0 1 2 12c0-.62.24-1.23.7-1.7l1.53-1.53c.24-.24.58-.35.92-.3.51.07.88.53 1.07 1.01a2.5 2.5 0 1 0 3.26-3.26c-.48-.2-.93-.56-1.01-1.07-.05-.34.06-.68.3-.92l1.53-1.53A2.4 2.4 0 0 1 12 2c.62 0 1.23.24 1.7.7l1.57 1.57c.23.23.56.34.88.29.49-.07.84-.5 1.02-.97a2.5 2.5 0 1 1 3.24 3.24c-.46.18-.9.53-.97 1.02z"/>
+       </svg>
+     </div>
+     <div class="puzzle-tag">${esc(p.type||"Puzzle")}</div>
+   </div>
+
+   <h3>${esc(p.title||"Grammar Puzzle")}</h3>
+   <p>${esc(p.text||"")}</p>
+
+   <label class="puzzle-answer-label" for="puzzleInput${i}">Your Answer</label>
+   <input
+     id="puzzleInput${i}"
+     class="puzzle-answer-input"
+     type="text"
+     placeholder="Type your answer here…"
+     autocomplete="off"
+     spellcheck="false"
+   >
+
+   <div class="puzzle-actions">
+     <button class="btn primary puzzle-check-btn" data-index="${i}">Check Answer</button>
+     <button class="btn secondary puzzle-show-btn" data-index="${i}" type="button">Show Answer</button>
+   </div>
+
+   <div id="puzzleMsg${i}" class="puzzle-answer-msg" aria-live="polite"></div>
+   <div id="pa${i}" class="puzzle-answer" hidden></div>
+ </article>
+ `).join("");
+
+ a.querySelectorAll(".puzzle-check-btn").forEach(b=>{
+   b.onclick=()=>{
+     const i=+b.dataset.index;
+     const input=$("puzzleInput"+i);
+     const msg=$("puzzleMsg"+i);
+     const expected=String(puzzles[i].answer||"").trim();
+
+     if(!input.value.trim()){
+       msg.textContent="Please enter your answer first.";
+       msg.className="puzzle-answer-msg error";
+       input.focus();
+       return;
+     }
+
+     if(!expected){
+       msg.textContent="This puzzle does not have an answer published yet.";
+       msg.className="puzzle-answer-msg error";
+       return;
+     }
+
+     const normalize=s=>String(s||"")
+       .trim()
+       .toLowerCase()
+       .replace(/[“”‘’]/g,"'")
+       .replace(/[.!?,;:]+$/,"")
+       .replace(/\s+/g," ");
+
+     if(normalize(input.value)===normalize(expected)){
+       msg.textContent="✓ Correct! Great job.";
+       msg.className="puzzle-answer-msg success";
+     }else{
+       msg.textContent="✗ Not quite. Try again!";
+       msg.className="puzzle-answer-msg error";
+     }
+   };
+ });
+
+ a.querySelectorAll(".puzzle-show-btn").forEach(b=>{
+   b.onclick=()=>{
+     const i=+b.dataset.index;
+     const box=$("pa"+i);
+     box.hidden=false;
+     box.textContent="Answer: "+(puzzles[i].answer||"No answer published.");
+     b.disabled=true;
+     b.textContent="Answer Shown";
+   };
+ });
+
+ a.querySelectorAll(".puzzle-answer-input").forEach(input=>{
+   input.addEventListener("keydown",e=>{
+     if(e.key==="Enter"){
+       e.preventDefault();
+       input.closest(".puzzle").querySelector(".puzzle-check-btn").click();
+     }
+   });
+ });
 }
+
 function renderParticipants(){
  const visible=participants.filter(p=>(typeof p.name==="string"&&p.name.trim())||(typeof p.imageData==="string"&&p.imageData));
  if(!visible.length){$("participantsSection").style.display="none";$("participantsArea").innerHTML="";return}
@@ -173,27 +265,4 @@ function renderParticipantTable(){const v=participants.filter(p=>(p.name||"").tr
 function compressImage(file){return new Promise((resolve,reject)=>{if(!file||!file.type.startsWith("image/"))return reject(new Error("Please choose an image file."));const r=new FileReader();r.onerror=()=>reject(new Error("Could not read the image."));r.onload=()=>{const img=new Image();img.onerror=()=>reject(new Error("Could not open the image."));img.onload=()=>{const max=720,s=Math.min(1,max/Math.max(img.width,img.height)),w=Math.max(1,Math.round(img.width*s)),h=Math.max(1,Math.round(img.height*s)),c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(img,0,0,w,h);let q=.82,data=c.toDataURL("image/jpeg",q);while(data.length>700000&&q>.5){q-=.07;data=c.toDataURL("image/jpeg",q)}if(data.length>900000)return reject(new Error("That image is too detailed. Please choose a smaller image."));resolve(data)};img.src=r.result};r.readAsDataURL(file)})}
 $("participantImage").onchange=async()=>{const f=$("participantImage").files[0];if(!f){$("imagePreviewWrap").classList.remove("show");return}try{$("imagePreview").src=await compressImage(f);$("imagePreviewWrap").classList.add("show");setStatus("participantStatus","Image ready to publish.","success")}catch(e){$("participantImage").value="";$("imagePreviewWrap").classList.remove("show");setStatus("participantStatus",e.message,"error")}};
 
-async function saveQuestion(){if(!currentUser)return;const question=$("qText").value.trim(),options=[0,1,2,3].map(i=>$("q"+i).value.trim()),correctIndex=+$("qCorrect").value;if(!question||options.some(x=>!x))return setStatus("questionStatus","Fill the question and all four options.","error");const b=$("saveQuestionBtn");b.disabled=true;b.textContent="Publishing…";try{await db.collection("questions").add({question,options,correctIndex,giveUp:true,published:true,createdAt:firebase.firestore.FieldValue.serverTimestamp()});["qText","q0","q1","q2","q3"].forEach(id=>$(id).value="");setStatus("questionStatus","Question published ✓","success")}catch(e){setStatus("questionStatus","Error: "+e.message,"error")}finally{b.disabled=false;b.textContent="Publish Question"}}
-async function savePuzzle(){if(!currentUser)return;const data={title:$("pTitle").value.trim(),type:$("pType").value,text:$("pText").value.trim(),answer:$("pAnswer").value.trim(),published:true,createdAt:firebase.firestore.FieldValue.serverTimestamp()};if(!data.title||!data.text)return setStatus("puzzleStatus","Add a title and puzzle text.","error");const b=$("savePuzzleBtn");b.disabled=true;b.textContent="Publishing…";try{await db.collection("puzzles").add(data);["pTitle","pText","pAnswer"].forEach(id=>$(id).value="");setStatus("puzzleStatus","Puzzle published ✓","success")}catch(e){setStatus("puzzleStatus","Error: "+e.message,"error")}finally{b.disabled=false;b.textContent="Publish Puzzle"}}
-async function saveDueDate(){if(!currentUser)return;const v=$("adminDueDate").value;if(!v)return setStatus("dueStatus","Choose a date.","error");try{await db.collection("meta").doc("event").set({dueDate:v},{merge:true});setStatus("dueStatus","Due date saved ✓","success")}catch(e){setStatus("dueStatus","Error: "+e.message,"error")}}
-async function saveParticipant(){if(!currentUser)return;const name=$("participantName").value.trim(),file=$("participantImage").files[0];if(!name&&!file)return setStatus("participantStatus","Add a participant name or image.","error");const b=$("saveParticipantBtn");b.disabled=true;b.textContent="Publishing…";try{const imageData=file?await compressImage(file):"";await db.collection("participants").add({name,imageData,published:true,createdAt:firebase.firestore.FieldValue.serverTimestamp()});$("participantName").value="";$("participantImage").value="";$("imagePreviewWrap").classList.remove("show");setStatus("participantStatus","Participant published ✓","success")}catch(e){setStatus("participantStatus","Error: "+e.message,"error")}finally{b.disabled=false;b.textContent="Add Participant"}}
-async function del(collection,id,label){if(!currentUser||!confirm("Remove this "+label+"?"))return;try{await db.collection(collection).doc(id).delete()}catch(e){alert("Could not remove it: "+e.message)}}
-
-$("saveQuestionBtn").onclick=saveQuestion;$("clearQuestionBtn").onclick=()=>["qText","q0","q1","q2","q3"].forEach(id=>$(id).value="");$("savePuzzleBtn").onclick=savePuzzle;$("clearPuzzleBtn").onclick=()=>["pTitle","pText","pAnswer"].forEach(id=>$(id).value="");$("saveDueBtn").onclick=saveDueDate;$("saveParticipantBtn").onclick=saveParticipant;$("clearParticipantBtn").onclick=()=>{$("participantName").value="";$("participantImage").value="";$("imagePreviewWrap").classList.remove("show")};
-$("questionTable").onclick=e=>{const b=e.target.closest("[data-delete-question]");if(b)del("questions",b.dataset.deleteQuestion,"question")};$("puzzleTable").onclick=e=>{const b=e.target.closest("[data-delete-puzzle]");if(b)del("puzzles",b.dataset.deletePuzzle,"puzzle")};$("participantTable").onclick=e=>{const b=e.target.closest("[data-delete-participant]");if(b)del("participants",b.dataset.deleteParticipant,"participant")};
-
-function openLogin(){$("loginOverlay").classList.add("open");$("loginStatus").textContent="";setTimeout(()=>$("loginEmail").focus(),50)}function closeLogin(){$("loginOverlay").classList.remove("open")}
-$("secretHit").onclick=openLogin;$("cancelLogin").onclick=closeLogin;$("loginOverlay").onclick=e=>{if(e.target===$("loginOverlay"))closeLogin()};
-$("submitLogin").onclick=async()=>{const email=$("loginEmail").value.trim(),pass=$("loginPassword").value;if(!email||!pass){$("loginStatus").textContent="Enter both fields.";return}$("submitLogin").disabled=true;$("loginStatus").textContent="Signing in…";try{await auth.signInWithEmailAndPassword(email,pass);closeLogin()}catch(e){$("loginStatus").textContent="Sign-in failed. Check the coordinator account."}finally{$("submitLogin").disabled=false}};
-$("loginPassword").onkeydown=e=>{if(e.key==="Enter")$("submitLogin").click()};$("logoutBtn").onclick=()=>auth.signOut();
-document.onkeydown=e=>{if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()==="g"){e.preventDefault();openLogin()}};
-auth.onAuthStateChanged(u=>{currentUser=u;if(u){$("adminRoom").classList.add("open");$("signedInAs").textContent="Signed in as "+(u.email||"authorized coordinator");renderQuestionTable();renderPuzzleTable();renderParticipantTable()}else $("adminRoom").classList.remove("open")});
-
-db.collection("questions").where("published","==",true).onSnapshot(s=>{questions=s.docs.map(d=>({id:d.id,...d.data()}));if(qIndex>=questions.length)qIndex=0;renderGrammar();if(currentUser)renderQuestionTable()},e=>{$("grammarArea").innerHTML='<div class="empty">Questions could not be loaded right now.</div>'});
-db.collection("puzzles").where("published","==",true).onSnapshot(s=>{puzzles=s.docs.map(d=>({id:d.id,...d.data()}));renderPuzzles();if(currentUser)renderPuzzleTable()},e=>{$("puzzleArea").innerHTML='<div class="empty">Puzzles could not be loaded right now.</div>'});
-db.collection("participants").where("published","==",true).onSnapshot(s=>{participants=s.docs.map(d=>({id:d.id,...d.data()}));renderParticipants();if(currentUser)renderParticipantTable()},e=>{$("participantsSection").style.display="none"});
-db.collection("meta").doc("event").onSnapshot(d=>{dueDate=d.exists?(d.data().dueDate||""):"";renderDue()});
-renderGrammar();renderPuzzles();renderParticipants();renderDue();
-</script>
-</body>
-</html>
+async function saveQuestion(){if(!currentUser)return;const question=$("qText").value.trim(),options=[0,1,2,3].map(i=>$("q"+i).value.trim()),correctIndex=+$("qCorrect").value;if(!question||options.some(x=>!x))return setStatus("questionStatus","Fill the question and all four options.","error");const b=$("saveQuestionBtn");b.disabled=true;b.textContent="Publishing…";try{await
