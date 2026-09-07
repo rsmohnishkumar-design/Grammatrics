@@ -1,0 +1,31 @@
+GRAMMATRICS — UPDATED PWA
+
+Based directly on the supplied current HTML.
+
+Implemented:
+- Renamed the supplied app source to index.html for Firebase Hosting.
+- Added manifest.json and Apple touch icon integration.
+- Added service-worker registration.
+- Added interactive puzzle answer input and Check Answer.
+- Puzzle matching trims whitespace, collapses repeated spaces, and ignores capitalization.
+- Incorrect answers can be tried again without a reload.
+- Show Answer reveals the stored answer and optional explanation.
+- Coordinator Puzzle form now includes an optional Explanation field.
+- Firebase project/config and existing app architecture were preserved.
+- Service worker cache version is v2 for deployment-based cache invalidation.
+
+Files:
+- index.html
+- manifest.json
+- service-worker.js
+- icons/icon-192.png
+- icons/icon-512.png
+
+Deploy:
+firebase init hosting
+firebase deploy --only hosting
+
+Security:
+The existing Coordinator Room still authenticates with Firebase Authentication.
+Firestore Security Rules must enforce admin authorization. This package does not claim
+to have implemented those rules.

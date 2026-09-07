@@ -1,0 +1,25 @@
+{
+  "name": "Grammatrics \u2014 The Mega Grammar Learning Fest",
+  "short_name": "Grammatrics",
+  "description": "Grammatrics \u2014 The Mega Grammar Learning Fest, Velammal Annex.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#18243f",
+  "background_color": "#f4f7fc",
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
