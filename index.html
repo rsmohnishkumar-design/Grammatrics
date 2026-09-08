@@ -2381,6 +2381,24 @@ $("profileStatus").textContent=e.message
 $("closeProfile").onclick=closeProfile;
 
 
+function closeIntro(){
+
+localStorage.setItem(
+"grammatrixIntroSeen",
+"1"
+);
+
+$("introOverlay")
+.classList.remove("open");
+
+if(!profile.name)
+openProfile();
+
+}
+
+$("introContinue").onclick=closeIntro;
+
+
 function ensureFirstOpen(){
 
 loadProfile();
