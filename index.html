@@ -1,0 +1,3935 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#18243f">
+<meta name="description" content="Grammatrix — The Mega Grammar Learning Fest, Velammal Annex.">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>Grammatrix — The Mega Grammar Learning Fest</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<style>
+:root{
+--ink:#18243f;
+--muted:#74819a;
+--bg:#f4f7fc;
+--surface:#fff;
+--line:#e3e8f2;
+--primary:#5a4ff2;
+--primary2:#776df7;
+--soft:#eeecff;
+--cyan:#21b7c9;
+--green:#16845b;
+--greenSoft:#e4f8ef;
+--red:#b53f56;
+--redSoft:#ffe9ee;
+--gold:#f2b94b;
+--silver:#aeb7c7;
+--bronze:#c48752;
+--shadow:0 18px 55px rgba(28,43,78,.09);
+--shadowLg:0 30px 90px rgba(15,27,55,.18)
+}
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0
+}
+
+html{
+scroll-behavior:smooth
+}
+
+body{
+font-family:"DM Sans",sans-serif;
+background:
+radial-gradient(circle at 10% 20%,rgba(90,79,242,.06),transparent 24rem),
+radial-gradient(circle at 90% 45%,rgba(33,183,201,.05),transparent 24rem),
+var(--bg);
+color:var(--ink);
+line-height:1.55
+}
+
+button,input,select,textarea{
+font:inherit
+}
+
+button{
+cursor:pointer
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible{
+outline:3px solid rgba(90,79,242,.25);
+outline-offset:2px
+}
+
+.hero{
+position:relative;
+overflow:hidden;
+color:#fff;
+padding:24px 20px 88px;
+background:
+radial-gradient(circle at 16% 12%,rgba(119,109,247,.9),transparent 30%),
+radial-gradient(circle at 86% 35%,rgba(33,183,201,.18),transparent 28%),
+linear-gradient(135deg,#5548e8,#303d72 52%,#18243f)
+}
+
+.hero:before,
+.hero:after{
+content:"";
+position:absolute;
+border:1px solid rgba(255,255,255,.12);
+border-radius:50%;
+pointer-events:none
+}
+
+.hero:before{
+width:390px;
+height:390px;
+right:-145px;
+top:-175px
+}
+
+.hero:after{
+width:260px;
+height:260px;
+left:-150px;
+bottom:-180px
+}
+
+.topbar,
+.hero-inner,
+.shell,
+.admin-inner{
+max-width:1120px;
+margin:auto
+}
+
+.topbar{
+display:flex;
+align-items:center;
+justify-content:space-between;
+position:relative;
+z-index:2
+}
+
+.brand-mini{
+display:flex;
+align-items:center;
+gap:9px;
+font-weight:800;
+letter-spacing:.08em;
+font-size:.84rem
+}
+
+.brand-mark{
+width:31px;
+height:31px;
+border-radius:10px;
+display:grid;
+place-items:center;
+background:rgba(255,255,255,.13);
+border:1px solid rgba(255,255,255,.18)
+}
+
+.due-pill{
+display:flex;
+align-items:center;
+gap:7px;
+border:1px solid rgba(255,255,255,.2);
+background:rgba(255,255,255,.09);
+padding:9px 13px;
+border-radius:999px;
+font-size:.78rem;
+color:rgba(255,255,255,.9);
+backdrop-filter:blur(8px);
+cursor:pointer
+}
+
+.hero-inner{
+text-align:center;
+position:relative;
+z-index:2;
+margin-top:55px
+}
+
+.eyebrow{
+font-size:.73rem;
+letter-spacing:.2em;
+text-transform:uppercase;
+font-weight:700;
+color:rgba(255,255,255,.72)
+}
+
+h1{
+font-family:Manrope,sans-serif;
+font-size:clamp(3.4rem,9vw,6.5rem);
+line-height:.94;
+letter-spacing:-.065em;
+margin:13px 0 14px;
+text-shadow:0 10px 35px rgba(0,0,0,.16)
+}
+
+.subtitle{
+font-family:Manrope,sans-serif;
+font-size:clamp(1.05rem,2.5vw,1.45rem);
+font-weight:600;
+color:rgba(255,255,255,.94)
+}
+
+.hero-note{
+max-width:680px;
+margin:17px auto 0;
+color:rgba(255,255,255,.68);
+font-size:.93rem
+}
+
+.shell{
+margin-top:-46px;
+padding:0 18px 65px;
+position:relative;
+z-index:3
+}
+
+.nav-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:16px;
+max-width:760px;
+margin:0 auto
+}
+
+.nav-card{
+border:1px solid rgba(255,255,255,.85);
+background:rgba(255,255,255,.97);
+color:var(--ink);
+border-radius:24px;
+padding:23px;
+text-align:left;
+box-shadow:var(--shadow);
+min-height:158px;
+transition:transform .18s,box-shadow .18s
+}
+
+.nav-card:hover{
+transform:translateY(-5px);
+box-shadow:0 25px 65px rgba(28,43,78,.13)
+}
+
+.nav-icon{
+width:45px;
+height:45px;
+border-radius:14px;
+display:grid;
+place-items:center;
+margin-bottom:15px;
+background:var(--soft);
+color:var(--primary)
+}
+
+.nav-card:nth-child(2) .nav-icon{
+background:#e5f8fa;
+color:#1196a8
+}
+
+.nav-card h2{
+font-family:Manrope,sans-serif;
+font-size:1.08rem
+}
+
+.nav-card p{
+color:var(--muted);
+font-size:.84rem;
+margin-top:5px
+}
+
+.section{
+margin-top:28px
+}
+
+.section-head{
+margin:39px 2px 15px
+}
+
+.section-head h2{
+font-family:Manrope,sans-serif;
+font-size:1.72rem;
+letter-spacing:-.04em
+}
+
+.section-head p{
+color:var(--muted);
+font-size:.86rem;
+margin-top:3px
+}
+
+.card{
+background:#fff;
+border:1px solid var(--line);
+border-radius:28px;
+box-shadow:var(--shadow);
+padding:27px
+}
+
+.hidden{
+display:none!important
+}
+
+.profile-bar{
+display:flex;
+align-items:center;
+gap:12px;
+background:#fff;
+border:1px solid var(--line);
+border-radius:18px;
+padding:12px 15px;
+margin:0 auto 24px;
+max-width:760px
+}
+
+.profile-bar img,
+.profile-avatar{
+width:48px;
+height:48px;
+border-radius:50%;
+object-fit:cover
+}
+
+.profile-avatar{
+display:grid;
+place-items:center;
+background:var(--soft);
+color:var(--primary);
+font-weight:800
+}
+
+.profile-info{
+flex:1
+}
+
+.profile-info b{
+font-family:Manrope
+}
+
+.profile-info small{
+display:block;
+color:var(--muted)
+}
+
+.profile-setup{
+max-width:560px;
+margin:0 auto 25px
+}
+
+.profile-setup h2{
+font-family:Manrope;
+margin-bottom:5px
+}
+
+.profile-setup p{
+color:var(--muted);
+font-size:.88rem;
+margin-bottom:17px
+}
+
+.field{
+margin:10px 0
+}
+
+.field label{
+display:block;
+font-size:.76rem;
+font-weight:800;
+margin-bottom:5px
+}
+
+.field input,
+.field textarea,
+.field select{
+width:100%;
+padding:11px 12px;
+border:1px solid var(--line);
+border-radius:11px;
+background:#fbfcff;
+color:var(--ink)
+}
+
+.btn{
+border:0;
+border-radius:12px;
+padding:11px 16px;
+font-weight:700;
+transition:.15s;
+display:inline-flex;
+align-items:center;
+gap:7px;
+justify-content:center
+}
+
+.btn.primary{
+background:var(--primary);
+color:#fff
+}
+
+.btn.secondary{
+background:#eef1f7;
+color:var(--ink)
+}
+
+.btn.danger{
+background:#ffe9ee;
+color:#a62f47
+}
+
+.btn:disabled{
+opacity:.45;
+cursor:not-allowed
+}
+
+.btn-row{
+display:flex;
+gap:9px;
+flex-wrap:wrap;
+margin-top:14px
+}
+
+.info-overlay,
+.login-overlay,
+.intro-overlay,
+.profile-overlay{
+position:fixed;
+inset:0;
+background:rgba(10,18,39,.64);
+backdrop-filter:blur(7px);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:100;
+padding:18px
+}
+
+.info-overlay.open,
+.login-overlay.open,
+.intro-overlay.open,
+.profile-overlay.open{
+display:flex
+}
+
+.modal{
+width:min(620px,100%);
+max-height:90vh;
+overflow:auto;
+background:#fff;
+border-radius:28px;
+box-shadow:var(--shadowLg);
+padding:27px;
+position:relative
+}
+
+.modal h2{
+font-family:Manrope;
+font-size:1.55rem
+}
+
+.modal .lead{
+color:var(--muted);
+font-size:.9rem;
+margin:5px 0 18px
+}
+
+.close{
+position:absolute;
+right:16px;
+top:16px;
+border:0;
+background:#f0f2f7;
+border-radius:10px;
+width:38px;
+height:38px;
+font-size:20px
+}
+
+.info-list{
+display:grid;
+gap:10px
+}
+
+.info-step{
+display:grid;
+grid-template-columns:30px 1fr;
+gap:10px;
+align-items:start;
+padding:12px;
+border:1px solid var(--line);
+border-radius:14px;
+background:#fafbfe
+}
+
+.info-step b{
+width:28px;
+height:28px;
+display:grid;
+place-items:center;
+border-radius:9px;
+background:var(--soft);
+color:var(--primary);
+font-size:.75rem
+}
+
+.info-step p{
+font-size:.84rem;
+color:#52617c
+}
+
+.info-note{
+padding:13px 14px;
+border-radius:14px;
+background:#f3f5fa;
+color:#52617c;
+font-size:.81rem;
+margin-top:15px
+}
+
+.challenge-card{
+background:#fff;
+border:1px solid var(--line);
+border-radius:28px;
+box-shadow:var(--shadow);
+padding:27px;
+max-width:820px;
+margin:auto
+}
+
+.progress-row{
+display:flex;
+justify-content:space-between;
+color:var(--muted);
+font-size:.79rem;
+margin-bottom:13px
+}
+
+.progress{
+height:8px;
+background:#edf0f6;
+border-radius:999px;
+overflow:hidden
+}
+
+.progress i{
+display:block;
+height:100%;
+background:linear-gradient(90deg,var(--primary),var(--primary2));
+border-radius:999px
+}
+
+.question-number{
+display:inline-flex;
+margin-top:21px;
+padding:6px 9px;
+border-radius:8px;
+background:var(--soft);
+color:var(--primary);
+font-size:.69rem;
+font-weight:800;
+letter-spacing:.12em;
+text-transform:uppercase
+}
+
+.question{
+font-family:Manrope;
+font-size:clamp(1.2rem,3vw,1.72rem);
+font-weight:800;
+line-height:1.3;
+margin:10px 0 20px
+}
+
+.options{
+display:grid;
+gap:10px
+}
+
+.option{
+width:100%;
+text-align:left;
+border:1px solid var(--line);
+background:#f8faff;
+padding:15px 16px;
+border-radius:15px;
+color:var(--ink)
+}
+
+.option.correct{
+background:var(--greenSoft);
+border-color:#b7e9d1
+}
+
+.option.wrong{
+background:var(--redSoft);
+border-color:#ffd0da
+}
+
+.option:disabled{
+cursor:default
+}
+
+.option-label{
+font-weight:800;
+margin-right:9px;
+color:var(--primary)
+}
+
+.answer-msg{
+min-height:28px;
+margin-top:13px;
+font-size:.89rem;
+font-weight:700
+}
+
+.success{
+color:var(--green)
+}
+
+.error{
+color:var(--red)
+}
+
+.challenge-actions{
+display:flex;
+gap:10px;
+justify-content:space-between;
+margin-top:16px
+}
+
+.puzzle-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:16px
+}
+
+.puzzle{
+background:#fff;
+border:1px solid var(--line);
+border-radius:23px;
+padding:22px;
+box-shadow:0 12px 38px rgba(28,38,68,.06)
+}
+
+.puzzle h3{
+font-family:Manrope;
+margin:12px 0 7px
+}
+
+.puzzle p{
+color:var(--muted);
+font-size:.88rem
+}
+
+.puzzle input{
+width:100%;
+padding:11px;
+border:1px solid var(--line);
+border-radius:11px;
+margin-top:12px
+}
+
+.puzzle-solution{
+margin-top:11px;
+padding:11px 12px;
+border-radius:12px;
+background:#f3f5fa;
+color:#52617c;
+font-size:.84rem
+}
+
+.leaderboard{
+display:grid;
+gap:10px
+}
+
+.leader{
+display:flex;
+align-items:center;
+gap:12px;
+padding:13px;
+border:1px solid var(--line);
+border-radius:16px;
+background:#fff
+}
+
+.rank{
+width:34px;
+text-align:center;
+font-weight:900
+}
+
+.leader img,
+.leader-avatar{
+width:48px;
+height:48px;
+border-radius:50%;
+object-fit:cover
+}
+
+.leader-avatar{
+display:grid;
+place-items:center;
+background:var(--soft);
+color:var(--primary);
+font-weight:800
+}
+
+.leader-main{
+flex:1
+}
+
+.leader-main b{
+font-family:Manrope
+}
+
+.leader-main small{
+display:block;
+color:var(--muted)
+}
+
+.score{
+font-weight:900
+}
+
+.gold{
+border-color:#efd18a;
+background:#fffaf0
+}
+
+.silver{
+border-color:#d3d8e0;
+background:#fafbfd
+}
+
+.bronze{
+border-color:#e4c0a1;
+background:#fff9f5
+}
+
+.feedback-fab{
+position:fixed;
+right:18px;
+bottom:18px;
+width:52px;
+height:52px;
+border:0;
+border-radius:50%;
+background:var(--primary);
+color:#fff;
+box-shadow:0 12px 35px rgba(90,79,242,.35);
+z-index:80;
+font-size:22px;
+transition:width .2s,height .2s,font-size .2s,opacity .2s
+}
+
+.feedback-fab.small{
+width:32px;
+height:32px;
+font-size:14px;
+opacity:.7;
+box-shadow:0 8px 20px rgba(90,79,242,.28)
+}
+
+.star-rating{
+display:flex;
+gap:6px;
+font-size:1.7rem;
+line-height:1
+}
+
+.star{
+background:none;
+border:0;
+padding:0;
+color:#d8dce8;
+cursor:pointer;
+transition:color .12s,transform .12s
+}
+
+.star:hover{
+transform:scale(1.12)
+}
+
+.star.active{
+color:var(--gold)
+}
+
+.empty{
+background:#fff;
+border:1px dashed #cfd6e4;
+border-radius:22px;
+padding:30px;
+text-align:center;
+color:var(--muted)
+}
+
+#secretHit{
+position:fixed;
+left:7px;
+bottom:7px;
+width:12px;
+height:12px;
+opacity:.015;
+border:0;
+background:#000;
+z-index:99
+}
+
+.admin{
+display:none;
+position:fixed;
+inset:0;
+z-index:90;
+overflow:auto;
+background:#0e172b;
+color:#edf2ff
+}
+
+.admin.open{
+display:block
+}
+
+.admin-inner{
+padding:25px 18px 55px
+}
+
+.admin-top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:15px;
+margin-bottom:22px
+}
+
+.admin-brand{
+display:flex;
+align-items:center;
+gap:10px
+}
+
+.admin-sub{
+color:#9ca9c1;
+font-size:.8rem
+}
+
+.admin-card{
+background:#17223a;
+border:1px solid #293754;
+border-radius:20px;
+padding:20px;
+margin:14px 0
+}
+
+.admin-card h3{
+margin-bottom:13px;
+font-family:Manrope
+}
+
+.admin label{
+display:block;
+font-size:.75rem;
+color:#aeb8ce;
+margin:9px 0 5px
+}
+
+.admin input,
+.admin textarea,
+.admin select{
+width:100%;
+border:1px solid #35415d;
+background:#0e1729;
+color:#fff;
+border-radius:10px;
+padding:10px 11px
+}
+
+.admin textarea{
+min-height:80px;
+resize:vertical
+}
+
+.admin-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px
+}
+
+.sheet{
+width:100%;
+border-collapse:collapse;
+font-size:.78rem
+}
+
+.sheet th,
+.sheet td{
+border:1px solid #35415d;
+padding:8px;
+text-align:left;
+vertical-align:top
+}
+
+.sheet th{
+background:#202c48;
+color:#bfc9dc
+}
+
+.sheet td{
+color:#eaf0ff
+}
+
+.mini{
+padding:6px 9px;
+border-radius:8px;
+border:0;
+background:#2b3959;
+color:#fff;
+margin:2px
+}
+
+.status{
+font-size:.8rem;
+margin-top:9px;
+color:#9ca8bd
+}
+
+.status.success{
+color:#54d39b
+}
+
+.status.error{
+color:#ff9aaa
+}
+
+.parser{
+border:1px solid #35415d;
+background:#111b30;
+padding:14px;
+border-radius:14px;
+margin-bottom:15px
+}
+
+.parser textarea{
+min-height:180px
+}
+
+.admin-note{
+font-size:.73rem;
+color:#8794ad;
+margin-top:9px
+}
+
+.lock-dot{
+width:10px;
+height:10px;
+border-radius:50%;
+background:#66738c;
+border:0;
+padding:0;
+display:inline-block;
+margin-left:5px
+}
+
+.feedback-admin{
+display:grid;
+gap:10px
+}
+
+.feedback-item{
+padding:13px;
+border:1px solid #35415d;
+border-radius:12px;
+background:#111b30
+}
+
+.feedback-item small{
+color:#8e9ab0;
+display:block;
+margin-top:4px
+}
+
+.intro-content{
+text-align:center
+}
+
+.intro-logo{
+font-family:Manrope;
+font-size:2.5rem;
+font-weight:900;
+color:var(--primary);
+letter-spacing:-.06em
+}
+
+.intro-content p{
+color:var(--muted);
+margin:12px auto;
+max-width:480px
+}
+
+.welcome-icon{
+font-size:3rem;
+margin-bottom:8px
+}
+
+footer{
+text-align:center;
+padding:35px 20px 55px;
+color:var(--muted);
+font-size:.82rem
+}
+
+@media(max-width:760px){
+
+.nav-grid,
+.puzzle-grid,
+.admin-grid{
+grid-template-columns:1fr
+}
+
+.hero{
+padding:21px 14px 80px
+}
+
+.shell{
+padding:0 12px 42px
+}
+
+.challenge-card{
+padding:18px
+}
+
+.challenge-actions{
+flex-direction:column
+}
+
+.challenge-actions .btn{
+width:100%
+}
+
+.admin-inner{
+padding:17px 12px 40px
+}
+
+.sheet{
+display:block;
+overflow-x:auto;
+white-space:nowrap
+}
+
+.profile-bar{
+margin-left:0;
+margin-right:0
+}
+
+.menu-grid,.station-grid{grid-template-columns:1fr}
+
+}
+
+/* ---- redesign additions ---- */
+.menu-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:820px;margin:0 auto}
+.big-card{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:24px;padding:26px;text-align:center;box-shadow:var(--shadow);min-height:186px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;transition:transform .18s,box-shadow .18s}
+.big-card:hover{transform:translateY(-5px);box-shadow:0 25px 65px rgba(28,43,78,.13)}
+.big-card .bc-ic{font-size:2.4rem;line-height:1}
+.big-card h3{font-family:Manrope,sans-serif;font-size:1.15rem}
+.big-card p{color:var(--muted);font-size:.85rem;max-width:28ch}
+.backbtn{margin-bottom:14px}
+.station-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.station{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow)}
+.station h3{font-family:Manrope,sans-serif;font-size:1.05rem;margin-bottom:6px}
+.station p{color:#52617c;font-size:.88rem;white-space:pre-wrap}
+.option.selected{border-color:var(--primary);background:var(--soft);box-shadow:0 0 0 2px rgba(90,79,242,.18)}
+.puzzle-input{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:13px;background:#fbfcff;color:var(--ink);font-size:1rem;margin-bottom:4px}
+.review-list{display:grid;gap:10px;margin:6px 0 16px;text-align:left}
+.review-item{border:1px solid var(--line);border-radius:14px;padding:13px 14px;background:#fafbfe}
+.review-item.ok{border-color:#b7e9d1;background:var(--greenSoft)}
+.review-item.no{border-color:#ffd0da;background:var(--redSoft)}
+.ri-q{font-weight:700;margin-bottom:6px;font-size:.92rem}
+.ri-line{font-size:.85rem;color:#52617c;margin-top:2px}
+.ri-line .good{color:var(--green);font-weight:700}
+.ri-line .bad{color:var(--red);font-weight:700}
+.ribbon{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:999px;background:linear-gradient(90deg,#f2b94b,#e79b2f);color:#4a2d00;font-size:.66rem;font-weight:900;letter-spacing:.05em;vertical-align:middle}
+.you-tag{display:inline-block;margin-left:6px;padding:2px 7px;border-radius:999px;background:var(--soft);color:var(--primary);font-size:.62rem;font-weight:800;vertical-align:middle}
+.leader.me{outline:2px solid rgba(90,79,242,.35)}
+.podium-banner{border-radius:18px;padding:16px 18px;margin-bottom:14px}
+.podium-banner.gold{background:linear-gradient(120deg,#fff3d6,#ffe4a3);border:1px solid #efd18a;color:#3a2a00}
+.podium-banner.silver{background:linear-gradient(120deg,#f2f4f8,#dfe4ec);border:1px solid #d3d8e0;color:#333b49}
+.podium-banner.bronze{background:linear-gradient(120deg,#ffe9d6,#f6cdae);border:1px solid #e4c0a1;color:#4a2c14}
+.podium-banner .pb-label{font-family:Manrope,sans-serif;font-weight:800;font-size:1.1rem;margin-bottom:4px}
+.podium-banner .pb-msg{font-size:.9rem;line-height:1.5}
+.final-tag{display:inline-block;margin-bottom:10px;padding:4px 10px;border-radius:999px;background:#fff4d9;border:1px solid #efd18a;color:#7a5200;font-size:.72rem;font-weight:800}
+</style>
+</head>
+
+<body>
+
+<header class="hero">
+
+<div class="topbar">
+
+<div class="brand-mini">
+<span class="brand-mark">G</span>
+GRAMMATRIX
+</div>
+
+<button class="due-pill" id="dueIndicator">
+⏱ Due <strong id="publicDueDate">Not announced</strong>
+</button>
+
+</div>
+
+<div class="hero-inner">
+
+<div class="eyebrow">Velammal Annex</div>
+
+<h1>Grammatrix</h1>
+
+<p class="subtitle">The Mega Grammar Learning Fest</p>
+
+<p class="hero-note">
+Understand grammar, practise language skills and learn from every answer.
+</p>
+
+</div>
+
+</header>
+
+
+<main class="shell">
+
+<div id="profileBar" class="profile-bar hidden"></div>
+
+
+<!-- ============ MENU ============ -->
+<section class="view" id="menuView">
+
+<div class="section-head">
+<h2>Choose your path</h2>
+<p>Head to the stations, or jump straight into gameplay.</p>
+</div>
+
+<div class="menu-grid">
+
+<button class="big-card" id="goStations">
+<span class="bc-ic">🏁</span>
+<h3>Stations</h3>
+<p>Explore the stations the coordinators have set up.</p>
+</button>
+
+<button class="big-card" id="goGameplay">
+<span class="bc-ic">🎮</span>
+<h3>Gameplay</h3>
+<p>Take on the Grammar Challenge and the Puzzles.</p>
+</button>
+
+</div>
+
+</section>
+
+
+<!-- ============ STATIONS ============ -->
+<section class="view hidden" id="stationsView">
+
+<button class="btn secondary backbtn" data-goto="menuView">← Back to menu</button>
+
+<div class="section-head">
+<h2>🏁 Stations</h2>
+<p>Visit each station to take part.</p>
+</div>
+
+<div id="stationsArea" class="station-grid">
+<div class="empty">Loading stations…</div>
+</div>
+
+</section>
+
+
+<!-- ============ GAMEPLAY ============ -->
+<section class="view hidden" id="gameplayView">
+
+<button class="btn secondary backbtn" data-goto="menuView">← Back to menu</button>
+
+<div class="section-head">
+<h2>🎮 Gameplay</h2>
+<p>Pick an activity. Every answer is saved as you go.</p>
+</div>
+
+<div class="menu-grid">
+
+<button class="big-card" id="goGrammar">
+<span class="bc-ic">❓</span>
+<h3>Grammar Challenge</h3>
+<p>Multiple-choice questions, one at a time.</p>
+</button>
+
+<button class="big-card" id="goPuzzles">
+<span class="bc-ic">🧩</span>
+<h3>Puzzles</h3>
+<p>Solve language puzzles, one at a time.</p>
+</button>
+
+</div>
+
+<div class="section">
+<div class="section-head">
+<h2>🏆 Leaderboard</h2>
+<p id="lbSub">Ranked automatically by score.</p>
+</div>
+<div id="leaderboardArea" class="leaderboard">
+<div class="empty">No scores yet. Play a round to appear here.</div>
+</div>
+</div>
+
+</section>
+
+
+<!-- ============ GRAMMAR CHALLENGE ============ -->
+<section class="view hidden" id="grammarView">
+
+<button class="btn secondary backbtn" data-goto="gameplayView">← Back to gameplay</button>
+
+<div class="section-head">
+<h2>❓ Grammar Challenge</h2>
+</div>
+
+<div id="grammarArea" class="challenge-card">
+<div class="empty">Loading questions…</div>
+</div>
+
+</section>
+
+
+<!-- ============ PUZZLES ============ -->
+<section class="view hidden" id="puzzlesView">
+
+<button class="btn secondary backbtn" data-goto="gameplayView">← Back to gameplay</button>
+
+<div class="section-head">
+<h2>🧩 Puzzles</h2>
+</div>
+
+<div id="puzzleArea" class="challenge-card">
+<div class="empty">Loading puzzles…</div>
+</div>
+
+</section>
+
+</main>
+
+
+<footer>
+
+<strong>Velammal Annex · Grammatrix</strong>
+<br>
+The Mega Grammar Learning Fest
+
+</footer>
+
+
+<button class="feedback-fab" id="feedbackFab" title="Feedback">
+💬
+</button>
+
+<button id="secretHit" aria-label="Private coordinator access"></button>
+
+
+<!-- FIRST OPEN INTRO -->
+
+<div class="intro-overlay" id="introOverlay">
+
+<div class="modal intro-content">
+
+<div class="welcome-icon">📚</div>
+
+<div class="intro-logo">
+GRAMMATRIX
+</div>
+
+<p>
+Welcome to the Mega Grammar Learning Fest.
+Learn grammar in simple words, practise questions,
+solve puzzles and see your progress.
+</p>
+
+<button class="btn primary" id="introContinue">
+Continue
+</button>
+
+</div>
+
+</div>
+
+
+<!-- PROFILE SETUP -->
+
+<div class="profile-overlay" id="profileOverlay">
+
+<div class="modal">
+
+<h2>👤 Your Profile</h2>
+
+<p class="lead">
+Your username is required. A profile image is optional.
+</p>
+
+<div class="field">
+
+<label>Username *</label>
+
+<input
+id="usernameInput"
+maxlength="40"
+placeholder="Enter your name">
+
+</div>
+
+
+<div class="field">
+
+<label>Profile image (optional)</label>
+
+<input
+id="profileImageInput"
+type="file"
+accept="image/*">
+
+</div>
+
+
+<img
+id="profilePreview"
+class="hidden"
+style="width:80px;height:80px;border-radius:50%;object-fit:cover;margin:5px 0"
+alt="Preview">
+
+
+<div id="profileStatus" class="status"></div>
+
+
+<div class="btn-row">
+
+<button class="btn primary" id="saveProfile">
+Continue
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- INFO POPUP -->
+
+<div class="info-overlay" id="infoOverlay">
+
+<div class="modal">
+
+<button class="close" id="closeInfo">×</button>
+
+<h2 id="infoTitle"></h2>
+
+<p class="lead" id="infoLead"></p>
+
+<div class="info-list" id="infoSteps"></div>
+
+<div class="info-note" id="infoNote"></div>
+
+</div>
+
+</div>
+
+
+<!-- FEEDBACK -->
+
+<div class="info-overlay" id="feedbackOverlay">
+
+<div class="modal">
+
+<button class="close" id="closeFeedback">×</button>
+
+<h2>💬 Feedback</h2>
+
+<p class="lead">
+Tell the Grammatrix coordinators what you think.
+</p>
+
+<div class="field">
+
+<label>Your rating</label>
+
+<div class="star-rating" id="starRating">
+<button type="button" class="star" data-star="1">★</button>
+<button type="button" class="star" data-star="2">★</button>
+<button type="button" class="star" data-star="3">★</button>
+<button type="button" class="star" data-star="4">★</button>
+<button type="button" class="star" data-star="5">★</button>
+</div>
+
+</div>
+
+<div class="field">
+
+<label>Your review (optional)</label>
+
+<textarea
+id="feedbackText"
+maxlength="1000"
+placeholder="Write a review…"></textarea>
+
+</div>
+
+<div id="feedbackStatus" class="status"></div>
+
+<button class="btn primary" id="submitFeedback">
+Submit Feedback
+</button>
+
+</div>
+
+</div>
+
+
+<!-- COORDINATOR LOGIN -->
+
+<div class="login-overlay" id="loginOverlay">
+
+<div class="modal" style="width:min(400px,100%)">
+
+<button class="close" id="cancelLogin">×</button>
+
+<h2>🔐 Coordinator Access</h2>
+
+<p class="lead">
+Authorized coordinator account required.
+</p>
+
+<div class="field">
+
+<label>Coordinator email</label>
+
+<input
+id="loginEmail"
+type="email"
+autocomplete="username">
+
+</div>
+
+
+<div class="field">
+
+<label>Password</label>
+
+<input
+id="loginPassword"
+type="password"
+autocomplete="current-password">
+
+</div>
+
+
+<div id="loginStatus" class="status error"></div>
+
+<button class="btn primary" id="submitLogin">
+Enter Room
+</button>
+
+</div>
+
+</div>
+
+
+<!-- COORDINATOR ROOM -->
+
+<div class="admin" id="adminRoom">
+
+<div class="admin-inner">
+
+<div class="admin-top">
+
+<div>
+
+<h2>
+GRAMMATRIX Coordinator Room
+</h2>
+
+<div class="admin-sub" id="signedInAs"></div>
+
+</div>
+
+<button class="btn secondary" id="logoutBtn">
+Sign Out
+</button>
+
+<button
+class="lock-dot"
+id="lockDot"
+title="Private control">
+</button>
+
+</div>
+
+
+<!-- DUE DATE -->
+
+<div class="admin-card">
+
+<h3>⏱ Due Date</h3>
+
+<label>
+Current learning-set due date
+</label>
+
+<input id="adminDueDate" type="date">
+
+<div class="btn-row">
+
+<button class="btn primary" id="saveDueBtn">
+Save Due Date
+</button>
+
+</div>
+
+<div id="dueStatus" class="status"></div>
+
+</div>
+
+
+<!-- GRAMMAR QUESTION -->
+
+<div class="admin-card">
+
+<h3>❓ Grammar Question</h3>
+
+
+<div class="parser">
+
+<strong>📋 Paste &amp; Auto-Publish</strong>
+
+<p class="admin-note">
+Paste the question text, A–D options, answer and explanation.
+Pressing the button parses the fields and publishes the question in one step.
+</p>
+
+<textarea
+id="questionPaste"
+placeholder="1. _________ is ...&#10;&#10;A) ...&#10;B) ...&#10;C) ...&#10;D) ...&#10;&#10;Ans: A&#10;&#10;Explanation: ..."></textarea>
+
+<div class="btn-row">
+
+<button class="btn primary" id="parseQuestionBtn">
+⚡ Auto-Fill &amp; Publish
+</button>
+
+</div>
+
+<div id="parserStatus" class="status"></div>
+
+</div>
+
+
+<div class="admin-grid">
+
+<div>
+
+<label>Question</label>
+
+<textarea
+id="qText"
+placeholder="Write the grammar question…"></textarea>
+
+</div>
+
+
+<div>
+
+<label>Correct option</label>
+
+<select id="qCorrect">
+
+<option value="0">A</option>
+<option value="1">B</option>
+<option value="2">C</option>
+<option value="3">D</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<div class="admin-grid">
+
+<div>
+
+<label>Option A</label>
+
+<input id="q0">
+
+</div>
+
+
+<div>
+
+<label>Option B</label>
+
+<input id="q1">
+
+</div>
+
+
+<div>
+
+<label>Option C</label>
+
+<input id="q2">
+
+</div>
+
+
+<div>
+
+<label>Option D</label>
+
+<input id="q3">
+
+</div>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Explanation — why is this answer correct?
+</label>
+
+<textarea
+id="qExplanation"
+placeholder="Explain the grammar rule or reason…"></textarea>
+
+</div>
+
+
+<div class="btn-row">
+
+<button class="btn primary" id="saveQuestionBtn">
+Publish Question
+</button>
+
+<button class="btn secondary" id="clearQuestionBtn">
+Clear
+</button>
+
+</div>
+
+<div id="questionStatus" class="status"></div>
+
+</div>
+
+
+<!-- PUZZLE -->
+
+<div class="admin-card">
+
+<h3>🧩 Puzzle</h3>
+
+<div class="parser">
+
+<strong>📋 Paste &amp; Auto-Publish</strong>
+
+<p class="admin-note">
+Paste with lines like <em>Title:</em>, <em>Type:</em>, <em>Puzzle:</em>, <em>Answer:</em>, <em>Explanation:</em>.
+Parses the fields and publishes in one step.
+</p>
+
+<textarea
+id="puzzlePaste"
+placeholder="Title: Fix the Sentence&#10;Type: Grammar Fix&#10;Puzzle: Rewrite — she don't like it.&#10;Answer: She doesn't like it.&#10;Explanation: ..."></textarea>
+
+<div class="btn-row">
+
+<button class="btn primary" id="parsePuzzleBtn">
+⚡ Auto-Fill &amp; Publish
+</button>
+
+</div>
+
+<div id="puzzleParserStatus" class="status"></div>
+
+</div>
+
+<div class="admin-grid">
+
+<div>
+
+<label>Title</label>
+
+<input
+id="pTitle"
+placeholder="e.g. Fix the Sentence">
+
+</div>
+
+
+<div>
+
+<label>Type</label>
+
+<select id="pType">
+
+<option>Word Puzzle</option>
+<option>Grammar Fix</option>
+<option>Sentence Builder</option>
+<option>Vocabulary</option>
+<option>Riddle</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<label>Puzzle</label>
+
+<textarea id="pText"></textarea>
+
+
+<label>Answer / solution</label>
+
+<input id="pAnswer">
+
+
+<label>Explanation (optional)</label>
+
+<textarea id="pExplanation"></textarea>
+
+
+<div class="btn-row">
+
+<button class="btn primary" id="savePuzzleBtn">
+Publish Puzzle
+</button>
+
+<button class="btn secondary" id="clearPuzzleBtn">
+Clear
+</button>
+
+</div>
+
+<div id="puzzleStatus" class="status"></div>
+
+</div>
+
+
+<!-- STATION -->
+
+<div class="admin-card">
+
+<h3>🏁 Station</h3>
+
+<label>Station name</label>
+<input id="stName" placeholder="e.g. Tense Tower">
+
+<label>Description</label>
+<textarea id="stDesc" placeholder="What happens at this station…"></textarea>
+
+<div class="btn-row">
+
+<button class="btn primary" id="saveStationBtn">
+Publish Station
+</button>
+
+<button class="btn secondary" id="clearStationBtn">
+Clear
+</button>
+
+</div>
+
+<div id="stationStatus" class="status"></div>
+
+</div>
+
+
+<!-- PUBLISHED TABLES -->
+
+<div class="admin-card">
+
+<h3>📋 Published Grammar Questions</h3>
+
+<div id="questionTable" class="status">
+Loading…
+</div>
+
+</div>
+
+
+<div class="admin-card">
+
+<h3>📋 Published Puzzles</h3>
+
+<div id="puzzleTable" class="status">
+Loading…
+</div>
+
+</div>
+
+
+<div class="admin-card">
+
+<h3>📋 Published Stations</h3>
+
+<div id="stationTable" class="status">
+Loading…
+</div>
+
+</div>
+
+
+<div class="admin-card">
+
+<h3>👥 Players &amp; Scores</h3>
+
+<p class="admin-note">
+Built automatically as players answer questions. “Remove” takes one player off the leaderboard.
+“Reset leaderboard” clears every player's score.
+</p>
+
+<div class="btn-row">
+<button class="btn danger" id="resetLeaderboardBtn">Reset leaderboard</button>
+</div>
+
+<div id="playersStatus" class="status"></div>
+
+<div id="playersTable" class="status">
+Loading…
+</div>
+
+</div>
+
+
+<!-- FEEDBACK ADMIN -->
+
+<div class="admin-card">
+
+<h3>💬 Feedback</h3>
+
+<div id="feedbackTable" class="feedback-admin">
+
+<div class="status">
+Loading…
+</div>
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<script>
+
+const firebaseConfig={
+apiKey:"AIzaSyBzFCWvAYsDpcwAOvYOYeDhMZkVUK2QeR8",
+authDomain:"grammatrics.firebaseapp.com",
+projectId:"grammatrics",
+storageBucket:"grammatrics.firebasestorage.app",
+messagingSenderId:"342466303097",
+appId:"1:342466303097:web:4b4c1780ac02f03db370a8"
+};
+
+/* Offline / restricted-preview fallback.
+   If the Firebase SDK failed to load (no network, blocked CDN, sandboxed
+   preview pane) the whole script used to die on the first line. Replace the
+   missing SDK with harmless no-op stubs so every UI handler below still runs. */
+if(typeof firebase==="undefined"){
+console.warn("Firebase SDK not available — running in offline preview mode.");
+const store={
+collection:()=>store,
+doc:()=>store,
+where:()=>store,
+orderBy:()=>store,
+limit:()=>store,
+onSnapshot:()=>{},
+get:()=>Promise.reject(new Error("offline")),
+add:()=>Promise.reject(new Error("offline")),
+set:()=>Promise.reject(new Error("offline")),
+delete:()=>Promise.reject(new Error("offline"))
+};
+window.firebase={
+initializeApp:()=>{},
+auth:()=>({
+onAuthStateChanged:cb=>{try{cb&&cb(null);}catch(e){}},
+signInWithEmailAndPassword:()=>Promise.reject(new Error("offline")),
+signOut:()=>Promise.resolve()
+}),
+firestore:Object.assign(()=>store,{FieldValue:{serverTimestamp:()=>null}})
+};
+}
+
+try{
+firebase.initializeApp(firebaseConfig);
+}catch(e){
+console.warn("Firebase init failed — offline preview mode.",e);
+}
+
+let auth,db;
+try{
+auth=firebase.auth();
+}catch(e){
+auth={
+onAuthStateChanged:cb=>{try{cb&&cb(null);}catch(_){}},
+signInWithEmailAndPassword:()=>Promise.reject(new Error("offline")),
+signOut:()=>Promise.resolve()
+};
+}
+try{
+db=firebase.firestore();
+}catch(e){
+const s={
+collection:()=>s,doc:()=>s,where:()=>s,orderBy:()=>s,limit:()=>s,
+onSnapshot:()=>{},
+get:()=>Promise.reject(new Error("offline")),
+add:()=>Promise.reject(new Error("offline")),
+set:()=>Promise.reject(new Error("offline")),
+delete:()=>Promise.reject(new Error("offline"))
+};
+db=s;
+}
+
+const $=id=>document.getElementById(id);
+
+const esc=s=>{
+const d=document.createElement("div");
+d.textContent=s??"";
+return d.innerHTML
+};
+
+const fmtDate=v=>
+v
+?new Date(v+"T00:00:00").toLocaleDateString(
+undefined,
+{
+day:"numeric",
+month:"long",
+year:"numeric"
+}
+)
+:"Not announced";
+
+
+let questions=[];
+let puzzles=[];
+let stations=[];
+let feedbacks=[];
+let scores=[];
+let dueDate="";
+
+let currentUser=null;
+let editingQuestionId=null;
+let editingPuzzleId=null;
+let lockClicks=0;
+let coordinatorLocked=false;
+
+/* per-attempt quiz sessions */
+let gSession=null;
+let pSession=null;
+let myGrammar={correct:0,total:0};
+let myPuzzle={correct:0,total:0};
+
+const keyFor=n=>btoa(unescape(encodeURIComponent(String(n||"")))).replace(/[^a-zA-Z0-9]/g,"").slice(0,80)||"user";
+const liveScore=()=>(myGrammar.correct||0)+(myPuzzle.correct||0);
+
+let profile={
+name:"",
+imageData:""
+};
+
+
+function showProfileBar(){
+
+if(!profile.name)return;
+
+const img=profile.imageData
+?`<img src="${esc(profile.imageData)}" alt="">`
+:`<div class="profile-avatar">${esc(profile.name[0].toUpperCase())}</div>`;
+
+$("profileBar").innerHTML=`
+
+${img}
+
+<div class="profile-info">
+
+<b>${esc(profile.name)}</b>
+
+<small>
+Current score: ${liveScore()}
+</small>
+
+</div>
+
+<button class="btn secondary" id="editProfileBtn">
+Edit
+</button>
+
+`;
+
+$("profileBar").classList.remove("hidden");
+
+$("editProfileBtn").onclick=openProfile;
+
+}
+
+
+function openProfile(){
+
+$("usernameInput").value=profile.name||"";
+
+$("profilePreview").classList.toggle(
+"hidden",
+!profile.imageData
+);
+
+if(profile.imageData)
+$("profilePreview").src=profile.imageData;
+
+$("profileOverlay").classList.add("open");
+
+}
+
+
+function closeProfile(){
+
+$("profileOverlay").classList.remove("open")
+
+}
+
+
+function saveLocalProfile(){
+
+localStorage.setItem(
+"grammatrixProfile",
+JSON.stringify(profile)
+)
+
+}
+
+
+function loadProfile(){
+
+try{
+
+const p=JSON.parse(
+localStorage.getItem("grammatrixProfile")||"null"
+);
+
+if(p&&p.name)
+profile=p;
+
+}catch{}
+
+}
+
+
+function imageData(file){
+
+return new Promise((resolve,reject)=>{
+
+if(!file)
+return resolve("");
+
+const r=new FileReader();
+
+r.onerror=()=>{
+reject(new Error("Could not read the image."))
+};
+
+r.onload=()=>{
+
+const im=new Image();
+
+im.onload=()=>{
+
+const max=600;
+
+const s=Math.min(
+1,
+max/Math.max(im.width,im.height)
+);
+
+const c=document.createElement("canvas");
+
+c.width=Math.max(
+1,
+Math.round(im.width*s)
+);
+
+c.height=Math.max(
+1,
+Math.round(im.height*s)
+);
+
+c.getContext("2d").drawImage(
+im,
+0,
+0,
+c.width,
+c.height
+);
+
+resolve(
+c.toDataURL(
+"image/jpeg",
+.82
+)
+);
+
+};
+
+im.onerror=()=>{
+reject(new Error("Could not open the image."))
+};
+
+im.src=r.result;
+
+};
+
+r.readAsDataURL(file);
+
+});
+
+}
+
+
+$("profileImageInput").onchange=async e=>{
+
+try{
+
+const d=await imageData(
+e.target.files[0]
+);
+
+if(d){
+
+$("profilePreview").src=d;
+
+$("profilePreview").classList.remove("hidden");
+
+}
+
+}catch(err){
+
+$("profileStatus").textContent=err.message
+
+}
+
+};
+
+
+$("saveProfile").onclick=async()=>{
+
+const name=$("usernameInput").value.trim();
+
+if(!name){
+
+$("profileStatus").textContent=
+"Username is required.";
+
+return;
+
+}
+
+try{
+
+const file=
+$("profileImageInput").files[0];
+
+profile={
+name,
+imageData:file
+?await imageData(file)
+:(profile.imageData||"")
+};
+
+saveLocalProfile();
+
+showProfileBar();
+
+closeProfile();
+
+syncMineFromScores();
+
+renderLeaderboard();
+
+if(
+profile.name.toLowerCase()==="mohnish kumar rs"
+)
+openLogin();
+
+}catch(e){
+
+$("profileStatus").textContent=e.message
+
+}
+
+};
+
+
+function closeIntro(){
+
+localStorage.setItem(
+"grammatrixIntroSeen",
+"1"
+);
+
+$("introOverlay")
+.classList.remove("open");
+
+if(!profile.name)
+openProfile();
+
+}
+
+$("introContinue").onclick=closeIntro;
+
+
+function ensureFirstOpen(){
+
+loadProfile();
+
+showProfileBar();
+
+if(
+!localStorage.getItem("grammatrixIntroSeen")
+)
+$("introOverlay").classList.add("open");
+
+else if(!profile.name)
+openProfile();
+
+}
+
+ensureFirstOpen();
+
+
+/*
+==================================================
+NORMAL ACTIVITY
+==================================================
+*/
+
+/* ============ VIEW ROUTER ============ */
+
+const VIEWS=["menuView","stationsView","gameplayView","grammarView","puzzlesView"];
+
+function showView(id){
+VIEWS.forEach(v=>{
+const el=$(v);
+if(el) el.classList.toggle("hidden",v!==id);
+});
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+document.querySelectorAll("[data-goto]").forEach(b=>{
+b.onclick=()=>showView(b.dataset.goto);
+});
+
+$("goStations").onclick=()=>{ showView("stationsView"); renderStations(); };
+$("goGameplay").onclick=()=>showView("gameplayView");
+$("goGrammar").onclick=()=>{ showView("grammarView"); startGrammar(); };
+$("goPuzzles").onclick=()=>{ showView("puzzlesView"); startPuzzles(); };
+
+
+/* ============ STATIONS (public) ============ */
+
+function renderStations(){
+const a=$("stationsArea");
+if(!stations.length){
+a.innerHTML='<div class="empty">No stations have been added yet. Check back soon.</div>';
+return;
+}
+a.innerHTML=stations.map(s=>`
+<article class="station">
+<h3>${esc(s.name||"Station")}</h3>
+<p>${esc(s.desc||s.description||"")}</p>
+</article>
+`).join("");
+}
+
+
+/* ============ GRAMMAR CHALLENGE ============ */
+
+function startGrammar(){
+const a=$("grammarArea");
+if(!questions.length){
+a.innerHTML='<div class="empty">No grammar questions have been published yet.</div>';
+gSession=null;
+return;
+}
+gSession={idx:0,pick:null,submitted:false,finished:false,answers:new Array(questions.length).fill(null)};
+myGrammar={correct:0,total:questions.length};
+renderGrammarQ();
+}
+
+function renderGrammarQ(){
+const a=$("grammarArea");
+const N=questions.length,i=gSession.idx,q=questions[i],o=q.options||[];
+a.innerHTML=`
+<div class="progress-row">
+<span>Question ${i+1} of ${N}</span>
+<span>Score: ${liveScore()}</span>
+</div>
+<div class="progress"><i style="width:${(i/N)*100}%"></i></div>
+<div class="question-number">Grammar</div>
+<div class="question">${esc(q.question)}</div>
+<div class="options">
+${o.map((x,n)=>`
+<button class="option" data-i="${n}">
+<span class="option-label">${String.fromCharCode(65+n)}</span>${esc(x)}
+</button>`).join("")}
+</div>
+<div class="answer-msg" id="answerMsg"></div>
+<div class="challenge-actions">
+<span></span>
+<button class="btn primary" id="qActionBtn" disabled>Submit answer</button>
+</div>`;
+const opts=[...a.querySelectorAll(".option")];
+opts.forEach(b=>b.onclick=()=>{
+if(gSession.submitted)return;
+gSession.pick=+b.dataset.i;
+opts.forEach(x=>x.classList.toggle("selected",x===b));
+$("qActionBtn").disabled=false;
+});
+$("qActionBtn").onclick=()=>{
+if(!gSession.submitted) submitGrammar();
+else nextGrammar();
+};
+}
+
+function submitGrammar(){
+if(gSession.submitted||gSession.pick==null)return;
+gSession.submitted=true;
+const i=gSession.idx,q=questions[i],c=+q.correctIndex,pick=gSession.pick,o=q.options||[];
+[...document.querySelectorAll("#grammarArea .option")].forEach((b,n)=>{
+b.disabled=true;
+if(n===c) b.classList.add("correct");
+if(n===pick&&n!==c) b.classList.add("wrong");
+});
+const ok=pick===c;
+gSession.answers[i]={question:q.question,your:o[pick]||"",correct:o[c]||"",ok};
+myGrammar.correct=gSession.answers.filter(x=>x&&x.ok).length;
+const m=$("answerMsg");
+m.className="answer-msg "+(ok?"success":"error");
+m.innerHTML=(ok?"✓ Correct!":`✗ Not quite. Correct answer: <b>${esc(o[c]||"")}</b>`)
++(q.explanation?`<div class="info-note"><b>Why?</b><br>${esc(q.explanation)}</div>`:"");
+const btn=$("qActionBtn");
+btn.disabled=false;
+btn.textContent=(i===questions.length-1)?"Finish":"Next question →";
+const bar=$("grammarArea").querySelector(".progress i");
+if(bar) bar.style.width=(((i+1)/questions.length)*100)+"%";
+showProfileBar();
+saveProgress();
+}
+
+function nextGrammar(){
+if(gSession.idx>=questions.length-1){ renderGrammarReview(); return; }
+gSession.idx++;
+gSession.pick=null;
+gSession.submitted=false;
+renderGrammarQ();
+}
+
+function renderGrammarReview(){
+gSession.finished=true;
+const N=questions.length,correct=gSession.answers.filter(x=>x&&x.ok).length;
+$("grammarArea").innerHTML=`
+<div style="text-align:center">
+<div class="question-number">Complete</div>
+<h3 style="font-family:Manrope;font-size:1.5rem;margin:8px 0">You scored ${correct} / ${N}</h3>
+<p style="color:var(--muted);margin-bottom:16px">Here's every question, your answer and the correct one.</p>
+</div>
+<div class="review-list">
+${gSession.answers.map((a,i)=>a?`
+<div class="review-item ${a.ok?'ok':'no'}">
+<div class="ri-q"><b>${i+1}.</b> ${esc(a.question)}</div>
+<div class="ri-line">Your answer: <span class="${a.ok?'good':'bad'}">${esc(a.your)||"—"}</span> ${a.ok?"✓":"✗"}</div>
+${a.ok?"":`<div class="ri-line">Correct answer: <span class="good">${esc(a.correct)}</span></div>`}
+</div>`:"").join("")}
+</div>
+<div class="challenge-actions">
+<button class="btn secondary" id="gReplay">Try again</button>
+<button class="btn primary" id="gBack">Back to gameplay</button>
+</div>`;
+$("gReplay").onclick=startGrammar;
+$("gBack").onclick=()=>showView("gameplayView");
+saveProgress();
+}
+
+
+/* ============ PUZZLES ============ */
+
+function startPuzzles(){
+const a=$("puzzleArea");
+if(!puzzles.length){
+a.innerHTML='<div class="empty">No puzzles have been published yet.</div>';
+pSession=null;
+return;
+}
+pSession={idx:0,submitted:false,finished:false,answers:new Array(puzzles.length).fill(null)};
+myPuzzle={correct:0,total:puzzles.length};
+renderPuzzleQ();
+}
+
+function renderPuzzleQ(){
+const a=$("puzzleArea");
+const N=puzzles.length,i=pSession.idx,p=puzzles[i];
+a.innerHTML=`
+<div class="progress-row">
+<span>Puzzle ${i+1} of ${N}</span>
+<span>Score: ${liveScore()}</span>
+</div>
+<div class="progress"><i style="width:${(i/N)*100}%"></i></div>
+<div class="question-number">${esc(p.type||"Puzzle")}</div>
+<div class="question">${esc(p.title||"Puzzle")}</div>
+<p style="color:var(--muted);margin-bottom:14px;white-space:pre-wrap">${esc(p.text||"")}</p>
+<input id="quizPuzzleInput" class="puzzle-input" placeholder="Type your answer…" autocomplete="off">
+<div class="answer-msg" id="quizPuzzleMsg"></div>
+<div class="challenge-actions">
+<span></span>
+<button class="btn primary" id="quizPuzzleBtn" disabled>Submit answer</button>
+</div>`;
+const inp=$("quizPuzzleInput"),btn=$("quizPuzzleBtn");
+inp.oninput=()=>{ if(!pSession.submitted) btn.disabled=!inp.value.trim(); };
+inp.onkeydown=e=>{ if(e.key==="Enter"&&!btn.disabled) btn.click(); };
+btn.onclick=()=>{ if(!pSession.submitted) submitPuzzle(); else nextPuzzle(); };
+inp.focus();
+}
+
+function submitPuzzle(){
+if(pSession.submitted)return;
+const i=pSession.idx,p=puzzles[i],inp=$("quizPuzzleInput"),val=inp.value.trim();
+if(!val)return;
+pSession.submitted=true;
+inp.disabled=true;
+const hasKey=!!(p.answer&&String(p.answer).trim());
+const ok=hasKey?normalize(val)===normalize(p.answer):true;
+pSession.answers[i]={
+question:(p.title?p.title+" — ":"")+(p.text||""),
+your:val,
+correct:hasKey?p.answer:"(accepted)",
+ok
+};
+myPuzzle.correct=pSession.answers.filter(x=>x&&x.ok).length;
+const m=$("quizPuzzleMsg");
+m.className="answer-msg "+(ok?"success":"error");
+m.innerHTML=(ok?"✓ Correct!":"✗ Not quite.")
++(hasKey?` Correct answer: <b>${esc(p.answer)}</b>`:"")
++(p.explanation?`<div class="info-note"><b>Why?</b><br>${esc(p.explanation)}</div>`:"");
+const btn=$("quizPuzzleBtn");
+btn.disabled=false;
+btn.textContent=(i===puzzles.length-1)?"Finish":"Next puzzle →";
+const bar=$("puzzleArea").querySelector(".progress i");
+if(bar) bar.style.width=(((i+1)/puzzles.length)*100)+"%";
+showProfileBar();
+saveProgress();
+}
+
+function nextPuzzle(){
+if(pSession.idx>=puzzles.length-1){ renderPuzzleReview(); return; }
+pSession.idx++;
+pSession.submitted=false;
+renderPuzzleQ();
+}
+
+function renderPuzzleReview(){
+pSession.finished=true;
+const N=puzzles.length,correct=pSession.answers.filter(x=>x&&x.ok).length;
+$("puzzleArea").innerHTML=`
+<div style="text-align:center">
+<div class="question-number">Complete</div>
+<h3 style="font-family:Manrope;font-size:1.5rem;margin:8px 0">You solved ${correct} / ${N}</h3>
+<p style="color:var(--muted);margin-bottom:16px">Here's every puzzle, your answer and the correct one.</p>
+</div>
+<div class="review-list">
+${pSession.answers.map((a,i)=>a?`
+<div class="review-item ${a.ok?'ok':'no'}">
+<div class="ri-q"><b>${i+1}.</b> ${esc(a.question)}</div>
+<div class="ri-line">Your answer: <span class="${a.ok?'good':'bad'}">${esc(a.your)||"—"}</span> ${a.ok?"✓":"✗"}</div>
+${a.ok?"":`<div class="ri-line">Correct answer: <span class="good">${esc(a.correct)}</span></div>`}
+</div>`:"").join("")}
+</div>
+<div class="challenge-actions">
+<button class="btn secondary" id="pReplay">Try again</button>
+<button class="btn primary" id="pBack">Back to gameplay</button>
+</div>`;
+$("pReplay").onclick=startPuzzles;
+$("pBack").onclick=()=>showView("gameplayView");
+saveProgress();
+}
+
+
+/* ============ PROGRESS SAVE (after every question) ============ */
+
+async function saveProgress(){
+if(!profile.name)return;
+const payload={
+name:profile.name,
+imageData:profile.imageData||"",
+grammarCorrect:myGrammar.correct||0,
+grammarTotal:myGrammar.total||0,
+puzzleCorrect:myPuzzle.correct||0,
+puzzleTotal:myPuzzle.total||0,
+score:liveScore(),
+grammarAnswers:gSession?gSession.answers.filter(Boolean):[],
+puzzleAnswers:pSession?pSession.answers.filter(Boolean):[],
+updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+};
+try{
+await db.collection("scores").doc(keyFor(profile.name)).set(payload,{merge:true});
+}catch(e){
+console.warn("Progress save unavailable:",e.message);
+}
+}
+
+function syncMineFromScores(){
+if(!profile.name)return;
+const mine=scores.find(p=>p.id===keyFor(profile.name));
+if(!mine)return;
+if(!gSession||gSession.finished){
+myGrammar.correct=+mine.grammarCorrect||0;
+myGrammar.total=+mine.grammarTotal||0;
+}
+if(!pSession||pSession.finished){
+myPuzzle.correct=+mine.puzzleCorrect||0;
+myPuzzle.total=+mine.puzzleTotal||0;
+}
+showProfileBar();
+}
+
+
+const infoData={
+
+due:{
+title:"Due Date",
+
+lead:
+"The due date tells you when the current learning set ends.",
+
+steps:[
+
+"The displayed date is the end date for the current learning set.",
+
+"Coordinators can publish an updated set when the date changes.",
+
+"The public page automatically shows the latest published content."
+
+],
+
+note:"Current due date: "
+
+}
+
+};
+
+
+function openInfo(type){
+
+const d=infoData[type];
+
+$("infoTitle").textContent=d.title;
+
+$("infoLead").textContent=d.lead;
+
+$("infoSteps").innerHTML=
+d.steps.map((x,i)=>`
+
+<div class="info-step">
+
+<b>${i+1}</b>
+
+<p>${esc(x)}</p>
+
+</div>
+
+`).join("");
+
+$("infoNote").textContent=
+d.note+fmtDate(dueDate);
+
+$("infoOverlay").classList.add("open");
+
+}
+
+
+$("dueIndicator").onclick=()=>{
+openInfo("due")
+};
+
+$("closeInfo").onclick=()=>{
+$("infoOverlay").classList.remove("open")
+};
+
+
+function normalize(v){
+
+return String(v||"")
+.trim()
+.replace(/\s+/g," ")
+.toLowerCase();
+
+}
+
+
+const GOLD_MSG="You ATE this and left no crumbs. 👑🔥 Certified Grammatrix legend — first place is yours and it's not even a debate. Nobody did it like you.";
+const SILVER_MSG="Excellent work! 🥈 You fought all the way to 2nd place — genuinely impressive. So close to the crown.";
+const BRONZE_MSG="Good job! 🥉 You made the podium and held your spot. Solid, steady and well earned.";
+
+function dueDatePassed(){
+if(!dueDate)return false;
+const end=new Date(dueDate+"T23:59:59");
+return !isNaN(end.getTime()) && Date.now()>end.getTime();
+}
+
+function renderLeaderboard(){
+const a=$("leaderboardArea");
+const sub=$("lbSub");
+const ended=dueDatePassed();
+if(sub) sub.textContent=ended
+?"🏁 Final results — the fest has ended."
+:"Ranked automatically by score. Locks into a gold / silver / bronze podium after the due date.";
+
+const list=[...scores].sort((x,y)=>
+((Number(y.score)||0)-(Number(x.score)||0))
+|| String(x.name||"").localeCompare(String(y.name||""))
+);
+
+if(!list.length){
+a.innerHTML='<div class="empty">No scores yet. Play a round to appear here.</div>';
+return;
+}
+
+const myKey=profile.name?keyFor(profile.name):null;
+const myRank=myKey?list.findIndex(p=>p.id===myKey):-1;
+
+let html="";
+
+if(ended && (myRank===0||myRank===1||myRank===2)){
+const tone=["gold","silver","bronze"][myRank];
+const label=["🥇 You're the WINNER!","🥈 You got Silver!","🥉 You got Bronze!"][myRank];
+const msg=[GOLD_MSG,SILVER_MSG,BRONZE_MSG][myRank];
+html+=`<div class="podium-banner ${tone}">
+<div class="pb-label">${label}</div>
+<div class="pb-msg">${esc(msg)}</div>
+</div>`;
+}
+
+html+=list.map((p,i)=>{
+const topCls=ended&&i<3?["gold","silver","bronze"][i]:"";
+const medal=ended&&i<3?["🥇","🥈","🥉"][i]:("#"+(i+1));
+const ribbon=ended&&i===0?'<span class="ribbon">🏆 WINNER</span>':"";
+const isMe=myKey&&p.id===myKey;
+const img=p.imageData
+?`<img src="${esc(p.imageData)}" alt="">`
+:`<div class="leader-avatar">${esc((p.name||"?")[0].toUpperCase())}</div>`;
+const gc=Number(p.grammarCorrect)||0;
+const pc=Number(p.puzzleCorrect)||0;
+return `
+<div class="leader ${topCls} ${isMe?'me':''}">
+<div class="rank">${medal}</div>
+${img}
+<div class="leader-main">
+<b>${esc(p.name||"Player")}${ribbon}${isMe?' <span class="you-tag">You</span>':''}</b>
+<small>❓ ${gc} correct · 🧩 ${pc} solved</small>
+</div>
+<div class="score">${Number(p.score)||0}</div>
+</div>`;
+}).join("");
+
+a.innerHTML=html;
+}
+
+
+function clearQuestionForm(){
+
+[
+"qText",
+"q0",
+"q1",
+"q2",
+"q3",
+"qExplanation"
+]
+.forEach(id=>
+$(id).value=""
+);
+
+$("qCorrect").value="0";
+
+editingQuestionId=null;
+
+$("saveQuestionBtn").textContent=
+"Publish Question";
+
+}
+
+
+function parseQuestion(raw){
+
+const text=
+raw
+.replace(/\r/g,"")
+.trim();
+
+if(!text)
+throw new Error("Paste a question first.");
+
+const ansMatch=
+text.match(
+/(?:^|\n)\s*(?:ans(?:wer)?|correct\s*answer)\s*[:\-]\s*([ABCD])\b/i
+);
+
+const expMatch=
+text.match(
+/(?:^|\n)\s*explanation\s*[:\-]?\s*([\s\S]*)$/i
+);
+
+let body=text;
+
+if(expMatch)
+body=body
+.slice(0,expMatch.index)
+.trim();
+
+if(ansMatch)
+body=body
+.replace(ansMatch[0],"")
+.trim();
+
+
+const optRe=
+/(?:^|\n)\s*(?:option\s*)?([ABCD])\s*[\)\.\:\-]\s*([^\n]+)/gi;
+
+const opts={
+A:"",
+B:"",
+C:"",
+D:""
+};
+
+const matches=[
+...body.matchAll(optRe)
+];
+
+
+matches.forEach(m=>
+opts[m[1].toUpperCase()]=
+m[2].trim()
+);
+
+
+if(
+Object.values(opts).some(v=>!v)
+){
+
+const lines=
+body
+.split("\n")
+.map(x=>x.trim())
+.filter(Boolean);
+
+const pos=
+lines.findIndex(
+x=>
+/^(?:option\s*)?a\s*[\)\.\:\-]/i.test(x)
+);
+
+if(pos>=0&&lines.length>=pos+4)
+
+["A","B","C","D"]
+.forEach((k,j)=>
+opts[k]=
+lines[pos+j]
+.replace(
+/^(?:option\s*)?[ABCD]\s*[\)\.\:\-]\s*/i,
+""
+)
+.trim()
+);
+
+}
+
+
+const qEnd=
+matches.length
+?matches[0].index
+:body.length;
+
+let q=
+body
+.slice(0,qEnd)
+.replace(/^\s*\d+\s*[\.\)]\s*/,"")
+.trim();
+
+if(!q)
+throw new Error(
+"Could not detect the question text."
+);
+
+if(
+Object.values(opts).some(v=>!v)
+)
+throw new Error(
+"Could not detect all four options A–D."
+);
+
+const correct=
+ansMatch
+?ansMatch[1].toUpperCase()
+:"A";
+
+const explanation=
+expMatch
+?expMatch[1].trim()
+:"";
+
+return {
+
+question:q,
+
+options:[
+opts.A,
+opts.B,
+opts.C,
+opts.D
+],
+
+correctIndex:
+"ABCD".indexOf(correct),
+
+explanation
+
+};
+
+}
+
+
+function setSelect(sel,val){
+if(!val)return;
+if(![...sel.options].some(o=>o.value===val||o.text===val)){
+const o=document.createElement("option");
+o.textContent=val;
+sel.appendChild(o);
+}
+sel.value=val;
+}
+
+async function publishQuestionDoc(question,options,correctIndex,explanation,editId){
+if(!question||options.some(o=>!o))
+throw new Error("Fill the question and all four options.");
+const payload={
+question,
+options,
+correctIndex:+correctIndex||0,
+explanation:explanation||"",
+published:true
+};
+if(editId){
+payload.updatedAt=firebase.firestore.FieldValue.serverTimestamp();
+await db.collection("questions").doc(editId).set(payload,{merge:true});
+}else{
+payload.createdAt=firebase.firestore.FieldValue.serverTimestamp();
+await db.collection("questions").add(payload);
+}
+}
+
+$("parseQuestionBtn").onclick=async()=>{
+let x;
+try{
+x=parseQuestion($("questionPaste").value);
+}catch(e){
+return setStatus("parserStatus",e.message,"error");
+}
+$("qText").value=x.question;
+x.options.forEach((v,i)=>$("q"+i).value=v);
+$("qCorrect").value=x.correctIndex;
+$("qExplanation").value=x.explanation;
+try{
+await publishQuestionDoc(x.question,x.options,x.correctIndex,x.explanation,null);
+$("questionPaste").value="";
+clearQuestionForm();
+setStatus("parserStatus","✓ Parsed and published.","success");
+}catch(e){
+setStatus("parserStatus","Publish failed: "+e.message,"error");
+}
+};
+
+async function saveQuestion(){
+const question=$("qText").value.trim();
+const options=[0,1,2,3].map(i=>$("q"+i).value.trim());
+const correctIndex=+$("qCorrect").value;
+const explanation=$("qExplanation").value.trim();
+const editId=editingQuestionId;
+try{
+await publishQuestionDoc(question,options,correctIndex,explanation,editId);
+clearQuestionForm();
+setStatus("questionStatus",editId?"Question updated ✓":"Question published ✓","success");
+}catch(e){
+setStatus("questionStatus","Error: "+e.message,"error");
+}
+}
+
+
+function parsePuzzle(raw){
+const t=String(raw||"").replace(/\r/g,"").trim();
+if(!t) throw new Error("Paste a puzzle first.");
+const grab=re=>{ const m=t.match(re); return m?m[1].trim():""; };
+const title=grab(/(?:^|\n)\s*title\s*[:\-]\s*([^\n]+)/i);
+const type=grab(/(?:^|\n)\s*type\s*[:\-]\s*([^\n]+)/i);
+const text=grab(/(?:^|\n)\s*(?:puzzle|question|prompt)\s*[:\-]\s*([\s\S]*?)(?=\n\s*(?:answer|ans|solution|explanation)\s*[:\-]|$)/i);
+const answer=grab(/(?:^|\n)\s*(?:answer|ans|solution)\s*[:\-]\s*([\s\S]*?)(?=\n\s*explanation\s*[:\-]|$)/i);
+const explanation=grab(/(?:^|\n)\s*explanation\s*[:\-]\s*([\s\S]*)$/i);
+if(!title) throw new Error("Could not detect the title (start a line with \"Title:\").");
+if(!text) throw new Error("Could not detect the puzzle text (start a line with \"Puzzle:\").");
+if(!answer) throw new Error("Could not detect the answer (start a line with \"Answer:\").");
+return {title,type:type||"Word Puzzle",text,answer,explanation};
+}
+
+async function publishPuzzleDoc(d,editId){
+if(!d.title||!d.text) throw new Error("Add a title and puzzle text.");
+const payload={
+title:d.title,
+type:d.type||"Word Puzzle",
+text:d.text,
+answer:d.answer||"",
+explanation:d.explanation||"",
+published:true
+};
+if(editId){
+payload.updatedAt=firebase.firestore.FieldValue.serverTimestamp();
+await db.collection("puzzles").doc(editId).set(payload,{merge:true});
+}else{
+payload.createdAt=firebase.firestore.FieldValue.serverTimestamp();
+await db.collection("puzzles").add(payload);
+}
+}
+
+function clearPuzzleForm(){
+["pTitle","pText","pAnswer","pExplanation"].forEach(id=>$(id).value="");
+$("pType").value="Word Puzzle";
+editingPuzzleId=null;
+$("savePuzzleBtn").textContent="Publish Puzzle";
+}
+
+async function savePuzzle(){
+const d={
+title:$("pTitle").value.trim(),
+type:$("pType").value,
+text:$("pText").value.trim(),
+answer:$("pAnswer").value.trim(),
+explanation:$("pExplanation").value.trim()
+};
+const editId=editingPuzzleId;
+try{
+await publishPuzzleDoc(d,editId);
+clearPuzzleForm();
+setStatus("puzzleStatus",editId?"Puzzle updated ✓":"Puzzle published ✓","success");
+}catch(e){
+setStatus("puzzleStatus","Error: "+e.message,"error");
+}
+}
+
+$("parsePuzzleBtn").onclick=async()=>{
+let d;
+try{
+d=parsePuzzle($("puzzlePaste").value);
+}catch(e){
+return setStatus("puzzleParserStatus",e.message,"error");
+}
+$("pTitle").value=d.title;
+setSelect($("pType"),d.type);
+$("pText").value=d.text;
+$("pAnswer").value=d.answer;
+$("pExplanation").value=d.explanation;
+try{
+await publishPuzzleDoc(d,null);
+$("puzzlePaste").value="";
+clearPuzzleForm();
+setStatus("puzzleParserStatus","✓ Parsed and published.","success");
+}catch(e){
+setStatus("puzzleParserStatus","Publish failed: "+e.message,"error");
+}
+};
+
+
+async function saveDueDate(){
+
+const v=
+$("adminDueDate").value;
+
+if(!v)
+return setStatus(
+"dueStatus",
+"Choose a date.",
+"error"
+);
+
+
+try{
+
+await db
+.collection("meta")
+.doc("event")
+.set(
+{
+dueDate:v
+},
+{merge:true}
+);
+
+setStatus(
+"dueStatus",
+"Due date saved ✓",
+"success"
+);
+
+}catch(e){
+
+setStatus(
+"dueStatus",
+"Error: "+e.message,
+"error"
+);
+
+}
+
+}
+
+
+async function saveStation(){
+const name=$("stName").value.trim();
+const desc=$("stDesc").value.trim();
+if(!name) return setStatus("stationStatus","Add a station name.","error");
+try{
+await db.collection("stations").add({
+name,
+desc,
+published:true,
+createdAt:firebase.firestore.FieldValue.serverTimestamp()
+});
+$("stName").value="";
+$("stDesc").value="";
+setStatus("stationStatus","Station published ✓","success");
+}catch(e){
+setStatus("stationStatus","Error: "+e.message,"error");
+}
+}
+
+function renderStationTable(){
+if(!stations.length){
+$("stationTable").textContent="No stations yet.";
+return;
+}
+$("stationTable").innerHTML=`
+<table class="sheet">
+<tr><th>Name</th><th>Description</th><th>Action</th></tr>
+${stations.map(s=>`
+<tr>
+<td>${esc(s.name||"")}</td>
+<td>${esc(s.desc||s.description||"")}</td>
+<td><button class="mini" data-delete-st="${s.id}">🗑 Remove</button></td>
+</tr>`).join("")}
+</table>`;
+}
+
+function renderPlayersTable(){
+if(!scores.length){
+$("playersTable").textContent="No players yet.";
+return;
+}
+const list=[...scores].sort((a,b)=>(Number(b.score)||0)-(Number(a.score)||0));
+$("playersTable").innerHTML=`
+<table class="sheet">
+<tr><th>Player</th><th>❓ correct</th><th>🧩 solved</th><th>Score</th><th>Action</th></tr>
+${list.map(p=>`
+<tr>
+<td>${esc(p.name||"")}</td>
+<td>${Number(p.grammarCorrect)||0} / ${Number(p.grammarTotal)||0}</td>
+<td>${Number(p.puzzleCorrect)||0} / ${Number(p.puzzleTotal)||0}</td>
+<td>${Number(p.score)||0}</td>
+<td><button class="mini" data-delete-score="${p.id}">🗑 Remove</button></td>
+</tr>`).join("")}
+</table>`;
+}
+
+
+function setStatus(id,text,type=""){
+
+const e=$(id);
+
+e.textContent=text;
+
+e.className=
+"status "+type;
+
+}
+
+
+async function del(
+collection,
+id,
+label
+){
+
+if(
+!confirm(
+"Remove this "+label+"?"
+)
+)
+return;
+
+try{
+
+await db
+.collection(collection)
+.doc(id)
+.delete();
+
+}catch(e){
+
+alert(
+"Could not remove it: "+e.message
+);
+
+}
+
+}
+
+
+function renderQuestionTable(){
+
+if(!questions.length){
+
+$("questionTable").textContent=
+"No questions yet.";
+
+return;
+
+}
+
+
+$("questionTable").innerHTML=`
+
+<table class="sheet">
+
+<tr>
+
+<th>Question</th>
+<th>Options</th>
+<th>Correct</th>
+<th>Explanation</th>
+<th>Action</th>
+
+</tr>
+
+${questions.map(q=>`
+
+<tr>
+
+<td>
+${esc(q.question)}
+</td>
+
+<td>
+${(q.options||[])
+.map(
+(x,i)=>
+String.fromCharCode(65+i)+
+". "+
+esc(x)
+)
+.join("<br>")}
+</td>
+
+<td>
+${String.fromCharCode(
+65+(+q.correctIndex||0)
+)}
+</td>
+
+<td>
+${esc(q.explanation||"")}
+</td>
+
+<td>
+
+<button
+class="mini"
+data-edit-q="${q.id}">
+✏️ Edit
+</button>
+
+<button
+class="mini"
+data-delete-q="${q.id}">
+🗑 Remove
+</button>
+
+</td>
+
+</tr>
+
+`).join("")}
+
+</table>
+
+`;
+
+}
+
+
+function renderPuzzleTable(){
+
+if(!puzzles.length){
+
+$("puzzleTable").textContent=
+"No puzzles yet.";
+
+return;
+
+}
+
+
+$("puzzleTable").innerHTML=`
+
+<table class="sheet">
+
+<tr>
+
+<th>Title</th>
+<th>Type</th>
+<th>Answer</th>
+<th>Action</th>
+
+</tr>
+
+${puzzles.map(p=>`
+
+<tr>
+
+<td>
+${esc(p.title)}
+</td>
+
+<td>
+${esc(p.type)}
+</td>
+
+<td>
+${esc(p.answer||"")}
+</td>
+
+<td>
+
+<button
+class="mini"
+data-edit-p="${p.id}">
+✏️ Edit
+</button>
+
+<button
+class="mini"
+data-delete-p="${p.id}">
+🗑 Remove
+</button>
+
+</td>
+
+</tr>
+
+`).join("")}
+
+</table>
+
+`;
+
+}
+
+
+function renderFeedback(){
+
+if(!feedbacks.length){
+
+$("feedbackTable").innerHTML=
+'<div class="status">No feedback yet.</div>';
+
+return;
+
+}
+
+
+$("feedbackTable").innerHTML=
+feedbacks.map(f=>`
+
+<div class="feedback-item">
+
+<strong>
+${esc(f.name||"Anonymous")}
+</strong>
+
+<div style="color:var(--gold);letter-spacing:2px">
+${"★".repeat(f.rating||0)}${"☆".repeat(5-(f.rating||0))}
+</div>
+
+<div>
+${esc(f.text||"")}
+</div>
+
+<small>
+${
+f.createdAt?.toDate
+?f.createdAt.toDate().toLocaleString()
+:"Recently submitted"
+}
+</small>
+
+</div>
+
+`).join("");
+
+}
+
+
+$("saveQuestionBtn").onclick=
+saveQuestion;
+
+$("clearQuestionBtn").onclick=
+clearQuestionForm;
+
+$("savePuzzleBtn").onclick=
+savePuzzle;
+
+$("saveDueBtn").onclick=
+saveDueDate;
+
+$("clearPuzzleBtn").onclick=clearPuzzleForm;
+
+$("saveStationBtn").onclick=saveStation;
+
+$("clearStationBtn").onclick=()=>{
+$("stName").value="";
+$("stDesc").value="";
+setStatus("stationStatus","","");
+};
+
+
+$("questionTable").onclick=e=>{
+const ed=e.target.closest("[data-edit-q]");
+const de=e.target.closest("[data-delete-q]");
+if(ed){
+const q=questions.find(x=>x.id===ed.dataset.editQ);
+if(q){
+editingQuestionId=q.id;
+$("qText").value=q.question||"";
+for(let i=0;i<4;i++) $("q"+i).value=(q.options&&q.options[i])||"";
+$("qCorrect").value=String(q.correctIndex==null?0:q.correctIndex);
+$("qExplanation").value=q.explanation||"";
+$("saveQuestionBtn").textContent="Save changes";
+setStatus("questionStatus","Editing this question — update the fields and press “Save changes”.","");
+$("qText").scrollIntoView({behavior:"smooth",block:"center"});
+}
+return;
+}
+if(de) del("questions",de.dataset.deleteQ,"question");
+};
+
+
+$("puzzleTable").onclick=e=>{
+const ed=e.target.closest("[data-edit-p]");
+const de=e.target.closest("[data-delete-p]");
+if(ed){
+const p=puzzles.find(x=>x.id===ed.dataset.editP);
+if(p){
+editingPuzzleId=p.id;
+$("pTitle").value=p.title||"";
+setSelect($("pType"),p.type||"Word Puzzle");
+$("pText").value=p.text||"";
+$("pAnswer").value=p.answer||"";
+$("pExplanation").value=p.explanation||"";
+$("savePuzzleBtn").textContent="Save changes";
+setStatus("puzzleStatus","Editing this puzzle — update the fields and press “Save changes”.","");
+$("pTitle").scrollIntoView({behavior:"smooth",block:"center"});
+}
+return;
+}
+if(de) del("puzzles",de.dataset.deleteP,"puzzle");
+};
+
+
+$("stationTable").onclick=e=>{
+const b=e.target.closest("[data-delete-st]");
+if(b) del("stations",b.dataset.deleteSt,"station");
+};
+
+
+$("playersTable").onclick=e=>{
+const b=e.target.closest("[data-delete-score]");
+if(b) del("scores",b.dataset.deleteScore,"player");
+};
+
+$("resetLeaderboardBtn").onclick=async()=>{
+if(!confirm("Reset the leaderboard? This permanently removes every player's score."))return;
+setStatus("playersStatus","Resetting…","");
+try{
+const snap=await db.collection("scores").get();
+for(const d of snap.docs){ await d.ref.delete(); }
+setStatus("playersStatus","Leaderboard reset ✓ ("+snap.size+" removed)","success");
+}catch(e){
+setStatus("playersStatus","Error: "+e.message,"error");
+}
+};
+
+
+function openLogin(){
+
+$("loginOverlay")
+.classList.add("open");
+
+$("loginStatus").textContent="";
+
+setTimeout(
+()=>$("loginEmail").focus(),
+50
+);
+
+}
+
+
+function closeLogin(){
+
+$("loginOverlay")
+.classList.remove("open");
+
+}
+
+
+$("secretHit").onclick=
+openLogin;
+
+$("cancelLogin").onclick=
+closeLogin;
+
+
+$("submitLogin").onclick=async()=>{
+
+if(coordinatorLocked){
+
+$("loginStatus").textContent=
+"Coordinator access is currently locked.";
+
+return;
+
+}
+
+
+const email=
+$("loginEmail").value.trim();
+
+const pass=
+$("loginPassword").value;
+
+
+if(!email||!pass){
+
+$("loginStatus").textContent=
+"Enter both fields.";
+
+return;
+
+}
+
+
+$("submitLogin").disabled=true;
+
+$("loginStatus").textContent=
+"Signing in…";
+
+
+try{
+
+await auth.signInWithEmailAndPassword(
+email,
+pass
+);
+
+closeLogin();
+
+}catch(e){
+
+$("loginStatus").textContent=
+"Sign-in failed. Check the coordinator account.";
+
+}finally{
+
+$("submitLogin").disabled=false;
+
+}
+
+};
+
+
+$("loginPassword").onkeydown=e=>{
+
+if(e.key==="Enter")
+$("submitLogin").click();
+
+};
+
+
+$("logoutBtn").onclick=()=>
+auth.signOut();
+
+
+document.onkeydown=e=>{
+
+if(
+e.ctrlKey&&
+e.shiftKey&&
+e.key.toLowerCase()==="g"
+){
+
+e.preventDefault();
+
+openLogin();
+
+}
+
+};
+
+
+let feedbackRating=0;
+
+function setStarDisplay(n){
+
+document
+.querySelectorAll("#starRating .star")
+.forEach(s=>{
+
+s.classList.toggle(
+"active",
++s.dataset.star<=n
+);
+
+});
+
+}
+
+document
+.querySelectorAll("#starRating .star")
+.forEach(s=>
+
+s.onclick=()=>{
+
+feedbackRating=+s.dataset.star;
+
+setStarDisplay(feedbackRating);
+
+}
+
+);
+
+
+function markFeedbackGiven(){
+
+localStorage.setItem(
+"grammatrixFeedbackGiven",
+"1"
+);
+
+$("feedbackFab").classList.add("small");
+
+}
+
+
+if(localStorage.getItem("grammatrixFeedbackGiven"))
+$("feedbackFab").classList.add("small");
+
+
+async function submitFeedback(){
+
+const text=
+$("feedbackText").value.trim();
+
+if(!feedbackRating)
+
+return setStatus(
+"feedbackStatus",
+"Please select a star rating.",
+"error"
+);
+
+
+try{
+
+await db
+.collection("feedback")
+.add(
+{
+name:
+profile.name||"Anonymous",
+
+rating:
+feedbackRating,
+
+text,
+
+createdAt:
+firebase.firestore.FieldValue.serverTimestamp()
+
+}
+);
+
+$("feedbackText").value="";
+
+feedbackRating=0;
+
+setStarDisplay(0);
+
+setStatus(
+"feedbackStatus",
+"Feedback submitted ✓",
+"success"
+);
+
+markFeedbackGiven();
+
+}catch(e){
+
+setStatus(
+"feedbackStatus",
+"Could not submit feedback: "+e.message,
+"error"
+);
+
+}
+
+}
+
+
+$("feedbackFab").onclick=()=>
+$("feedbackOverlay").classList.add("open");
+
+
+$("closeFeedback").onclick=()=>
+$("feedbackOverlay").classList.remove("open");
+
+
+$("submitFeedback").onclick=
+submitFeedback;
+
+
+function updateLockUI(){
+
+const dot=$("lockDot");
+
+if(!dot)return;
+
+dot.title=
+coordinatorLocked
+?"Coordinator access is locked"
+:"Coordinator access is unlocked";
+
+dot.style.background=
+coordinatorLocked
+?"#b53f56"
+:"#66738c";
+
+}
+
+
+function listenLock(){
+
+db.collection("meta")
+.doc("security")
+.onSnapshot(
+
+d=>{
+
+coordinatorLocked=
+d.exists
+?!!d.data().coordinatorLocked
+:false;
+
+updateLockUI();
+
+},
+
+e=>{
+
+coordinatorLocked=false;
+
+updateLockUI();
+
+}
+
+);
+
+}
+
+listenLock();
+
+
+$("lockDot").onclick=async()=>{
+
+lockClicks++;
+
+
+if(lockClicks===5){
+
+const code=
+prompt("Enter cheat code");
+
+
+if(
+code==="1234RSMK"||
+code==="MK_github.io"
+){
+
+try{
+
+await db
+.collection("meta")
+.doc("security")
+.set(
+{
+coordinatorLocked:true,
+
+updatedAt:
+firebase.firestore.FieldValue.serverTimestamp()
+
+},
+{merge:true}
+);
+
+alert(
+"Coordinator access locked across connected devices."
+);
+
+}catch(e){
+
+alert(
+"Could not update the shared lock: "+e.message
+);
+
+}
+
+}else if(code!==null){
+
+alert(
+"Invalid cheat code."
+);
+
+}
+
+lockClicks=0;
+
+}
+
+
+if(lockClicks===10){
+
+try{
+
+await db
+.collection("meta")
+.doc("security")
+.set(
+{
+coordinatorLocked:false,
+
+updatedAt:
+firebase.firestore.FieldValue.serverTimestamp()
+
+},
+{merge:true}
+);
+
+alert(
+"Coordinator access unlocked across connected devices."
+);
+
+}catch(e){
+
+alert(
+"Could not update the shared lock: "+e.message
+);
+
+}
+
+lockClicks=0;
+
+}
+
+};
+
+
+auth.onAuthStateChanged(u=>{
+
+currentUser=u;
+
+if(u){
+
+$("adminRoom").classList.add("open");
+
+$("signedInAs").textContent=
+"Signed in as "+
+(
+u.email||
+"authorized coordinator"
+);
+
+renderQuestionTable();
+
+renderPuzzleTable();
+
+renderStationTable();
+
+renderPlayersTable();
+
+renderFeedback();
+
+updateLockUI();
+
+}else{
+
+$("adminRoom").classList.remove("open");
+
+}
+
+});
+
+
+db.collection("questions")
+.where("published","==",true)
+.onSnapshot(
+s=>{
+questions=s.docs.map(d=>({id:d.id,...d.data()}));
+if(currentUser) renderQuestionTable();
+if(!gSession && !$("grammarView").classList.contains("hidden")) startGrammar();
+},
+e=>{
+$("grammarArea").innerHTML='<div class="empty">Questions could not be loaded. Check the Firebase rules.</div>';
+}
+);
+
+
+db.collection("puzzles")
+.where("published","==",true)
+.onSnapshot(
+s=>{
+puzzles=s.docs.map(d=>({id:d.id,...d.data()}));
+if(currentUser) renderPuzzleTable();
+if(!pSession && !$("puzzlesView").classList.contains("hidden")) startPuzzles();
+},
+e=>{}
+);
+
+
+db.collection("stations")
+.where("published","==",true)
+.onSnapshot(
+s=>{
+stations=s.docs.map(d=>({id:d.id,...d.data()}));
+if(!$("stationsView").classList.contains("hidden")) renderStations();
+if(currentUser) renderStationTable();
+},
+e=>{}
+);
+
+
+db.collection("feedback")
+.orderBy("createdAt","desc")
+.limit(100)
+.onSnapshot(
+s=>{
+feedbacks=s.docs.map(d=>({id:d.id,...d.data()}));
+if(currentUser) renderFeedback();
+},
+e=>{}
+);
+
+
+db.collection("scores")
+.orderBy("score","desc")
+.limit(100)
+.onSnapshot(
+s=>{
+scores=s.docs.map(d=>({id:d.id,...d.data()}));
+renderLeaderboard();
+syncMineFromScores();
+if(currentUser) renderPlayersTable();
+},
+e=>{
+$("leaderboardArea").innerHTML='<div class="empty">Scores will appear after players complete questions.</div>';
+}
+);
+
+
+db.collection("meta")
+.doc("event")
+.onSnapshot(
+d=>{
+dueDate=d.exists?(d.data().dueDate||""):"";
+$("publicDueDate").textContent=fmtDate(dueDate);
+if($("adminDueDate")) $("adminDueDate").value=dueDate;
+renderLeaderboard();
+}
+);
+
+
+renderLeaderboard();
+
+</script>
+
+
+<script>
+
+if("serviceWorker" in navigator
+&&location.protocol.indexOf("http")===0)
+
+window.addEventListener(
+"load",
+()=>
+navigator.serviceWorker
+.register("./service-worker.js")
+.catch(
+e=>
+console.warn(
+"PWA service worker:",
+e
+)
+)
+);
+
+</script>
+
+</body>
+</html>
