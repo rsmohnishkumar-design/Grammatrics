@@ -1,0 +1,4802 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#18243f">
+<meta name="description" content="Grammatrix — The Mega Grammar Learning Fest, Velammal Annex.">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>Grammatrix — The Mega Grammar Learning Fest</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<style>
+:root{
+--ink:#18243f;
+--muted:#74819a;
+--bg:#f4f7fc;
+--surface:#fff;
+--line:#e3e8f2;
+--primary:#5a4ff2;
+--primary2:#776df7;
+--soft:#eeecff;
+--cyan:#21b7c9;
+--green:#16845b;
+--greenSoft:#e4f8ef;
+--red:#b53f56;
+--redSoft:#ffe9ee;
+--gold:#f2b94b;
+--silver:#aeb7c7;
+--bronze:#c48752;
+--shadow:0 18px 55px rgba(28,43,78,.09);
+--shadowLg:0 30px 90px rgba(15,27,55,.18)
+}
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0
+}
+
+html{
+scroll-behavior:smooth
+}
+
+body{
+font-family:"DM Sans",sans-serif;
+background:
+radial-gradient(circle at 10% 20%,rgba(90,79,242,.06),transparent 24rem),
+radial-gradient(circle at 90% 45%,rgba(33,183,201,.05),transparent 24rem),
+var(--bg);
+color:var(--ink);
+line-height:1.55
+}
+
+button,input,select,textarea{
+font:inherit
+}
+
+button{
+cursor:pointer
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible{
+outline:3px solid rgba(90,79,242,.25);
+outline-offset:2px
+}
+
+.hero{
+position:relative;
+overflow:hidden;
+color:#fff;
+padding:24px 20px 88px;
+background:
+radial-gradient(circle at 16% 12%,rgba(119,109,247,.9),transparent 30%),
+radial-gradient(circle at 86% 35%,rgba(33,183,201,.18),transparent 28%),
+linear-gradient(135deg,#5548e8,#303d72 52%,#18243f)
+}
+
+.hero:before,
+.hero:after{
+content:"";
+position:absolute;
+border:1px solid rgba(255,255,255,.12);
+border-radius:50%;
+pointer-events:none
+}
+
+.hero:before{
+width:390px;
+height:390px;
+right:-145px;
+top:-175px
+}
+
+.hero:after{
+width:260px;
+height:260px;
+left:-150px;
+bottom:-180px
+}
+
+.topbar,
+.hero-inner,
+.shell,
+.admin-inner{
+max-width:1120px;
+margin:auto
+}
+
+.topbar{
+display:flex;
+align-items:center;
+justify-content:space-between;
+position:relative;
+z-index:2
+}
+
+.brand-mini{
+display:flex;
+align-items:center;
+gap:9px;
+font-weight:800;
+letter-spacing:.08em;
+font-size:.84rem
+}
+
+.brand-mark{
+width:31px;
+height:31px;
+border-radius:10px;
+display:grid;
+place-items:center;
+background:rgba(255,255,255,.13);
+border:1px solid rgba(255,255,255,.18)
+}
+
+.due-pill{
+display:flex;
+align-items:center;
+gap:7px;
+border:1px solid rgba(255,255,255,.2);
+background:rgba(255,255,255,.09);
+padding:9px 13px;
+border-radius:999px;
+font-size:.78rem;
+color:rgba(255,255,255,.9);
+backdrop-filter:blur(8px);
+cursor:pointer
+}
+
+.hero-inner{
+text-align:center;
+position:relative;
+z-index:2;
+margin-top:55px
+}
+
+.eyebrow{
+font-size:.73rem;
+letter-spacing:.2em;
+text-transform:uppercase;
+font-weight:700;
+color:rgba(255,255,255,.72)
+}
+
+h1{
+font-family:Manrope,sans-serif;
+font-size:clamp(3.4rem,9vw,6.5rem);
+line-height:.94;
+letter-spacing:-.065em;
+margin:13px 0 14px;
+text-shadow:0 10px 35px rgba(0,0,0,.16)
+}
+
+.subtitle{
+font-family:Manrope,sans-serif;
+font-size:clamp(1.05rem,2.5vw,1.45rem);
+font-weight:600;
+color:rgba(255,255,255,.94)
+}
+
+.hero-note{
+max-width:680px;
+margin:17px auto 0;
+color:rgba(255,255,255,.68);
+font-size:.93rem
+}
+
+.shell{
+margin-top:-46px;
+padding:0 18px 65px;
+position:relative;
+z-index:3
+}
+
+.nav-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:16px;
+max-width:760px;
+margin:0 auto
+}
+
+.nav-card{
+border:1px solid rgba(255,255,255,.85);
+background:rgba(255,255,255,.97);
+color:var(--ink);
+border-radius:24px;
+padding:23px;
+text-align:left;
+box-shadow:var(--shadow);
+min-height:158px;
+transition:transform .18s,box-shadow .18s
+}
+
+.nav-card:hover{
+transform:translateY(-5px);
+box-shadow:0 25px 65px rgba(28,43,78,.13)
+}
+
+.nav-icon{
+width:45px;
+height:45px;
+border-radius:14px;
+display:grid;
+place-items:center;
+margin-bottom:15px;
+background:var(--soft);
+color:var(--primary)
+}
+
+.nav-card:nth-child(2) .nav-icon{
+background:#e5f8fa;
+color:#1196a8
+}
+
+.nav-card h2{
+font-family:Manrope,sans-serif;
+font-size:1.08rem
+}
+
+.nav-card p{
+color:var(--muted);
+font-size:.84rem;
+margin-top:5px
+}
+
+.section{
+margin-top:28px
+}
+
+.section-head{
+margin:39px 2px 15px
+}
+
+.section-head h2{
+font-family:Manrope,sans-serif;
+font-size:1.72rem;
+letter-spacing:-.04em
+}
+
+.section-head p{
+color:var(--muted);
+font-size:.86rem;
+margin-top:3px
+}
+
+.card{
+background:#fff;
+border:1px solid var(--line);
+border-radius:28px;
+box-shadow:var(--shadow);
+padding:27px
+}
+
+.hidden{
+display:none!important
+}
+
+.profile-bar{
+display:flex;
+align-items:center;
+gap:12px;
+background:#fff;
+border:1px solid var(--line);
+border-radius:18px;
+padding:12px 15px;
+margin:0 auto 24px;
+max-width:760px
+}
+
+.profile-bar img,
+.profile-avatar{
+width:48px;
+height:48px;
+border-radius:50%;
+object-fit:cover
+}
+
+.profile-avatar{
+display:grid;
+place-items:center;
+background:var(--soft);
+color:var(--primary);
+font-weight:800
+}
+
+.profile-info{
+flex:1
+}
+
+.profile-info b{
+font-family:Manrope
+}
+
+.profile-info small{
+display:block;
+color:var(--muted)
+}
+
+.profile-setup{
+max-width:560px;
+margin:0 auto 25px
+}
+
+.profile-setup h2{
+font-family:Manrope;
+margin-bottom:5px
+}
+
+.profile-setup p{
+color:var(--muted);
+font-size:.88rem;
+margin-bottom:17px
+}
+
+.field{
+margin:10px 0
+}
+
+.field label{
+display:block;
+font-size:.76rem;
+font-weight:800;
+margin-bottom:5px
+}
+
+.field input,
+.field textarea,
+.field select{
+width:100%;
+padding:11px 12px;
+border:1px solid var(--line);
+border-radius:11px;
+background:#fbfcff;
+color:var(--ink)
+}
+
+.btn{
+border:0;
+border-radius:12px;
+padding:11px 16px;
+font-weight:700;
+transition:.15s;
+display:inline-flex;
+align-items:center;
+gap:7px;
+justify-content:center
+}
+
+.btn.primary{
+background:var(--primary);
+color:#fff
+}
+
+.btn.secondary{
+background:#eef1f7;
+color:var(--ink)
+}
+
+.btn.danger{
+background:#ffe9ee;
+color:#a62f47
+}
+
+.btn:disabled{
+opacity:.45;
+cursor:not-allowed
+}
+
+.btn-row{
+display:flex;
+gap:9px;
+flex-wrap:wrap;
+margin-top:14px
+}
+
+.info-overlay,
+.login-overlay,
+.intro-overlay,
+.profile-overlay{
+position:fixed;
+inset:0;
+background:rgba(10,18,39,.64);
+backdrop-filter:blur(7px);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:100;
+padding:18px
+}
+
+.info-overlay.open,
+.login-overlay.open,
+.intro-overlay.open,
+.profile-overlay.open{
+display:flex
+}
+
+.modal{
+width:min(620px,100%);
+max-height:90vh;
+overflow:auto;
+background:#fff;
+border-radius:28px;
+box-shadow:var(--shadowLg);
+padding:27px;
+position:relative
+}
+
+.modal h2{
+font-family:Manrope;
+font-size:1.55rem
+}
+
+.modal .lead{
+color:var(--muted);
+font-size:.9rem;
+margin:5px 0 18px
+}
+
+.close{
+position:absolute;
+right:16px;
+top:16px;
+border:0;
+background:#f0f2f7;
+border-radius:10px;
+width:38px;
+height:38px;
+font-size:20px
+}
+
+.info-list{
+display:grid;
+gap:10px
+}
+
+.info-step{
+display:grid;
+grid-template-columns:30px 1fr;
+gap:10px;
+align-items:start;
+padding:12px;
+border:1px solid var(--line);
+border-radius:14px;
+background:#fafbfe
+}
+
+.info-step b{
+width:28px;
+height:28px;
+display:grid;
+place-items:center;
+border-radius:9px;
+background:var(--soft);
+color:var(--primary);
+font-size:.75rem
+}
+
+.info-step p{
+font-size:.84rem;
+color:#52617c
+}
+
+.info-note{
+padding:13px 14px;
+border-radius:14px;
+background:#f3f5fa;
+color:#52617c;
+font-size:.81rem;
+margin-top:15px
+}
+
+.challenge-card{
+background:#fff;
+border:1px solid var(--line);
+border-radius:28px;
+box-shadow:var(--shadow);
+padding:27px;
+max-width:820px;
+margin:auto
+}
+
+.progress-row{
+display:flex;
+justify-content:space-between;
+color:var(--muted);
+font-size:.79rem;
+margin-bottom:13px
+}
+
+.progress{
+height:8px;
+background:#edf0f6;
+border-radius:999px;
+overflow:hidden
+}
+
+.progress i{
+display:block;
+height:100%;
+background:linear-gradient(90deg,var(--primary),var(--primary2));
+border-radius:999px
+}
+
+.question-number{
+display:inline-flex;
+margin-top:21px;
+padding:6px 9px;
+border-radius:8px;
+background:var(--soft);
+color:var(--primary);
+font-size:.69rem;
+font-weight:800;
+letter-spacing:.12em;
+text-transform:uppercase
+}
+
+.question{
+font-family:Manrope;
+font-size:clamp(1.2rem,3vw,1.72rem);
+font-weight:800;
+line-height:1.3;
+margin:10px 0 20px
+}
+
+.options{
+display:grid;
+gap:10px
+}
+
+.option{
+width:100%;
+text-align:left;
+border:1px solid var(--line);
+background:#f8faff;
+padding:15px 16px;
+border-radius:15px;
+color:var(--ink)
+}
+
+.option.correct{
+background:var(--greenSoft);
+border-color:#b7e9d1
+}
+
+.option.wrong{
+background:var(--redSoft);
+border-color:#ffd0da
+}
+
+.option:disabled{
+cursor:default
+}
+
+.option-label{
+font-weight:800;
+margin-right:9px;
+color:var(--primary)
+}
+
+.answer-msg{
+min-height:28px;
+margin-top:13px;
+font-size:.89rem;
+font-weight:700
+}
+
+.success{
+color:var(--green)
+}
+
+.error{
+color:var(--red)
+}
+
+.challenge-actions{
+display:flex;
+gap:10px;
+justify-content:space-between;
+margin-top:16px
+}
+
+.puzzle-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:16px
+}
+
+.puzzle{
+background:#fff;
+border:1px solid var(--line);
+border-radius:23px;
+padding:22px;
+box-shadow:0 12px 38px rgba(28,38,68,.06)
+}
+
+.puzzle h3{
+font-family:Manrope;
+margin:12px 0 7px
+}
+
+.puzzle p{
+color:var(--muted);
+font-size:.88rem
+}
+
+.puzzle input{
+width:100%;
+padding:11px;
+border:1px solid var(--line);
+border-radius:11px;
+margin-top:12px
+}
+
+.puzzle-solution{
+margin-top:11px;
+padding:11px 12px;
+border-radius:12px;
+background:#f3f5fa;
+color:#52617c;
+font-size:.84rem
+}
+
+.definition-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px
+}
+
+.definition{
+border:1px solid var(--line);
+border-radius:17px;
+padding:17px;
+background:#fafbfe
+}
+
+.definition h3{
+font-family:Manrope;
+font-size:1rem
+}
+
+.definition p{
+color:#52617c;
+font-size:.84rem;
+margin-top:5px
+}
+
+.example{
+margin-top:8px;
+font-size:.78rem;
+color:var(--primary);
+background:var(--soft);
+padding:8px 10px;
+border-radius:9px
+}
+
+.leaderboard{
+display:grid;
+gap:10px
+}
+
+.leader{
+display:flex;
+align-items:center;
+gap:12px;
+padding:13px;
+border:1px solid var(--line);
+border-radius:16px;
+background:#fff
+}
+
+.rank{
+width:34px;
+text-align:center;
+font-weight:900
+}
+
+.leader img,
+.leader-avatar{
+width:48px;
+height:48px;
+border-radius:50%;
+object-fit:cover
+}
+
+.leader-avatar{
+display:grid;
+place-items:center;
+background:var(--soft);
+color:var(--primary);
+font-weight:800
+}
+
+.leader-main{
+flex:1
+}
+
+.leader-main b{
+font-family:Manrope
+}
+
+.leader-main small{
+display:block;
+color:var(--muted)
+}
+
+.score{
+font-weight:900
+}
+
+.gold{
+border-color:#efd18a;
+background:#fffaf0
+}
+
+.silver{
+border-color:#d3d8e0;
+background:#fafbfd
+}
+
+.bronze{
+border-color:#e4c0a1;
+background:#fff9f5
+}
+
+.feedback-fab{
+position:fixed;
+right:18px;
+bottom:18px;
+width:52px;
+height:52px;
+border:0;
+border-radius:50%;
+background:var(--primary);
+color:#fff;
+box-shadow:0 12px 35px rgba(90,79,242,.35);
+z-index:80;
+font-size:22px;
+transition:width .2s,height .2s,font-size .2s,opacity .2s
+}
+
+.feedback-fab.small{
+width:32px;
+height:32px;
+font-size:14px;
+opacity:.7;
+box-shadow:0 8px 20px rgba(90,79,242,.28)
+}
+
+.star-rating{
+display:flex;
+gap:6px;
+font-size:1.7rem;
+line-height:1
+}
+
+.star{
+background:none;
+border:0;
+padding:0;
+color:#d8dce8;
+cursor:pointer;
+transition:color .12s,transform .12s
+}
+
+.star:hover{
+transform:scale(1.12)
+}
+
+.star.active{
+color:var(--gold)
+}
+
+.empty{
+background:#fff;
+border:1px dashed #cfd6e4;
+border-radius:22px;
+padding:30px;
+text-align:center;
+color:var(--muted)
+}
+
+#secretHit{
+position:fixed;
+left:7px;
+bottom:7px;
+width:12px;
+height:12px;
+opacity:.015;
+border:0;
+background:#000;
+z-index:99
+}
+
+.admin{
+display:none;
+position:fixed;
+inset:0;
+z-index:90;
+overflow:auto;
+background:#0e172b;
+color:#edf2ff
+}
+
+.admin.open{
+display:block
+}
+
+.admin-inner{
+padding:25px 18px 55px
+}
+
+.admin-top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:15px;
+margin-bottom:22px
+}
+
+.admin-brand{
+display:flex;
+align-items:center;
+gap:10px
+}
+
+.admin-sub{
+color:#9ca9c1;
+font-size:.8rem
+}
+
+.admin-card{
+background:#17223a;
+border:1px solid #293754;
+border-radius:20px;
+padding:20px;
+margin:14px 0
+}
+
+.admin-card h3{
+margin-bottom:13px;
+font-family:Manrope
+}
+
+.admin label{
+display:block;
+font-size:.75rem;
+color:#aeb8ce;
+margin:9px 0 5px
+}
+
+.admin input,
+.admin textarea,
+.admin select{
+width:100%;
+border:1px solid #35415d;
+background:#0e1729;
+color:#fff;
+border-radius:10px;
+padding:10px 11px
+}
+
+.admin textarea{
+min-height:80px;
+resize:vertical
+}
+
+.admin-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px
+}
+
+.sheet{
+width:100%;
+border-collapse:collapse;
+font-size:.78rem
+}
+
+.sheet th,
+.sheet td{
+border:1px solid #35415d;
+padding:8px;
+text-align:left;
+vertical-align:top
+}
+
+.sheet th{
+background:#202c48;
+color:#bfc9dc
+}
+
+.sheet td{
+color:#eaf0ff
+}
+
+.mini{
+padding:6px 9px;
+border-radius:8px;
+border:0;
+background:#2b3959;
+color:#fff;
+margin:2px
+}
+
+.status{
+font-size:.8rem;
+margin-top:9px;
+color:#9ca8bd
+}
+
+.status.success{
+color:#54d39b
+}
+
+.status.error{
+color:#ff9aaa
+}
+
+.parser{
+border:1px solid #35415d;
+background:#111b30;
+padding:14px;
+border-radius:14px;
+margin-bottom:15px
+}
+
+.parser textarea{
+min-height:180px
+}
+
+.admin-note{
+font-size:.73rem;
+color:#8794ad;
+margin-top:9px
+}
+
+.lock-dot{
+width:10px;
+height:10px;
+border-radius:50%;
+background:#66738c;
+border:0;
+padding:0;
+display:inline-block;
+margin-left:5px
+}
+
+.feedback-admin{
+display:grid;
+gap:10px
+}
+
+.feedback-item{
+padding:13px;
+border:1px solid #35415d;
+border-radius:12px;
+background:#111b30
+}
+
+.feedback-item small{
+color:#8e9ab0;
+display:block;
+margin-top:4px
+}
+
+.intro-content{
+text-align:center
+}
+
+.intro-logo{
+font-family:Manrope;
+font-size:2.5rem;
+font-weight:900;
+color:var(--primary);
+letter-spacing:-.06em
+}
+
+.intro-content p{
+color:var(--muted);
+margin:12px auto;
+max-width:480px
+}
+
+.welcome-icon{
+font-size:3rem;
+margin-bottom:8px
+}
+
+footer{
+text-align:center;
+padding:35px 20px 55px;
+color:var(--muted);
+font-size:.82rem
+}
+
+@media(max-width:760px){
+
+.nav-grid,
+.puzzle-grid,
+.definition-grid,
+.admin-grid{
+grid-template-columns:1fr
+}
+
+.hero{
+padding:21px 14px 80px
+}
+
+.shell{
+padding:0 12px 42px
+}
+
+.challenge-card{
+padding:18px
+}
+
+.challenge-actions{
+flex-direction:column
+}
+
+.challenge-actions .btn{
+width:100%
+}
+
+.admin-inner{
+padding:17px 12px 40px
+}
+
+.sheet{
+display:block;
+overflow-x:auto;
+white-space:nowrap
+}
+
+.profile-bar{
+margin-left:0;
+margin-right:0
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<header class="hero">
+
+<div class="topbar">
+
+<div class="brand-mini">
+<span class="brand-mark">G</span>
+GRAMMATRIX
+</div>
+
+<button class="due-pill" id="dueIndicator">
+⏱ Due <strong id="publicDueDate">Not announced</strong>
+</button>
+
+</div>
+
+<div class="hero-inner">
+
+<div class="eyebrow">Velammal Annex</div>
+
+<h1>Grammatrix</h1>
+
+<p class="subtitle">The Mega Grammar Learning Fest</p>
+
+<p class="hero-note">
+Understand grammar, practise language skills and learn from every answer.
+</p>
+
+</div>
+
+</header>
+
+
+<main class="shell">
+
+<div id="profileBar" class="profile-bar hidden"></div>
+
+
+<!-- TOP NAVIGATION CARDS -->
+
+<div class="nav-grid">
+
+<button class="nav-card" id="definitionsCard">
+
+<div class="nav-icon">📚</div>
+
+<h2>Definitions</h2>
+
+<p>
+Learn what grammar means and understand the language basics.
+</p>
+
+</button>
+
+
+<button class="nav-card" id="questionsCard">
+
+<div class="nav-icon">❓</div>
+
+<h2>Questions</h2>
+
+<p>
+Understand what questions are and why they are useful.
+</p>
+
+</button>
+
+</div>
+
+
+<!-- DEFINITIONS INFORMATION -->
+
+<section class="section hidden" id="definitionsSection">
+
+<div class="section-head">
+
+<h2>📚 Grammar Definitions</h2>
+
+<p>
+Simple explanations for parents and beginners.
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="definition-grid" id="definitionsArea"></div>
+
+</div>
+
+</section>
+
+
+<!-- WHAT ARE QUESTIONS INFORMATION -->
+
+<section class="section hidden" id="whatQuestionsSection">
+
+<div class="section-head">
+
+<h2>❓ What are Questions?</h2>
+
+<p>
+The purpose of questions, explained simply.
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="info-list">
+
+<div class="info-step">
+
+<b>1</b>
+
+<p>
+Questions help you check how well you understand grammar.
+</p>
+
+</div>
+
+
+<div class="info-step">
+
+<b>2</b>
+
+<p>
+You choose the answer you think is correct.
+</p>
+
+</div>
+
+
+<div class="info-step">
+
+<b>3</b>
+
+<p>
+Your answer is checked so you can know whether you are correct.
+</p>
+
+</div>
+
+
+<div class="info-step">
+
+<b>4</b>
+
+<p>
+The explanation helps you understand why the correct answer is right.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="info-note">
+
+Questions are useful because they help you practise grammar,
+identify mistakes and improve your understanding.
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- NORMAL QUESTIONS / ACTIVITIES -->
+
+<section class="section" id="activitySection">
+
+<div class="section-head">
+
+<h2>Questions</h2>
+
+<p>
+Choose an activity.
+</p>
+
+</div>
+
+
+<div class="nav-grid" style="max-width:820px">
+
+<button class="nav-card" id="startQuestions">
+
+<div class="nav-icon">❓</div>
+
+<h2>Grammar Questions</h2>
+
+<p>
+Answer multiple-choice questions and learn from explanations.
+</p>
+
+</button>
+
+
+<button class="nav-card" id="startPuzzles">
+
+<div class="nav-icon">🧩</div>
+
+<h2>Puzzles</h2>
+
+<p>
+Solve language-based challenges.
+</p>
+
+</button>
+
+</div>
+
+
+<!-- GRAMMAR ACTIVITY -->
+
+<div id="grammarActivity">
+
+<div class="section-head">
+
+<h2>Grammar Challenge</h2>
+
+</div>
+
+<div id="grammarArea" class="challenge-card">
+
+<div class="empty">
+Loading questions…
+</div>
+
+</div>
+
+</div>
+
+
+<!-- PUZZLE ACTIVITY -->
+
+<div id="puzzleActivity" class="hidden">
+
+<div class="section-head">
+
+<h2>Grammar Puzzles</h2>
+
+</div>
+
+<div id="puzzleArea" class="puzzle-grid">
+
+<div class="empty">
+Loading puzzles…
+</div>
+
+</div>
+
+</div>
+
+
+<!-- LEADERBOARD -->
+
+<div class="section">
+
+<div class="section-head">
+
+<h2>🏆 Leaderboard</h2>
+
+<p>
+Scores are ranked automatically.
+</p>
+
+</div>
+
+<div id="leaderboardArea" class="leaderboard">
+
+<div class="empty">
+No scores yet.
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<footer>
+
+<strong>Velammal Annex · Grammatrix</strong>
+<br>
+The Mega Grammar Learning Fest
+
+</footer>
+
+
+<button class="feedback-fab" id="feedbackFab" title="Feedback">
+💬
+</button>
+
+<button id="secretHit" aria-label="Private coordinator access"></button>
+
+
+<!-- FIRST OPEN INTRO -->
+
+<div class="intro-overlay" id="introOverlay">
+
+<div class="modal intro-content">
+
+<div class="welcome-icon">📚</div>
+
+<div class="intro-logo">
+GRAMMATRIX
+</div>
+
+<p>
+Welcome to the Mega Grammar Learning Fest.
+Learn grammar in simple words, practise questions,
+solve puzzles and see your progress.
+</p>
+
+<button class="btn primary" id="introContinue">
+Continue
+</button>
+
+</div>
+
+</div>
+
+
+<!-- PROFILE SETUP -->
+
+<div class="profile-overlay" id="profileOverlay">
+
+<div class="modal">
+
+<button class="close" id="closeProfile">×</button>
+
+<h2>👤 Your Profile</h2>
+
+<p class="lead">
+Your username is required. A profile image is optional.
+</p>
+
+<div class="field">
+
+<label>Username *</label>
+
+<input
+id="usernameInput"
+maxlength="40"
+placeholder="Enter your name">
+
+</div>
+
+
+<div class="field">
+
+<label>Profile image (optional)</label>
+
+<input
+id="profileImageInput"
+type="file"
+accept="image/*">
+
+</div>
+
+
+<img
+id="profilePreview"
+class="hidden"
+style="width:80px;height:80px;border-radius:50%;object-fit:cover;margin:5px 0"
+alt="Preview">
+
+
+<div id="profileStatus" class="status"></div>
+
+
+<div class="btn-row">
+
+<button class="btn primary" id="saveProfile">
+Continue
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- INFO POPUP -->
+
+<div class="info-overlay" id="infoOverlay">
+
+<div class="modal">
+
+<button class="close" id="closeInfo">×</button>
+
+<h2 id="infoTitle"></h2>
+
+<p class="lead" id="infoLead"></p>
+
+<div class="info-list" id="infoSteps"></div>
+
+<div class="info-note" id="infoNote"></div>
+
+</div>
+
+</div>
+
+
+<!-- FEEDBACK -->
+
+<div class="info-overlay" id="feedbackOverlay">
+
+<div class="modal">
+
+<button class="close" id="closeFeedback">×</button>
+
+<h2>💬 Feedback</h2>
+
+<p class="lead">
+Tell the Grammatrix coordinators what you think.
+</p>
+
+<div class="field">
+
+<label>Your rating</label>
+
+<div class="star-rating" id="starRating">
+<button type="button" class="star" data-star="1">★</button>
+<button type="button" class="star" data-star="2">★</button>
+<button type="button" class="star" data-star="3">★</button>
+<button type="button" class="star" data-star="4">★</button>
+<button type="button" class="star" data-star="5">★</button>
+</div>
+
+</div>
+
+<div class="field">
+
+<label>Your review (optional)</label>
+
+<textarea
+id="feedbackText"
+maxlength="1000"
+placeholder="Write a review…"></textarea>
+
+</div>
+
+<div id="feedbackStatus" class="status"></div>
+
+<button class="btn primary" id="submitFeedback">
+Submit Feedback
+</button>
+
+</div>
+
+</div>
+
+
+<!-- COORDINATOR LOGIN -->
+
+<div class="login-overlay" id="loginOverlay">
+
+<div class="modal" style="width:min(400px,100%)">
+
+<button class="close" id="cancelLogin">×</button>
+
+<h2>🔐 Coordinator Access</h2>
+
+<p class="lead">
+Authorized coordinator account required.
+</p>
+
+<div class="field">
+
+<label>Coordinator email</label>
+
+<input
+id="loginEmail"
+type="email"
+autocomplete="username">
+
+</div>
+
+
+<div class="field">
+
+<label>Password</label>
+
+<input
+id="loginPassword"
+type="password"
+autocomplete="current-password">
+
+</div>
+
+
+<div id="loginStatus" class="status error"></div>
+
+<button class="btn primary" id="submitLogin">
+Enter Room
+</button>
+
+</div>
+
+</div>
+
+
+<!-- COORDINATOR ROOM -->
+
+<div class="admin" id="adminRoom">
+
+<div class="admin-inner">
+
+<div class="admin-top">
+
+<div>
+
+<h2>
+GRAMMATRIX Coordinator Room
+</h2>
+
+<div class="admin-sub" id="signedInAs"></div>
+
+</div>
+
+<button class="btn secondary" id="logoutBtn">
+Sign Out
+</button>
+
+<button
+class="lock-dot"
+id="lockDot"
+title="Private control">
+</button>
+
+</div>
+
+
+<!-- DUE DATE -->
+
+<div class="admin-card">
+
+<h3>⏱ Due Date</h3>
+
+<label>
+Current learning-set due date
+</label>
+
+<input id="adminDueDate" type="date">
+
+<div class="btn-row">
+
+<button class="btn primary" id="saveDueBtn">
+Save Due Date
+</button>
+
+</div>
+
+<div id="dueStatus" class="status"></div>
+
+</div>
+
+
+<!-- GRAMMAR QUESTION -->
+
+<div class="admin-card">
+
+<h3>❓ Grammar Question</h3>
+
+
+<div class="parser">
+
+<strong>📋 Paste & Auto-Fill</strong>
+
+<p class="admin-note">
+Paste a question containing the question text,
+A–D options, answer and explanation.
+Grammatrix will detect the fields.
+</p>
+
+<textarea
+id="questionPaste"
+placeholder="1. _________ is ...
+
+Option A) ...
+Option B) ...
+Option C) ...
+Option D) ...
+
+Ans: A
+
+Explanation: ..."></textarea>
+
+<div class="btn-row">
+
+<button class="btn primary" id="parseQuestionBtn">
+⚡ Auto-Fill
+</button>
+
+</div>
+
+<div id="parserStatus" class="status"></div>
+
+</div>
+
+
+<div class="admin-grid">
+
+<div>
+
+<label>Question</label>
+
+<textarea
+id="qText"
+placeholder="Write the grammar question…"></textarea>
+
+</div>
+
+
+<div>
+
+<label>Correct option</label>
+
+<select id="qCorrect">
+
+<option value="0">A</option>
+<option value="1">B</option>
+<option value="2">C</option>
+<option value="3">D</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<div class="admin-grid">
+
+<div>
+
+<label>Option A</label>
+
+<input id="q0">
+
+</div>
+
+
+<div>
+
+<label>Option B</label>
+
+<input id="q1">
+
+</div>
+
+
+<div>
+
+<label>Option C</label>
+
+<input id="q2">
+
+</div>
+
+
+<div>
+
+<label>Option D</label>
+
+<input id="q3">
+
+</div>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Explanation — why is this answer correct?
+</label>
+
+<textarea
+id="qExplanation"
+placeholder="Explain the grammar rule or reason…"></textarea>
+
+</div>
+
+
+<div class="btn-row">
+
+<button class="btn primary" id="saveQuestionBtn">
+Publish Question
+</button>
+
+<button class="btn secondary" id="clearQuestionBtn">
+Clear
+</button>
+
+</div>
+
+<div id="questionStatus" class="status"></div>
+
+</div>
+
+
+<!-- PUZZLE -->
+
+<div class="admin-card">
+
+<h3>🧩 Puzzle</h3>
+
+<div class="admin-grid">
+
+<div>
+
+<label>Title</label>
+
+<input
+id="pTitle"
+placeholder="e.g. Fix the Sentence">
+
+</div>
+
+
+<div>
+
+<label>Type</label>
+
+<select id="pType">
+
+<option>Word Puzzle</option>
+<option>Grammar Fix</option>
+<option>Sentence Builder</option>
+<option>Vocabulary</option>
+<option>Riddle</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<label>Puzzle</label>
+
+<textarea id="pText"></textarea>
+
+
+<label>Answer / solution</label>
+
+<input id="pAnswer">
+
+
+<label>Explanation (optional)</label>
+
+<textarea id="pExplanation"></textarea>
+
+
+<div class="btn-row">
+
+<button class="btn primary" id="savePuzzleBtn">
+Publish Puzzle
+</button>
+
+<button class="btn secondary" id="clearPuzzleBtn">
+Clear
+</button>
+
+</div>
+
+<div id="puzzleStatus" class="status"></div>
+
+</div>
+
+
+<!-- PARTICIPANTS -->
+
+<div class="admin-card">
+
+<h3>👥 Participants / Scores</h3>
+
+<p class="admin-note">
+User profiles and scores are stored as users complete activities.
+Manual participant entries are still supported.
+</p>
+
+
+<div class="admin-grid">
+
+<div>
+
+<label>Name</label>
+
+<input id="participantName">
+
+</div>
+
+
+<div>
+
+<label>Image</label>
+
+<input
+id="participantImage"
+type="file"
+accept="image/*">
+
+</div>
+
+</div>
+
+
+<div class="btn-row">
+
+<button class="btn primary" id="saveParticipantBtn">
+Add Participant
+</button>
+
+</div>
+
+<div id="participantStatus" class="status"></div>
+
+</div>
+
+
+<!-- PUBLISHED TABLES -->
+
+<div class="admin-card">
+
+<h3>📋 Published Grammar Questions</h3>
+
+<div id="questionTable" class="status">
+Loading…
+</div>
+
+</div>
+
+
+<div class="admin-card">
+
+<h3>🧩 Published Puzzles</h3>
+
+<div id="puzzleTable" class="status">
+Loading…
+</div>
+
+</div>
+
+
+<div class="admin-card">
+
+<h3>📚 Published Definitions</h3>
+
+<div id="definitionTable" class="status">
+Loading…
+</div>
+
+</div>
+
+
+<div class="admin-card">
+
+<h3>👥 Participants</h3>
+
+<div id="participantTable" class="status">
+Loading…
+</div>
+
+</div>
+
+
+<!-- FEEDBACK ADMIN -->
+
+<div class="admin-card">
+
+<h3>💬 Feedback</h3>
+
+<div id="feedbackTable" class="feedback-admin">
+
+<div class="status">
+Loading…
+</div>
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<script>
+
+const firebaseConfig={
+apiKey:"AIzaSyBzFCWvAYsDpcwAOvYOYeDhMZkVUK2QeR8",
+authDomain:"grammatrics.firebaseapp.com",
+projectId:"grammatrics",
+storageBucket:"grammatrics.firebasestorage.app",
+messagingSenderId:"342466303097",
+appId:"1:342466303097:web:4b4c1780ac02f03db370a8"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const auth=firebase.auth();
+const db=firebase.firestore();
+
+const $=id=>document.getElementById(id);
+
+const esc=s=>{
+const d=document.createElement("div");
+d.textContent=s??"";
+return d.innerHTML
+};
+
+const fmtDate=v=>
+v
+?new Date(v+"T00:00:00").toLocaleDateString(
+undefined,
+{
+day:"numeric",
+month:"long",
+year:"numeric"
+}
+)
+:"Not announced";
+
+
+let questions=[];
+let puzzles=[];
+let definitions=[];
+let participants=[];
+let feedbacks=[];
+let scores=[];
+let dueDate="";
+
+let qIndex=0;
+let score=0;
+
+let puzzleScore=0;
+
+const solvedPuzzles=new Set();
+let answered=false;
+let currentUser=null;
+let editingQuestionId=null;
+let lockClicks=0;
+let coordinatorLocked=false;
+
+let profile={
+name:"",
+imageData:""
+};
+
+
+const defaultDefinitions=[
+
+[
+"Grammar",
+"Grammar is the set of rules that helps us arrange words correctly to communicate meaning.",
+"Mohnish goes to school."
+],
+
+[
+"Noun",
+"A noun names a person, place, animal, thing or idea.",
+"teacher, Chennai, book"
+],
+
+[
+"Pronoun",
+"A pronoun is used in place of a noun.",
+"He, she, it, they"
+],
+
+[
+"Verb",
+"A verb shows an action or state.",
+"run, write, is"
+],
+
+[
+"Adjective",
+"An adjective describes a noun or pronoun.",
+"a bright star"
+],
+
+[
+"Adverb",
+"An adverb gives more information about a verb, adjective or another adverb.",
+"runs quickly"
+],
+
+[
+"Preposition",
+"A preposition shows a relationship such as place, time or direction.",
+"on the table"
+],
+
+[
+"Conjunction",
+"A conjunction joins words, phrases or clauses.",
+"and, but, because"
+],
+
+[
+"Article",
+"Articles are words used before nouns: a, an and the.",
+"an apple"
+],
+
+[
+"Subject",
+"The subject tells who or what the sentence is about.",
+"The boy runs."
+],
+
+[
+"Predicate",
+"The predicate tells what the subject does or is.",
+"The boy runs."
+],
+
+[
+"Tense",
+"Tense shows the time of an action or state.",
+"walked, walks, will walk"
+],
+
+[
+"Sentence",
+"A sentence is a group of words that expresses a complete thought.",
+"She reads a book."
+]
+
+];
+
+
+function renderDefinitions(){
+
+const all=definitions.length
+?definitions.map(d=>[
+d.term,
+d.definition,
+d.example||""
+])
+:defaultDefinitions;
+
+$("definitionsArea").innerHTML=all.map(d=>`
+
+<article class="definition">
+
+<h3>${esc(d[0])}</h3>
+
+<p>${esc(d[1])}</p>
+
+${d[2]
+?`<div class="example">Example: ${esc(d[2])}</div>`
+:""}
+
+</article>
+
+`).join("");
+
+}
+
+renderDefinitions();
+
+
+function showProfileBar(){
+
+if(!profile.name)return;
+
+const img=profile.imageData
+?`<img src="${esc(profile.imageData)}" alt="">`
+:`<div class="profile-avatar">${esc(profile.name[0].toUpperCase())}</div>`;
+
+$("profileBar").innerHTML=`
+
+${img}
+
+<div class="profile-info">
+
+<b>${esc(profile.name)}</b>
+
+<small>
+Current score: ${score}
+</small>
+
+</div>
+
+<button class="btn secondary" id="editProfileBtn">
+Edit
+</button>
+
+`;
+
+$("profileBar").classList.remove("hidden");
+
+$("editProfileBtn").onclick=openProfile;
+
+}
+
+
+function openProfile(){
+
+$("usernameInput").value=profile.name||"";
+
+$("profilePreview").classList.toggle(
+"hidden",
+!profile.imageData
+);
+
+if(profile.imageData)
+$("profilePreview").src=profile.imageData;
+
+$("profileOverlay").classList.add("open");
+
+}
+
+
+function closeProfile(){
+
+$("profileOverlay").classList.remove("open")
+
+}
+
+
+function saveLocalProfile(){
+
+localStorage.setItem(
+"grammatrixProfile",
+JSON.stringify(profile)
+)
+
+}
+
+
+function loadProfile(){
+
+try{
+
+const p=JSON.parse(
+localStorage.getItem("grammatrixProfile")||"null"
+);
+
+if(p&&p.name)
+profile=p;
+
+}catch{}
+
+}
+
+
+function imageData(file){
+
+return new Promise((resolve,reject)=>{
+
+if(!file)
+return resolve("");
+
+const r=new FileReader();
+
+r.onerror=()=>{
+reject(new Error("Could not read the image."))
+};
+
+r.onload=()=>{
+
+const im=new Image();
+
+im.onload=()=>{
+
+const max=600;
+
+const s=Math.min(
+1,
+max/Math.max(im.width,im.height)
+);
+
+const c=document.createElement("canvas");
+
+c.width=Math.max(
+1,
+Math.round(im.width*s)
+);
+
+c.height=Math.max(
+1,
+Math.round(im.height*s)
+);
+
+c.getContext("2d").drawImage(
+im,
+0,
+0,
+c.width,
+c.height
+);
+
+resolve(
+c.toDataURL(
+"image/jpeg",
+.82
+)
+);
+
+};
+
+im.onerror=()=>{
+reject(new Error("Could not open the image."))
+};
+
+im.src=r.result;
+
+};
+
+r.readAsDataURL(file);
+
+});
+
+}
+
+
+$("profileImageInput").onchange=async e=>{
+
+try{
+
+const d=await imageData(
+e.target.files[0]
+);
+
+if(d){
+
+$("profilePreview").src=d;
+
+$("profilePreview").classList.remove("hidden");
+
+}
+
+}catch(err){
+
+$("profileStatus").textContent=err.message
+
+}
+
+};
+
+
+$("saveProfile").onclick=async()=>{
+
+const name=$("usernameInput").value.trim();
+
+if(!name){
+
+$("profileStatus").textContent=
+"Username is required.";
+
+return;
+
+}
+
+try{
+
+const file=
+$("profileImageInput").files[0];
+
+profile={
+name,
+imageData:file
+?await imageData(file)
+:(profile.imageData||"")
+};
+
+saveLocalProfile();
+
+showProfileBar();
+
+closeProfile();
+
+if(
+profile.name.toLowerCase()==="mohnish kumar rs"
+)
+openLogin();
+
+}catch(e){
+
+$("profileStatus").textContent=e.message
+
+}
+
+};
+
+
+$("closeProfile").onclick=closeProfile;
+
+
+function closeIntro(){
+
+localStorage.setItem(
+"grammatrixIntroSeen",
+"1"
+);
+
+$("introOverlay")
+.classList.remove("open");
+
+if(!profile.name)
+openProfile();
+
+}
+
+$("introContinue").onclick=closeIntro;
+
+
+function ensureFirstOpen(){
+
+loadProfile();
+
+showProfileBar();
+
+if(
+!localStorage.getItem("grammatrixIntroSeen")
+)
+$("introOverlay").classList.add("open");
+
+else if(!profile.name)
+openProfile();
+
+}
+
+ensureFirstOpen();
+
+
+/*
+==================================================
+DEFINITIONS CARD
+==================================================
+Only opens/closes the Definitions information.
+It does NOT affect Questions or the activity area.
+*/
+
+$("definitionsCard").onclick=()=>{
+
+const section=$("definitionsSection");
+
+const wasHidden=
+section.classList.contains("hidden");
+
+section.classList.toggle("hidden");
+
+if(wasHidden){
+
+section.scrollIntoView({
+behavior:"smooth",
+block:"start"
+});
+
+}
+
+};
+
+
+/*
+==================================================
+QUESTIONS CARD
+==================================================
+Only opens/closes "What are Questions?"
+It does NOT open Grammar Questions or Puzzles.
+==================================================
+*/
+
+$("questionsCard").onclick=()=>{
+
+const section=$("whatQuestionsSection");
+
+const wasHidden=
+section.classList.contains("hidden");
+
+section.classList.toggle("hidden");
+
+if(wasHidden){
+
+section.scrollIntoView({
+behavior:"smooth",
+block:"start"
+});
+
+}
+
+};
+
+
+/*
+==================================================
+NORMAL ACTIVITY
+==================================================
+This remains available normally below the intro cards.
+==================================================
+*/
+
+$("startQuestions").onclick=()=>{
+
+$("grammarActivity").classList.remove("hidden");
+
+$("puzzleActivity").classList.add("hidden");
+
+renderGrammar();
+
+$("grammarActivity").scrollIntoView({
+behavior:"smooth"
+});
+
+};
+
+
+$("startPuzzles").onclick=()=>{
+
+$("puzzleActivity").classList.remove("hidden");
+
+$("grammarActivity").classList.add("hidden");
+
+renderPuzzles();
+
+$("puzzleActivity").scrollIntoView({
+behavior:"smooth"
+});
+
+};
+
+
+const infoData={
+
+due:{
+title:"Due Date",
+
+lead:
+"The due date tells you when the current learning set ends.",
+
+steps:[
+
+"The displayed date is the end date for the current learning set.",
+
+"Coordinators can publish an updated set when the date changes.",
+
+"The public page automatically shows the latest published content."
+
+],
+
+note:"Current due date: "
+
+}
+
+};
+
+
+function openInfo(type){
+
+const d=infoData[type];
+
+$("infoTitle").textContent=d.title;
+
+$("infoLead").textContent=d.lead;
+
+$("infoSteps").innerHTML=
+d.steps.map((x,i)=>`
+
+<div class="info-step">
+
+<b>${i+1}</b>
+
+<p>${esc(x)}</p>
+
+</div>
+
+`).join("");
+
+$("infoNote").textContent=
+d.note+fmtDate(dueDate);
+
+$("infoOverlay").classList.add("open");
+
+}
+
+
+$("dueIndicator").onclick=()=>{
+openInfo("due")
+};
+
+$("closeInfo").onclick=()=>{
+$("infoOverlay").classList.remove("open")
+};
+
+
+function renderGrammar(){
+
+const a=$("grammarArea");
+
+if(!questions.length){
+
+a.innerHTML=
+'<div class="empty">No grammar questions have been published yet.</div>';
+
+return;
+
+}
+
+const i=qIndex%questions.length;
+
+const q=questions[i];
+
+const o=q.options||[];
+
+a.innerHTML=`
+
+<div class="progress-row">
+
+<span>
+Question ${i+1} of ${questions.length}
+</span>
+
+<span>
+Score: ${score}
+</span>
+
+</div>
+
+
+<div class="progress">
+
+<i style="width:${((i+1)/questions.length)*100}%"></i>
+
+</div>
+
+
+<div class="question-number">
+Grammar
+</div>
+
+
+<div class="question">
+${esc(q.question)}
+</div>
+
+
+<div class="options">
+
+${o.map((x,n)=>`
+
+<button
+class="option"
+data-i="${n}">
+
+<span class="option-label">
+${String.fromCharCode(65+n)}
+</span>
+
+${esc(x)}
+
+</button>
+
+`).join("")}
+
+</div>
+
+
+<div class="answer-msg" id="answerMsg"></div>
+
+
+<div class="challenge-actions">
+
+<button
+class="btn secondary"
+id="giveUp">
+
+Give Up
+
+</button>
+
+<button
+class="btn primary"
+id="nextQ"
+disabled>
+
+${i===questions.length-1
+?"Finish"
+:"Next Question"} →
+
+</button>
+
+</div>
+
+`;
+
+a.querySelectorAll(".option")
+.forEach(b=>
+b.onclick=()=>
+answerQuestion(+b.dataset.i)
+);
+
+$("giveUp").onclick=giveUp;
+
+$("nextQ").onclick=nextQuestion;
+
+answered=false;
+
+}
+
+
+function explanationText(q){
+
+return q.explanation
+?`<div class="info-note"><strong>Why?</strong><br>${esc(q.explanation)}</div>`
+:"";
+
+}
+
+
+function answerQuestion(i){
+
+if(answered)return;
+
+answered=true;
+
+const q=
+questions[qIndex%questions.length];
+
+const c=+q.correctIndex;
+
+document
+.querySelectorAll("#grammarArea .option")
+.forEach((b,n)=>{
+
+b.disabled=true;
+
+if(n===c)
+b.classList.add("correct");
+
+if(n===i&&n!==c)
+b.classList.add("wrong");
+
+});
+
+
+const m=$("answerMsg");
+
+
+if(i===c){
+
+score++;
+
+m.textContent=
+"✓ Correct! Good work.";
+
+m.className=
+"answer-msg success";
+
+}else{
+
+m.innerHTML=
+"Not quite — the correct answer is highlighted."
++explanationText(q);
+
+m.className=
+"answer-msg error";
+
+}
+
+
+$("nextQ").disabled=false;
+
+saveScore();
+
+}
+
+
+function giveUp(){
+
+if(answered)return;
+
+answered=true;
+
+const q=
+questions[qIndex%questions.length];
+
+const c=+q.correctIndex;
+
+document
+.querySelectorAll("#grammarArea .option")
+.forEach((b,n)=>{
+
+b.disabled=true;
+
+if(n===c)
+b.classList.add("correct");
+
+});
+
+
+$("answerMsg").innerHTML=
+"You gave up. The correct answer is highlighted."
++explanationText(q);
+
+$("answerMsg").className=
+"answer-msg error";
+
+$("nextQ").disabled=false;
+
+}
+
+
+function nextQuestion(){
+
+if(
+qIndex%questions.length===
+questions.length-1
+){
+
+renderCompletion();
+
+return;
+
+}
+
+qIndex++;
+
+renderGrammar();
+
+}
+
+
+function renderCompletion(){
+
+$("grammarArea").innerHTML=`
+
+<div
+class="card"
+style="box-shadow:none;text-align:center">
+
+<h3
+style="font-family:Manrope;font-size:1.5rem">
+
+Grammar Set Complete
+
+</h3>
+
+<p
+style="color:var(--muted);margin:8px 0 18px">
+
+You scored ${score} out of ${questions.length}.
+
+</p>
+
+<button
+class="btn primary"
+id="tryAgain">
+
+Try Again
+
+</button>
+
+</div>
+
+`;
+
+$("tryAgain").onclick=()=>{
+
+qIndex=0;
+
+score=0;
+
+renderGrammar();
+
+showProfileBar();
+
+saveScore();
+
+};
+
+}
+
+
+function normalize(v){
+
+return String(v||"")
+.trim()
+.replace(/\s+/g," ")
+.toLowerCase();
+
+}
+
+
+function renderPuzzles(){
+
+const a=$("puzzleArea");
+
+if(!puzzles.length){
+
+a.innerHTML=
+'<div class="empty">No puzzles have been published yet.</div>';
+
+return;
+
+}
+
+a.innerHTML=puzzles.map((p,i)=>`
+
+<article class="puzzle">
+
+<h3>
+${esc(p.title||"Grammar Puzzle")}
+</h3>
+
+<p>
+${esc(p.text||"")}
+</p>
+
+<input
+id="pi${i}"
+placeholder="Type your answer…">
+
+<div class="btn-row">
+
+<button
+class="btn primary"
+data-check="${i}">
+
+Check Answer
+
+</button>
+
+<button
+class="btn secondary"
+data-show="${i}">
+
+Show Answer
+
+</button>
+
+</div>
+
+<div
+id="pf${i}"
+class="status">
+</div>
+
+<div
+id="ps${i}"
+class="puzzle-solution"
+hidden>
+</div>
+
+</article>
+
+`).join("");
+
+
+a.querySelectorAll("[data-check]")
+.forEach(b=>
+
+b.onclick=()=>{
+
+const i=+b.dataset.check;
+
+const v=
+normalize($("pi"+i).value);
+
+const p=puzzles[i];
+
+const isCorrect=
+!!v&&
+v===normalize(p.answer);
+
+$("pf"+i).textContent=
+!v
+?"Enter an answer first."
+:(isCorrect
+?"✓ Correct!"
+:"✕ Incorrect. Try again.");
+
+$("pf"+i).className=
+"status "+
+(isCorrect
+?"success"
+:"error");
+
+if(
+isCorrect&&
+!solvedPuzzles.has(i)
+){
+
+solvedPuzzles.add(i);
+
+puzzleScore++;
+
+saveScore();
+
+}
+
+}
+
+);
+
+
+a.querySelectorAll("[data-show]")
+.forEach(b=>
+
+b.onclick=()=>{
+
+const i=+b.dataset.show;
+
+const p=puzzles[i];
+
+const x=$("ps"+i);
+
+x.hidden=false;
+
+x.innerHTML=
+`<strong>Answer:</strong> ${esc(p.answer||"No answer published.")}`
++
+(
+p.explanation
+?`<br>${esc(p.explanation)}`
+:""
+);
+
+}
+
+);
+
+}
+
+
+async function saveScore(){
+
+if(!profile.name)return;
+
+const data={
+
+name:profile.name,
+
+imageData:profile.imageData||"",
+
+score:Number(score)+Number(puzzleScore),
+
+questionScore:Number(score),
+
+puzzleScore:Number(puzzleScore),
+
+questionsTotal:
+questions.length||0,
+
+puzzlesSolved:
+solvedPuzzles.size,
+
+updatedAt:
+firebase.firestore.FieldValue.serverTimestamp()
+
+};
+
+try{
+
+await db
+.collection("scores")
+.doc(
+btoa(
+unescape(
+encodeURIComponent(profile.name)
+)
+)
+.replace(/[^a-zA-Z0-9]/g,"")
+.slice(0,80)
+||"user"
+)
+.set(
+data,
+{merge:true}
+);
+
+}catch(e){
+
+console.warn(
+"Score sync unavailable:",
+e.message
+);
+
+}
+
+}
+
+
+function renderLeaderboard(){
+
+const a=$("leaderboardArea");
+
+if(!scores.length){
+
+a.innerHTML=
+'<div class="empty">No scores yet. Complete a question set to appear here.</div>';
+
+return;
+
+}
+
+const sorted=
+[...scores]
+.sort(
+(a,b)=>
+(Number(b.score)||0)-
+(Number(a.score)||0)
+);
+
+
+a.innerHTML=
+sorted.map((p,i)=>{
+
+const cls=
+i===0
+?"gold"
+:i===1
+?"silver"
+:i===2
+?"bronze"
+:"";
+
+const medal=
+i===0
+?"🥇"
+:i===1
+?"🥈"
+:i===2
+?"🥉"
+:`${i+1}`;
+
+const img=p.imageData
+?`<img src="${esc(p.imageData)}" alt="">`
+:`<div class="leader-avatar">${esc((p.name||"?")[0].toUpperCase())}</div>`;
+
+const qScore=
+Number(p.questionScore)||0;
+
+const pSolved=
+Number(p.puzzleScore)||
+Number(p.puzzlesSolved)||0;
+
+const activity=
+(qScore||pSolved)
+?`❓ ${qScore} question${qScore===1?"":"s"} · 🧩 ${pSolved} puzzle${pSolved===1?"":"s"}`
+:(i<3?"Rank "+(i+1):"Participant");
+
+return `
+
+<div class="leader ${cls}">
+
+<div class="rank">
+${medal}
+</div>
+
+${img}
+
+<div class="leader-main">
+
+<b>
+${esc(p.name||"Participant")}
+</b>
+
+<small>
+${activity}
+</small>
+
+</div>
+
+<div class="score">
+${Number(p.score)||0}
+</div>
+
+</div>
+
+`;
+
+}).join("");
+
+}
+
+
+function clearQuestionForm(){
+
+[
+"qText",
+"q0",
+"q1",
+"q2",
+"q3",
+"qExplanation"
+]
+.forEach(id=>
+$(id).value=""
+);
+
+$("qCorrect").value="0";
+
+editingQuestionId=null;
+
+$("saveQuestionBtn").textContent=
+"Publish Question";
+
+}
+
+
+function parseQuestion(raw){
+
+const text=
+raw
+.replace(/\r/g,"")
+.trim();
+
+if(!text)
+throw new Error("Paste a question first.");
+
+const ansMatch=
+text.match(
+/(?:^|\n)\s*(?:ans(?:wer)?|correct\s*answer)\s*[:\-]\s*([ABCD])\b/i
+);
+
+const expMatch=
+text.match(
+/(?:^|\n)\s*explanation\s*[:\-]?\s*([\s\S]*)$/i
+);
+
+let body=text;
+
+if(expMatch)
+body=body
+.slice(0,expMatch.index)
+.trim();
+
+if(ansMatch)
+body=body
+.replace(ansMatch[0],"")
+.trim();
+
+
+const optRe=
+/(?:^|\n)\s*(?:option\s*)?([ABCD])\s*[\)\.\:\-]\s*([^\n]+)/gi;
+
+const opts={
+A:"",
+B:"",
+C:"",
+D:""
+};
+
+const matches=[
+...body.matchAll(optRe)
+];
+
+
+matches.forEach(m=>
+opts[m[1].toUpperCase()]=
+m[2].trim()
+);
+
+
+if(
+Object.values(opts).some(v=>!v)
+){
+
+const lines=
+body
+.split("\n")
+.map(x=>x.trim())
+.filter(Boolean);
+
+const pos=
+lines.findIndex(
+x=>
+/^(?:option\s*)?a\s*[\)\.\:\-]/i.test(x)
+);
+
+if(pos>=0&&lines.length>=pos+4)
+
+["A","B","C","D"]
+.forEach((k,j)=>
+opts[k]=
+lines[pos+j]
+.replace(
+/^(?:option\s*)?[ABCD]\s*[\)\.\:\-]\s*/i,
+""
+)
+.trim()
+);
+
+}
+
+
+const qEnd=
+matches.length
+?matches[0].index
+:body.length;
+
+let q=
+body
+.slice(0,qEnd)
+.replace(/^\s*\d+\s*[\.\)]\s*/,"")
+.trim();
+
+if(!q)
+throw new Error(
+"Could not detect the question text."
+);
+
+if(
+Object.values(opts).some(v=>!v)
+)
+throw new Error(
+"Could not detect all four options A–D."
+);
+
+const correct=
+ansMatch
+?ansMatch[1].toUpperCase()
+:"A";
+
+const explanation=
+expMatch
+?expMatch[1].trim()
+:"";
+
+return {
+
+question:q,
+
+options:[
+opts.A,
+opts.B,
+opts.C,
+opts.D
+],
+
+correctIndex:
+"ABCD".indexOf(correct),
+
+explanation
+
+};
+
+}
+
+
+$("parseQuestionBtn").onclick=()=>{
+
+try{
+
+const x=
+parseQuestion(
+$("questionPaste").value
+);
+
+$("qText").value=x.question;
+
+x.options.forEach(
+(v,i)=>
+$("q"+i).value=v
+);
+
+$("qCorrect").value=
+x.correctIndex;
+
+$("qExplanation").value=
+x.explanation;
+
+$("parserStatus").textContent=
+"✓ Fields detected and filled. Check them before publishing.";
+
+$("parserStatus").className=
+"status success";
+
+}catch(e){
+
+$("parserStatus").textContent=
+e.message;
+
+$("parserStatus").className=
+"status error";
+
+}
+
+};
+
+
+async function saveQuestion(){
+
+const question=
+$("qText").value.trim();
+
+const options=
+[0,1,2,3]
+.map(i=>$("q"+i).value.trim());
+
+const correctIndex=
++$("qCorrect").value;
+
+const explanation=
+$("qExplanation").value.trim();
+
+
+if(
+!question||
+options.some(x=>!x)
+)
+return setStatus(
+"questionStatus",
+"Fill the question and all four options.",
+"error"
+);
+
+
+try{
+
+if(editingQuestionId)
+
+await db
+.collection("questions")
+.doc(editingQuestionId)
+.set(
+{
+question,
+options,
+correctIndex,
+explanation,
+giveUp:true,
+published:true,
+updatedAt:
+firebase.firestore.FieldValue.serverTimestamp()
+},
+{merge:true}
+);
+
+else
+
+await db
+.collection("questions")
+.add(
+{
+question,
+options,
+correctIndex,
+explanation,
+giveUp:true,
+published:true,
+createdAt:
+firebase.firestore.FieldValue.serverTimestamp()
+}
+);
+
+const wasEditing=
+!!editingQuestionId;
+
+clearQuestionForm();
+
+setStatus(
+"questionStatus",
+wasEditing
+?"Question updated ✓"
+:"Question published ✓",
+"success"
+);
+
+}catch(e){
+
+setStatus(
+"questionStatus",
+"Error: "+e.message,
+"error"
+);
+
+}
+
+}
+
+
+async function savePuzzle(){
+
+const data={
+
+title:
+$("pTitle").value.trim(),
+
+type:
+$("pType").value,
+
+text:
+$("pText").value.trim(),
+
+answer:
+$("pAnswer").value.trim(),
+
+explanation:
+$("pExplanation").value.trim(),
+
+published:true,
+
+createdAt:
+firebase.firestore.FieldValue.serverTimestamp()
+
+};
+
+
+if(
+!data.title||
+!data.text
+)
+return setStatus(
+"puzzleStatus",
+"Add a title and puzzle text.",
+"error"
+);
+
+
+try{
+
+await db
+.collection("puzzles")
+.add(data);
+
+[
+"pTitle",
+"pText",
+"pAnswer",
+"pExplanation"
+]
+.forEach(
+id=>$(id).value=""
+);
+
+setStatus(
+"puzzleStatus",
+"Puzzle published ✓",
+"success"
+);
+
+}catch(e){
+
+setStatus(
+"puzzleStatus",
+"Error: "+e.message,
+"error"
+);
+
+}
+
+}
+
+
+async function saveDefinition(){
+
+const data={
+
+term:
+$("dTerm").value.trim(),
+
+definition:
+$("dDefinition").value.trim(),
+
+example:
+$("dExample").value.trim(),
+
+published:true,
+
+createdAt:
+firebase.firestore.FieldValue.serverTimestamp()
+
+};
+
+
+if(
+!data.term||
+!data.definition
+)
+return setStatus(
+"definitionStatus",
+"Add a term and definition.",
+"error"
+);
+
+
+try{
+
+await db
+.collection("definitions")
+.add(data);
+
+[
+"dTerm",
+"dDefinition",
+"dExample"
+]
+.forEach(
+id=>$(id).value=""
+);
+
+setStatus(
+"definitionStatus",
+"Definition published ✓",
+"success"
+);
+
+}catch(e){
+
+setStatus(
+"definitionStatus",
+"Error: "+e.message,
+"error"
+);
+
+}
+
+}
+
+
+async function saveDueDate(){
+
+const v=
+$("adminDueDate").value;
+
+if(!v)
+return setStatus(
+"dueStatus",
+"Choose a date.",
+"error"
+);
+
+
+try{
+
+await db
+.collection("meta")
+.doc("event")
+.set(
+{
+dueDate:v
+},
+{merge:true}
+);
+
+setStatus(
+"dueStatus",
+"Due date saved ✓",
+"success"
+);
+
+}catch(e){
+
+setStatus(
+"dueStatus",
+"Error: "+e.message,
+"error"
+);
+
+}
+
+}
+
+
+async function saveParticipant(){
+
+const name=
+$("participantName").value.trim();
+
+const file=
+$("participantImage").files[0];
+
+if(!name&&!file)
+return setStatus(
+"participantStatus",
+"Add a name or image.",
+"error"
+);
+
+
+try{
+
+await db
+.collection("participants")
+.add(
+{
+name,
+
+imageData:
+file
+?await imageData(file)
+:"",
+
+published:true,
+
+createdAt:
+firebase.firestore.FieldValue.serverTimestamp()
+
+}
+);
+
+$("participantName").value="";
+
+$("participantImage").value="";
+
+setStatus(
+"participantStatus",
+"Participant added ✓",
+"success"
+);
+
+}catch(e){
+
+setStatus(
+"participantStatus",
+"Error: "+e.message,
+"error"
+);
+
+}
+
+}
+
+
+function setStatus(id,text,type=""){
+
+const e=$(id);
+
+e.textContent=text;
+
+e.className=
+"status "+type;
+
+}
+
+
+async function del(
+collection,
+id,
+label
+){
+
+if(
+!confirm(
+"Remove this "+label+"?"
+)
+)
+return;
+
+try{
+
+await db
+.collection(collection)
+.doc(id)
+.delete();
+
+}catch(e){
+
+alert(
+"Could not remove it: "+e.message
+);
+
+}
+
+}
+
+
+function renderQuestionTable(){
+
+if(!questions.length){
+
+$("questionTable").textContent=
+"No questions yet.";
+
+return;
+
+}
+
+
+$("questionTable").innerHTML=`
+
+<table class="sheet">
+
+<tr>
+
+<th>Question</th>
+<th>Options</th>
+<th>Correct</th>
+<th>Explanation</th>
+<th>Action</th>
+
+</tr>
+
+${questions.map(q=>`
+
+<tr>
+
+<td>
+${esc(q.question)}
+</td>
+
+<td>
+${(q.options||[])
+.map(
+(x,i)=>
+String.fromCharCode(65+i)+
+". "+
+esc(x)
+)
+.join("<br>")}
+</td>
+
+<td>
+${String.fromCharCode(
+65+(+q.correctIndex||0)
+)}
+</td>
+
+<td>
+${esc(q.explanation||"")}
+</td>
+
+<td>
+
+<button
+class="mini"
+data-edit-q="${q.id}">
+✏️ Edit
+</button>
+
+<button
+class="mini"
+data-delete-q="${q.id}">
+🗑 Remove
+</button>
+
+</td>
+
+</tr>
+
+`).join("")}
+
+</table>
+
+`;
+
+}
+
+
+function renderPuzzleTable(){
+
+if(!puzzles.length){
+
+$("puzzleTable").textContent=
+"No puzzles yet.";
+
+return;
+
+}
+
+
+$("puzzleTable").innerHTML=`
+
+<table class="sheet">
+
+<tr>
+
+<th>Title</th>
+<th>Type</th>
+<th>Action</th>
+
+</tr>
+
+${puzzles.map(p=>`
+
+<tr>
+
+<td>
+${esc(p.title)}
+</td>
+
+<td>
+${esc(p.type)}
+</td>
+
+<td>
+
+<button
+class="mini"
+data-delete-p="${p.id}">
+🗑 Remove
+</button>
+
+</td>
+
+</tr>
+
+`).join("")}
+
+</table>
+
+`;
+
+}
+
+
+function renderDefinitionTable(){
+
+if(!definitions.length){
+
+$("definitionTable").textContent=
+"Using built-in definitions. No custom definitions yet.";
+
+return;
+
+}
+
+
+$("definitionTable").innerHTML=`
+
+<table class="sheet">
+
+<tr>
+
+<th>Term</th>
+<th>Definition</th>
+<th>Action</th>
+
+</tr>
+
+${definitions.map(d=>`
+
+<tr>
+
+<td>
+${esc(d.term)}
+</td>
+
+<td>
+${esc(d.definition)}
+</td>
+
+<td>
+
+<button
+class="mini"
+data-delete-d="${d.id}">
+🗑 Remove
+</button>
+
+</td>
+
+</tr>
+
+`).join("")}
+
+</table>
+
+`;
+
+}
+
+
+function renderParticipantTable(){
+
+if(!participants.length){
+
+$("participantTable").textContent=
+"No manually published participants.";
+
+return;
+
+}
+
+
+$("participantTable").innerHTML=`
+
+<table class="sheet">
+
+<tr>
+
+<th>Name</th>
+<th>Image</th>
+<th>Action</th>
+
+</tr>
+
+${participants.map(p=>`
+
+<tr>
+
+<td>
+${esc(p.name||"")}
+</td>
+
+<td>
+${p.imageData?"Uploaded":"None"}
+</td>
+
+<td>
+
+<button
+class="mini"
+data-delete-part="${p.id}">
+🗑 Remove
+</button>
+
+</td>
+
+</tr>
+
+`).join("")}
+
+</table>
+
+`;
+
+}
+
+
+function renderFeedback(){
+
+if(!feedbacks.length){
+
+$("feedbackTable").innerHTML=
+'<div class="status">No feedback yet.</div>';
+
+return;
+
+}
+
+
+$("feedbackTable").innerHTML=
+feedbacks.map(f=>`
+
+<div class="feedback-item">
+
+<strong>
+${esc(f.name||"Anonymous")}
+</strong>
+
+<div style="color:var(--gold);letter-spacing:2px">
+${"★".repeat(f.rating||0)}${"☆".repeat(5-(f.rating||0))}
+</div>
+
+<div>
+${esc(f.text||"")}
+</div>
+
+<small>
+${
+f.createdAt?.toDate
+?f.createdAt.toDate().toLocaleString()
+:"Recently submitted"
+}
+</small>
+
+</div>
+
+`).join("");
+
+}
+
+
+$("saveQuestionBtn").onclick=
+saveQuestion;
+
+$("clearQuestionBtn").onclick=
+clearQuestionForm;
+
+$("savePuzzleBtn").onclick=
+savePuzzle;
+
+$("saveDueBtn").onclick=
+saveDueDate;
+
+$("saveParticipantBtn").onclick=
+saveParticipant;
+
+
+$("questionTable").onclick=e=>{
+
+const ed=
+e.target.closest("[data-edit-q]");
+
+const de=
+e.target.closest("[data-delete-q]");
+
+
+if(ed){
+
+const q=
+questions.find(
+x=>x.id===ed.dataset.editQ
+);
+
+if(q){
+
+editingQuestionId=q.id;
+
+$("qText").value=
+q.question||"";
+
+(q.options||[])
+.forEach(
+(v,i)=>
+$("q"+i).value=v
+);
+
+$("qCorrect").value=
+String(q.correctIndex||0);
+
+$("qExplanation").value=
+q.explanation||"";
+
+$("saveQuestionBtn").textContent=
+"Save Changes";
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+}
+
+
+if(de)
+
+del(
+"questions",
+de.dataset.deleteQ,
+"question"
+);
+
+};
+
+
+$("puzzleTable").onclick=e=>{
+
+const b=
+e.target.closest("[data-delete-p]");
+
+if(b)
+
+del(
+"puzzles",
+b.dataset.deleteP,
+"puzzle"
+);
+
+};
+
+
+$("definitionTable").onclick=e=>{
+
+const b=
+e.target.closest("[data-delete-d]");
+
+if(b)
+
+del(
+"definitions",
+b.dataset.deleteD,
+"definition"
+);
+
+};
+
+
+$("participantTable").onclick=e=>{
+
+const b=
+e.target.closest("[data-delete-part]");
+
+if(b)
+
+del(
+"participants",
+b.dataset.deletePart,
+"participant"
+);
+
+};
+
+
+function openLogin(){
+
+$("loginOverlay")
+.classList.add("open");
+
+$("loginStatus").textContent="";
+
+setTimeout(
+()=>$("loginEmail").focus(),
+50
+);
+
+}
+
+
+function closeLogin(){
+
+$("loginOverlay")
+.classList.remove("open");
+
+}
+
+
+$("secretHit").onclick=
+openLogin;
+
+$("cancelLogin").onclick=
+closeLogin;
+
+
+$("submitLogin").onclick=async()=>{
+
+if(coordinatorLocked){
+
+$("loginStatus").textContent=
+"Coordinator access is currently locked.";
+
+return;
+
+}
+
+
+const email=
+$("loginEmail").value.trim();
+
+const pass=
+$("loginPassword").value;
+
+
+if(!email||!pass){
+
+$("loginStatus").textContent=
+"Enter both fields.";
+
+return;
+
+}
+
+
+$("submitLogin").disabled=true;
+
+$("loginStatus").textContent=
+"Signing in…";
+
+
+try{
+
+await auth.signInWithEmailAndPassword(
+email,
+pass
+);
+
+closeLogin();
+
+}catch(e){
+
+$("loginStatus").textContent=
+"Sign-in failed. Check the coordinator account.";
+
+}finally{
+
+$("submitLogin").disabled=false;
+
+}
+
+};
+
+
+$("loginPassword").onkeydown=e=>{
+
+if(e.key==="Enter")
+$("submitLogin").click();
+
+};
+
+
+$("logoutBtn").onclick=()=>
+auth.signOut();
+
+
+document.onkeydown=e=>{
+
+if(
+e.ctrlKey&&
+e.shiftKey&&
+e.key.toLowerCase()==="g"
+){
+
+e.preventDefault();
+
+openLogin();
+
+}
+
+};
+
+
+let feedbackRating=0;
+
+function setStarDisplay(n){
+
+document
+.querySelectorAll("#starRating .star")
+.forEach(s=>{
+
+s.classList.toggle(
+"active",
++s.dataset.star<=n
+);
+
+});
+
+}
+
+document
+.querySelectorAll("#starRating .star")
+.forEach(s=>
+
+s.onclick=()=>{
+
+feedbackRating=+s.dataset.star;
+
+setStarDisplay(feedbackRating);
+
+}
+
+);
+
+
+function markFeedbackGiven(){
+
+localStorage.setItem(
+"grammatrixFeedbackGiven",
+"1"
+);
+
+$("feedbackFab").classList.add("small");
+
+}
+
+
+if(localStorage.getItem("grammatrixFeedbackGiven"))
+$("feedbackFab").classList.add("small");
+
+
+async function submitFeedback(){
+
+const text=
+$("feedbackText").value.trim();
+
+if(!feedbackRating)
+
+return setStatus(
+"feedbackStatus",
+"Please select a star rating.",
+"error"
+);
+
+
+try{
+
+await db
+.collection("feedback")
+.add(
+{
+name:
+profile.name||"Anonymous",
+
+rating:
+feedbackRating,
+
+text,
+
+createdAt:
+firebase.firestore.FieldValue.serverTimestamp()
+
+}
+);
+
+$("feedbackText").value="";
+
+feedbackRating=0;
+
+setStarDisplay(0);
+
+setStatus(
+"feedbackStatus",
+"Feedback submitted ✓",
+"success"
+);
+
+markFeedbackGiven();
+
+}catch(e){
+
+setStatus(
+"feedbackStatus",
+"Could not submit feedback: "+e.message,
+"error"
+);
+
+}
+
+}
+
+
+$("feedbackFab").onclick=()=>
+$("feedbackOverlay").classList.add("open");
+
+
+$("closeFeedback").onclick=()=>
+$("feedbackOverlay").classList.remove("open");
+
+
+$("submitFeedback").onclick=
+submitFeedback;
+
+
+function updateLockUI(){
+
+const dot=$("lockDot");
+
+if(!dot)return;
+
+dot.title=
+coordinatorLocked
+?"Coordinator access is locked"
+:"Coordinator access is unlocked";
+
+dot.style.background=
+coordinatorLocked
+?"#b53f56"
+:"#66738c";
+
+}
+
+
+function listenLock(){
+
+db.collection("meta")
+.doc("security")
+.onSnapshot(
+
+d=>{
+
+coordinatorLocked=
+d.exists
+?!!d.data().coordinatorLocked
+:false;
+
+updateLockUI();
+
+},
+
+e=>{
+
+coordinatorLocked=false;
+
+updateLockUI();
+
+}
+
+);
+
+}
+
+listenLock();
+
+
+$("lockDot").onclick=async()=>{
+
+lockClicks++;
+
+
+if(lockClicks===5){
+
+const code=
+prompt("Enter cheat code");
+
+
+if(
+code==="1234RSMK"||
+code==="MK_github.io"
+){
+
+try{
+
+await db
+.collection("meta")
+.doc("security")
+.set(
+{
+coordinatorLocked:true,
+
+updatedAt:
+firebase.firestore.FieldValue.serverTimestamp()
+
+},
+{merge:true}
+);
+
+alert(
+"Coordinator access locked across connected devices."
+);
+
+}catch(e){
+
+alert(
+"Could not update the shared lock: "+e.message
+);
+
+}
+
+}else if(code!==null){
+
+alert(
+"Invalid cheat code."
+);
+
+}
+
+lockClicks=0;
+
+}
+
+
+if(lockClicks===10){
+
+try{
+
+await db
+.collection("meta")
+.doc("security")
+.set(
+{
+coordinatorLocked:false,
+
+updatedAt:
+firebase.firestore.FieldValue.serverTimestamp()
+
+},
+{merge:true}
+);
+
+alert(
+"Coordinator access unlocked across connected devices."
+);
+
+}catch(e){
+
+alert(
+"Could not update the shared lock: "+e.message
+);
+
+}
+
+lockClicks=0;
+
+}
+
+};
+
+
+auth.onAuthStateChanged(u=>{
+
+currentUser=u;
+
+if(u){
+
+$("adminRoom").classList.add("open");
+
+$("signedInAs").textContent=
+"Signed in as "+
+(
+u.email||
+"authorized coordinator"
+);
+
+renderQuestionTable();
+
+renderPuzzleTable();
+
+renderDefinitionTable();
+
+renderParticipantTable();
+
+renderFeedback();
+
+updateLockUI();
+
+}else{
+
+$("adminRoom").classList.remove("open");
+
+}
+
+});
+
+
+db.collection("questions")
+.where("published","==",true)
+.onSnapshot(
+
+s=>{
+
+questions=
+s.docs.map(
+d=>({
+id:d.id,
+...d.data()
+})
+);
+
+if(qIndex>=questions.length)
+qIndex=0;
+
+renderGrammar();
+
+if(currentUser)
+renderQuestionTable();
+
+},
+
+e=>{
+
+$("grammarArea").innerHTML=
+'<div class="empty">Questions could not be loaded. Check Firebase rules.</div>';
+
+}
+
+);
+
+
+db.collection("puzzles")
+.where("published","==",true)
+.onSnapshot(
+
+s=>{
+
+puzzles=
+s.docs.map(
+d=>({
+id:d.id,
+...d.data()
+})
+);
+
+renderPuzzles();
+
+if(currentUser)
+renderPuzzleTable();
+
+},
+
+e=>{}
+
+);
+
+
+db.collection("definitions")
+.where("published","==",true)
+.onSnapshot(
+
+s=>{
+
+definitions=
+s.docs.map(
+d=>({
+id:d.id,
+...d.data()
+})
+);
+
+renderDefinitions();
+
+if(currentUser)
+renderDefinitionTable();
+
+},
+
+e=>{}
+
+);
+
+
+db.collection("participants")
+.where("published","==",true)
+.onSnapshot(
+
+s=>{
+
+participants=
+s.docs.map(
+d=>({
+id:d.id,
+...d.data()
+})
+);
+
+if(currentUser)
+renderParticipantTable();
+
+},
+
+e=>{}
+
+);
+
+
+db.collection("feedback")
+.orderBy("createdAt","desc")
+.limit(100)
+.onSnapshot(
+
+s=>{
+
+feedbacks=
+s.docs.map(
+d=>({
+id:d.id,
+...d.data()
+})
+);
+
+if(currentUser)
+renderFeedback();
+
+},
+
+e=>{}
+
+);
+
+
+db.collection("scores")
+.orderBy("score","desc")
+.limit(100)
+.onSnapshot(
+
+s=>{
+
+scores=
+s.docs.map(
+d=>({
+id:d.id,
+...d.data()
+})
+);
+
+renderLeaderboard();
+
+},
+
+e=>{
+
+$("leaderboardArea").innerHTML=
+'<div class="empty">Scores will appear after participants complete questions.</div>';
+
+}
+
+);
+
+
+db.collection("meta")
+.doc("event")
+.onSnapshot(
+
+d=>{
+
+dueDate=
+d.exists
+?(d.data().dueDate||"")
+:"";
+
+$("publicDueDate").textContent=
+fmtDate(dueDate);
+
+if($("adminDueDate"))
+$("adminDueDate").value=
+dueDate;
+
+}
+
+);
+
+
+renderLeaderboard();
+
+</script>
+
+
+<script>
+
+if("serviceWorker" in navigator)
+
+window.addEventListener(
+"load",
+()=>
+navigator.serviceWorker
+.register("./service-worker.js")
+.catch(
+e=>
+console.warn(
+"PWA service worker:",
+e
+)
+)
+);
+
+</script>
+
+</body>
+</html>
