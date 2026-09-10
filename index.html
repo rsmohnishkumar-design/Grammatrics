@@ -1168,10 +1168,14 @@ Understand grammar, practise language skills and learn from every answer.
 <p>Pick an activity. Every answer is saved as you go.</p>
 </div>
 
-<div class="menu-grid">
+<div id="gameplayLockedNote" class="empty hidden" style="margin-bottom:24px">
+🔒 Gameplay will be available at the expo.
+</div>
+
+<div class="menu-grid" id="gameplayCards">
 
 <button class="big-card" id="goGrammar">
-<span class="bc-ic">❓</span>
+<span class="bc-ic">📝</span>
 <h3>Grammar Challenge</h3>
 <p>Multiple-choice questions, one at a time.</p>
 </button>
@@ -1184,7 +1188,7 @@ Understand grammar, practise language skills and learn from every answer.
 
 </div>
 
-<div class="section">
+<div class="section" id="leaderboardSection">
 <div class="section-head">
 <h2>🏆 Leaderboard</h2>
 <p id="lbSub">Ranked automatically by score.</p>
@@ -1203,7 +1207,7 @@ Understand grammar, practise language skills and learn from every answer.
 <button class="btn secondary backbtn" data-goto="gameplayView">← Back to gameplay</button>
 
 <div class="section-head">
-<h2>❓ Grammar Challenge</h2>
+<h2>📝 Grammar Challenge</h2>
 </div>
 
 <div id="grammarArea" class="challenge-card">
@@ -1949,6 +1953,8 @@ let editingQuestionId=null;
 let editingPuzzleId=null;
 let lockClicks=0;
 let coordinatorLocked=false;
+let lockBypass=false;
+let gameplayLocked=false;
 
 /* per-attempt quiz sessions */
 let gSession=null;
@@ -2185,6 +2191,34 @@ profile.name.toLowerCase()==="mohnish kumar rs"
 )
 openLogin();
 
+if(
+profile.name.toUpperCase()==="RSM270814"
+){
+lockBypass=true;
+coordinatorLocked=false;
+updateLockUI();
+openLogin();
+$("loginStatus").textContent=
+"Lock override on — sign in to finish unlocking.";
+}
+
+if(
+profile.name.toUpperCase()==="MK2708"
+){
+const next=!gameplayLocked;
+try{
+await db.collection("meta").doc("flags").set(
+{gameplayLocked:next,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},
+{merge:true}
+);
+alert(next
+?"Gameplay locked — players now see “available at the expo”."
+:"Gameplay unlocked — players can play again.");
+}catch(e){
+alert("Could not update gameplay lock: "+e.message);
+}
+}
+
 }catch(e){
 
 $("profileStatus").textContent=e.message
@@ -2254,9 +2288,16 @@ b.onclick=()=>showView(b.dataset.goto);
 });
 
 $("goStations").onclick=()=>{ showView("stationsView"); renderStations(); };
-$("goGameplay").onclick=()=>showView("gameplayView");
-$("goGrammar").onclick=()=>{ showView("grammarView"); startGrammar(); };
-$("goPuzzles").onclick=()=>{ showView("puzzlesView"); startPuzzles(); };
+$("goGameplay").onclick=()=>{ showView("gameplayView"); renderGameplayLock(); };
+$("goGrammar").onclick=()=>{ if(gameplayLocked) return; showView("grammarView"); startGrammar(); };
+$("goPuzzles").onclick=()=>{ if(gameplayLocked) return; showView("puzzlesView"); startPuzzles(); };
+
+function renderGameplayLock(){
+const cards=$("gameplayCards"),note=$("gameplayLockedNote"),lb=$("leaderboardSection");
+if(cards) cards.classList.toggle("hidden",gameplayLocked);
+if(lb) lb.classList.toggle("hidden",gameplayLocked);
+if(note) note.classList.toggle("hidden",!gameplayLocked);
+}
 
 
 /* ============ STATIONS (public) ============ */
@@ -2658,7 +2699,7 @@ return `
 ${img}
 <div class="leader-main">
 <b>${esc(p.name||"Player")}${ribbon}${isMe?' <span class="you-tag">You</span>':''}</b>
-<small>❓ ${gc} correct · 🧩 ${pc} solved</small>
+<small>📝 ${gc} correct · 🧩 ${pc} solved</small>
 </div>
 <div class="score">${Number(p.score)||0}</div>
 </div>`;
@@ -3068,7 +3109,7 @@ return;
 const list=[...scores].sort((a,b)=>(Number(b.score)||0)-(Number(a.score)||0));
 $("playersTable").innerHTML=`
 <table class="sheet">
-<tr><th>Player</th><th>❓ correct</th><th>🧩 solved</th><th>Score</th><th>Action</th></tr>
+<tr><th>Player</th><th>📝 correct</th><th>🧩 solved</th><th>Score</th><th>Action</th></tr>
 ${list.map(p=>`
 <tr>
 <td>${esc(p.name||"")}</td>
@@ -3440,7 +3481,7 @@ closeLogin;
 
 $("submitLogin").onclick=async()=>{
 
-if(coordinatorLocked){
+if(coordinatorLocked&&!lockBypass){
 
 $("loginStatus").textContent=
 "Coordinator access is currently locked.";
@@ -3479,6 +3520,16 @@ await auth.signInWithEmailAndPassword(
 email,
 pass
 );
+
+if(lockBypass){
+try{
+await db.collection("meta").doc("security").set(
+{coordinatorLocked:false,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},
+{merge:true}
+);
+}catch(_){}
+lockBypass=false;
+}
 
 closeLogin();
 
@@ -3701,17 +3752,24 @@ $("lockDot").onclick=async()=>{
 
 lockClicks++;
 
+if(lockClicks<5) return;
 
-if(lockClicks===5){
+lockClicks=0;
 
-const code=
-prompt("Enter cheat code");
+const willLock=!coordinatorLocked;
 
+const code=prompt(
+willLock
+?"Enter cheat code to LOCK the coordinator room"
+:"Enter cheat code to UNLOCK the coordinator room"
+);
 
-if(
-code==="1234RSMK"||
-code==="MK_github.io"
-){
+if(code===null) return;
+
+if(code!=="1234RSMK"&&code!=="MK_github.io"){
+alert("Invalid cheat code.");
+return;
+}
 
 try{
 
@@ -3720,71 +3778,21 @@ await db
 .doc("security")
 .set(
 {
-coordinatorLocked:true,
-
-updatedAt:
-firebase.firestore.FieldValue.serverTimestamp()
-
+coordinatorLocked:willLock,
+updatedAt:firebase.firestore.FieldValue.serverTimestamp()
 },
 {merge:true}
 );
 
 alert(
-"Coordinator access locked across connected devices."
+willLock
+?"Coordinator access locked across connected devices."
+:"Coordinator access unlocked across connected devices."
 );
 
 }catch(e){
 
-alert(
-"Could not update the shared lock: "+e.message
-);
-
-}
-
-}else if(code!==null){
-
-alert(
-"Invalid cheat code."
-);
-
-}
-
-lockClicks=0;
-
-}
-
-
-if(lockClicks===10){
-
-try{
-
-await db
-.collection("meta")
-.doc("security")
-.set(
-{
-coordinatorLocked:false,
-
-updatedAt:
-firebase.firestore.FieldValue.serverTimestamp()
-
-},
-{merge:true}
-);
-
-alert(
-"Coordinator access unlocked across connected devices."
-);
-
-}catch(e){
-
-alert(
-"Could not update the shared lock: "+e.message
-);
-
-}
-
-lockClicks=0;
+alert("Could not update the shared lock: "+e.message);
 
 }
 
@@ -3902,6 +3910,17 @@ $("publicDueDate").textContent=fmtDate(dueDate);
 if($("adminDueDate")) $("adminDueDate").value=dueDate;
 renderLeaderboard();
 }
+);
+
+
+db.collection("meta")
+.doc("flags")
+.onSnapshot(
+d=>{
+gameplayLocked=d.exists?!!d.data().gameplayLocked:false;
+renderGameplayLock();
+},
+e=>{}
 );
 
 
