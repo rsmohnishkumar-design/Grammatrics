@@ -2282,6 +2282,8 @@ syncMineFromScores();
 
 renderLeaderboard();
 
+refreshNudgeState();
+
 if(
 profile.name.toLowerCase()==="mohnish kumar rs"
 )
@@ -3846,10 +3848,22 @@ setStarDisplay(feedbackRating);
 );
 
 
+/* Feedback/nudge state is scoped per profile name, not per device —
+   several people can share one device across the event, and one
+   person giving feedback must not silently hide the prompt for the
+   next username that logs in on the same browser. */
+function feedbackGivenKey(){
+return "grammatrixFeedbackGiven:"+keyFor(profile.name||"");
+}
+
+function nudgeDismissedKey(){
+return "grammatrixNudgeDismissed:"+keyFor(profile.name||"");
+}
+
 function markFeedbackGiven(){
 
 localStorage.setItem(
-"grammatrixFeedbackGiven",
+feedbackGivenKey(),
 "1"
 );
 
@@ -3862,13 +3876,9 @@ dismissNudge();
 
 function dismissNudge(){
 $("feedbackNudge").classList.add("hidden");
-localStorage.setItem("grammatrixNudgeDismissed","1");
+localStorage.setItem(nudgeDismissedKey(),"1");
 clearInterval(nudgeInterval);
 }
-
-
-if(localStorage.getItem("grammatrixFeedbackGiven"))
-$("feedbackFab").classList.add("small");
 
 
 async function submitFeedback(){
@@ -3940,7 +3950,7 @@ $("feedbackNudge").classList.add("hidden");
 
 $("closeFeedback").onclick=()=>{
 $("feedbackOverlay").classList.remove("open");
-if(!localStorage.getItem("grammatrixNudgeDismissed")&&!localStorage.getItem("grammatrixFeedbackGiven"))
+if(!localStorage.getItem(nudgeDismissedKey())&&!localStorage.getItem(feedbackGivenKey()))
 $("feedbackNudge").classList.remove("hidden");
 };
 
@@ -3965,21 +3975,31 @@ $("nudgeText").textContent=nudgeMessages[nudgeIdx%nudgeMessages.length];
 nudgeIdx++;
 }
 
-if(new URLSearchParams(location.search).has("resetFeedback")){
-localStorage.removeItem("grammatrixNudgeDismissed");
-localStorage.removeItem("grammatrixFeedbackGiven");
+function refreshNudgeState(){
+clearInterval(nudgeInterval);
+if(localStorage.getItem(feedbackGivenKey())){
+$("feedbackFab").classList.add("small");
+}else{
 $("feedbackFab").classList.remove("small");
 }
-
 if(
-localStorage.getItem("grammatrixNudgeDismissed")||
-localStorage.getItem("grammatrixFeedbackGiven")
+localStorage.getItem(nudgeDismissedKey())||
+localStorage.getItem(feedbackGivenKey())
 ){
 $("feedbackNudge").classList.add("hidden");
 }else{
 rotateNudge();
+$("feedbackNudge").classList.remove("hidden");
 nudgeInterval=setInterval(rotateNudge,4000);
 }
+}
+
+if(new URLSearchParams(location.search).has("resetFeedback")){
+localStorage.removeItem(nudgeDismissedKey());
+localStorage.removeItem(feedbackGivenKey());
+}
+
+refreshNudgeState();
 
 $("feedbackNudge").onclick=()=>{
 $("feedbackOverlay").classList.add("open");
@@ -3996,7 +4016,7 @@ dismissNudge();
 
 function maybeAskFeedbackOnExit(){
 if(exitFeedbackShown)return;
-if(localStorage.getItem("grammatrixFeedbackGiven"))return;
+if(localStorage.getItem(feedbackGivenKey()))return;
 if($("feedbackOverlay").classList.contains("open"))return;
 exitFeedbackShown=true;
 $("feedbackNudge").classList.add("hidden");
@@ -4010,7 +4030,7 @@ if(!e.relatedTarget&&e.clientY<=0) maybeAskFeedbackOnExit();
 try{
 history.pushState({grammatrixGuard:true},"");
 window.addEventListener("popstate",()=>{
-if(localStorage.getItem("grammatrixFeedbackGiven")||exitFeedbackShown)return;
+if(localStorage.getItem(feedbackGivenKey())||exitFeedbackShown)return;
 history.pushState({grammatrixGuard:true},"");
 maybeAskFeedbackOnExit();
 });
