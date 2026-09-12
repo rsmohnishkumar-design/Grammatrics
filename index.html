@@ -1073,14 +1073,19 @@ margin-right:0
 .podium-banner .pb-msg{font-size:.9rem;line-height:1.5}
 .final-tag{display:inline-block;margin-bottom:10px;padding:4px 10px;border-radius:999px;background:#fff4d9;border:1px solid #efd18a;color:#7a5200;font-size:.72rem;font-weight:800}
 
-.feedback-nudge{position:fixed;right:14px;bottom:82px;max-width:210px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px 12px;box-shadow:var(--shadow);z-index:79;text-align:center;font-size:.78rem;font-weight:700;color:var(--primary);cursor:pointer;animation:nudgeFloat 2.4s ease-in-out infinite}
+.feedback-nudge{position:fixed;right:14px;bottom:82px;max-width:184px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:9px 11px;box-shadow:var(--shadow);z-index:79;text-align:center;color:var(--primary);cursor:pointer;animation:nudgeFloat 2.4s ease-in-out infinite}
 .feedback-nudge:after{content:"";position:absolute;right:22px;bottom:-8px;border:8px solid transparent;border-top-color:#fff}
-.feedback-nudge .nudge-emojis{font-size:1.15rem;margin-bottom:3px}
+.nudge-avatar-wrap{position:relative;width:34px;height:34px;margin:0 auto 5px}
+.nudge-avatar{display:block;width:100%;height:100%}
+.nudge-hand{position:absolute;right:-6px;bottom:-6px;font-size:.9rem;line-height:1;background:#fff;border-radius:50%;width:18px;height:18px;display:grid;place-items:center;box-shadow:var(--shadow)}
+.feedback-nudge #nudgeText{font-size:.66rem;line-height:1.3;font-weight:600;letter-spacing:.01em}
 .feedback-nudge.hidden{display:none}
 .nudge-close{position:absolute;top:-9px;right:-9px;width:22px;height:22px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:10px;line-height:1;display:grid;place-items:center;padding:0;box-shadow:var(--shadow)}
 @media(max-width:760px){
-.feedback-nudge{max-width:148px;padding:8px 9px;font-size:.68rem;bottom:78px}
-.feedback-nudge .nudge-emojis{font-size:.95rem}
+.feedback-nudge{max-width:136px;padding:8px 9px;bottom:78px}
+.nudge-avatar-wrap{width:28px;height:28px}
+.nudge-hand{width:15px;height:15px;font-size:.75rem;right:-5px;bottom:-5px}
+.feedback-nudge #nudgeText{font-size:.6rem}
 }
 
 .input-eye-wrap{position:relative}
@@ -1270,7 +1275,17 @@ The Mega Grammar Learning Fest
 
 <div class="feedback-nudge" id="feedbackNudge">
 <button class="nudge-close" id="closeNudge" aria-label="Dismiss">❌</button>
-<div class="nudge-emojis">🙋</div>
+<div class="nudge-avatar-wrap">
+<svg class="nudge-avatar" width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+<circle cx="17" cy="17" r="17" fill="#eeecff"/>
+<path d="M9 12c1-4 5-6 8-6s7 2 8 6c1 3-1 5-1 5H10s-2-2-1-5z" fill="#3a2f8f"/>
+<circle cx="17" cy="18" r="8" fill="#ffd9b3"/>
+<circle cx="14" cy="17" r="1.1" fill="#2b2b2b"/>
+<circle cx="20" cy="17" r="1.1" fill="#2b2b2b"/>
+<path d="M13.5 21c1.2 1.4 5.8 1.4 7 0" stroke="#7a4b2b" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+</svg>
+<span class="nudge-hand" aria-hidden="true">👇</span>
+</div>
 <div id="nudgeText"></div>
 </div>
 
