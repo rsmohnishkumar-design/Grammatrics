@@ -1077,6 +1077,7 @@ margin-right:0
 .feedback-nudge:after{content:"";position:absolute;right:22px;bottom:-8px;border:8px solid transparent;border-top-color:#fff}
 .nudge-avatar-wrap{position:relative;width:34px;height:34px;margin:0 auto 5px}
 .nudge-avatar{display:block;width:100%;height:100%}
+img.nudge-avatar{object-fit:cover;border-radius:50%;background:#fff}
 .nudge-hand{position:absolute;right:-6px;bottom:-6px;font-size:.9rem;line-height:1;background:#fff;border-radius:50%;width:18px;height:18px;display:grid;place-items:center;box-shadow:var(--shadow)}
 .feedback-nudge #nudgeText{font-size:.66rem;line-height:1.3;font-weight:600;letter-spacing:.01em}
 .feedback-nudge.hidden{display:none}
@@ -1276,7 +1277,7 @@ The Mega Grammar Learning Fest
 <div class="feedback-nudge" id="feedbackNudge">
 <button class="nudge-close" id="closeNudge" aria-label="Dismiss">❌</button>
 <div class="nudge-avatar-wrap">
-<svg class="nudge-avatar" width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+<svg class="nudge-avatar" id="nudgeAvatarSvg" width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
 <circle cx="17" cy="17" r="17" fill="#eeecff"/>
 <path d="M4 34c0-7 5.5-11 13-11s13 4 13 11z" fill="#bfe0fb"/>
 <path d="M13.5 24c1 2 5 2 6 0" stroke="#6fa8d8" stroke-width="1.3" fill="none" stroke-linecap="round"/>
@@ -1287,6 +1288,7 @@ The Mega Grammar Learning Fest
 <circle cx="19.7" cy="15.6" r="1" fill="#2b2b2b"/>
 <path d="M14 19c1 1.2 5 1.2 6 0" stroke="#7a4b2b" stroke-width="1.2" fill="none" stroke-linecap="round"/>
 </svg>
+<img id="nudgeAvatarImg" class="nudge-avatar hidden" alt="">
 <span class="nudge-hand" aria-hidden="true">👇</span>
 </div>
 <div id="nudgeText"></div>
@@ -1921,6 +1923,44 @@ Clear
 </div>
 
 
+<!-- FEEDBACK NUDGE ICON -->
+
+<div class="admin-card">
+
+<h3>🙋 Feedback Nudge Icon</h3>
+
+<p class="admin-note">
+Shown next to the "write your feedback" prompt. Upload any image —
+the school logo, a mascot, anything. Leave it unset to use the
+default drawn icon.
+</p>
+
+<label>Icon image</label>
+<input id="nudgeIconInput" type="file" accept="image/*">
+
+<img
+id="nudgeIconPreview"
+class="hidden"
+style="width:80px;height:80px;object-fit:cover;border-radius:50%;margin:8px 0"
+alt="Preview">
+
+<div class="btn-row">
+
+<button class="btn primary" id="saveNudgeIconBtn">
+Save Icon
+</button>
+
+<button class="btn secondary" id="resetNudgeIconBtn">
+Reset to Default
+</button>
+
+</div>
+
+<div id="nudgeIconStatus" class="status"></div>
+
+</div>
+
+
 <!-- PUBLISHED TABLES -->
 
 <div class="admin-card">
@@ -2102,6 +2142,8 @@ let currentUser=null;
 let editingQuestionId=null;
 let editingPuzzleId=null;
 let stationImageData="";
+let nudgeIconUrl="";
+let stagedNudgeIcon="";
 let nudgeInterval=null;
 let exitFeedbackShown=false;
 let lockClicks=0;
@@ -3347,6 +3389,48 @@ setStatus("stationStatus",err.message,"error");
 }
 };
 
+
+$("nudgeIconInput").onchange=async e=>{
+try{
+const d=await imageData(e.target.files[0],300);
+stagedNudgeIcon=d||"";
+if(d){
+$("nudgeIconPreview").src=d;
+$("nudgeIconPreview").classList.remove("hidden");
+}else{
+$("nudgeIconPreview").classList.add("hidden");
+}
+}catch(err){
+setStatus("nudgeIconStatus",err.message,"error");
+}
+};
+
+$("saveNudgeIconBtn").onclick=async()=>{
+if(!stagedNudgeIcon) return setStatus("nudgeIconStatus","Choose an image first.","error");
+try{
+await db.collection("meta").doc("nudgeIcon").set(
+{image:stagedNudgeIcon,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},
+{merge:true}
+);
+setStatus("nudgeIconStatus","Icon updated ✓","success");
+}catch(e){
+setStatus("nudgeIconStatus","Error: "+e.message,"error");
+}
+};
+
+$("resetNudgeIconBtn").onclick=async()=>{
+try{
+await db.collection("meta").doc("nudgeIcon").set({image:""},{merge:true});
+$("nudgeIconInput").value="";
+$("nudgeIconPreview").classList.add("hidden");
+$("nudgeIconPreview").src="";
+stagedNudgeIcon="";
+setStatus("nudgeIconStatus","Reset to default icon ✓","success");
+}catch(e){
+setStatus("nudgeIconStatus","Error: "+e.message,"error");
+}
+};
+
 async function saveStation(){
 const name=$("stName").value.trim();
 const desc=$("stDesc").value.trim();
@@ -4357,6 +4441,29 @@ db.collection("meta")
 d=>{
 gameplayLocked=d.exists?!!d.data().gameplayLocked:false;
 renderGameplayLock();
+},
+e=>{}
+);
+
+
+function renderNudgeIcon(){
+if(nudgeIconUrl){
+$("nudgeAvatarSvg").classList.add("hidden");
+$("nudgeAvatarImg").src=nudgeIconUrl;
+$("nudgeAvatarImg").classList.remove("hidden");
+}else{
+$("nudgeAvatarImg").classList.add("hidden");
+$("nudgeAvatarImg").src="";
+$("nudgeAvatarSvg").classList.remove("hidden");
+}
+}
+
+db.collection("meta")
+.doc("nudgeIcon")
+.onSnapshot(
+d=>{
+nudgeIconUrl=d.exists?(d.data().image||""):"";
+renderNudgeIcon();
 },
 e=>{}
 );
