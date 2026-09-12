@@ -1072,6 +1072,21 @@ margin-right:0
 .podium-banner .pb-label{font-family:Manrope,sans-serif;font-weight:800;font-size:1.1rem;margin-bottom:4px}
 .podium-banner .pb-msg{font-size:.9rem;line-height:1.5}
 .final-tag{display:inline-block;margin-bottom:10px;padding:4px 10px;border-radius:999px;background:#fff4d9;border:1px solid #efd18a;color:#7a5200;font-size:.72rem;font-weight:800}
+
+.feedback-nudge{position:fixed;right:14px;bottom:82px;max-width:210px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px 12px;box-shadow:var(--shadow);z-index:79;text-align:center;font-size:.78rem;font-weight:700;color:var(--primary);cursor:pointer;animation:nudgeFloat 2.4s ease-in-out infinite}
+.feedback-nudge:after{content:"";position:absolute;right:22px;bottom:-8px;border:8px solid transparent;border-top-color:#fff}
+.feedback-nudge .nudge-emojis{font-size:1.15rem;margin-bottom:3px}
+.feedback-nudge.hidden{display:none}
+@keyframes nudgeFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+.modal.lb-modal{text-align:center;overflow:hidden}
+.lb-modal .lb-icon{font-size:3rem;margin-bottom:6px}
+.confetti-piece{position:absolute;top:-40px;font-size:1.4rem;pointer-events:none;animation:confettiFall linear forwards;z-index:1}
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(420px) rotate(360deg);opacity:.15}}
+
+.station.station-image{padding:0;overflow:hidden;text-align:left;cursor:pointer;background:#fff;display:block;width:100%}
+.station.station-image img{width:100%;height:150px;object-fit:cover;display:block}
+.station.station-image h3{padding:14px 16px;margin:0}
 </style>
 </head>
 
@@ -1244,6 +1259,11 @@ The Mega Grammar Learning Fest
 </footer>
 
 
+<div class="feedback-nudge" id="feedbackNudge">
+<div class="nudge-emojis">🙋</div>
+<div id="nudgeText"></div>
+</div>
+
 <button class="feedback-fab" id="feedbackFab" title="Feedback">
 💬
 </button>
@@ -1402,6 +1422,48 @@ placeholder="Write a review…"></textarea>
 <button class="btn primary" id="submitFeedback">
 Submit Feedback
 </button>
+
+</div>
+
+</div>
+
+
+<!-- LEADERBOARD RESULT POPUP -->
+
+<div class="info-overlay" id="lbPopupOverlay">
+
+<div class="modal lb-modal" id="lbPopupCard">
+
+<button class="close" id="closeLbPopup">×</button>
+
+<div class="lb-icon" id="lbPopupIcon">🏆</div>
+
+<h2 id="lbPopupTitle"></h2>
+
+<p class="lead" id="lbPopupMsg"></p>
+
+</div>
+
+</div>
+
+
+<!-- STATION DETAIL -->
+
+<div class="info-overlay" id="stationPopupOverlay">
+
+<div class="modal">
+
+<button class="close" id="closeStationPopup">×</button>
+
+<h2 id="stPopupTitle"></h2>
+
+<img
+id="stPopupImg"
+class="hidden"
+style="width:100%;border-radius:16px;margin:12px 0;object-fit:cover;max-height:320px"
+alt="">
+
+<p class="lead" id="stPopupDesc" style="white-space:pre-wrap"></p>
 
 </div>
 
@@ -1754,6 +1816,15 @@ Clear
 <label>Description</label>
 <textarea id="stDesc" placeholder="What happens at this station…"></textarea>
 
+<label>Station image (optional)</label>
+<input id="stImage" type="file" accept="image/*">
+
+<img
+id="stImagePreview"
+class="hidden"
+style="width:100%;max-height:160px;object-fit:cover;border-radius:12px;margin:8px 0"
+alt="Preview">
+
 <div class="btn-row">
 
 <button class="btn primary" id="saveStationBtn">
@@ -1951,6 +2022,7 @@ let dueDate="";
 let currentUser=null;
 let editingQuestionId=null;
 let editingPuzzleId=null;
+let stationImageData="";
 let lockClicks=0;
 let coordinatorLocked=false;
 let lockBypass=false;
@@ -2056,7 +2128,7 @@ profile=p;
 }
 
 
-function imageData(file){
+function imageData(file,maxSize=600){
 
 return new Promise((resolve,reject)=>{
 
@@ -2075,7 +2147,7 @@ const im=new Image();
 
 im.onload=()=>{
 
-const max=600;
+const max=maxSize;
 
 const s=Math.min(
 1,
@@ -2281,6 +2353,12 @@ const el=$(v);
 if(el) el.classList.toggle("hidden",v!==id);
 });
 window.scrollTo({top:0,behavior:"smooth"});
+if(id==="gameplayView"){
+lbPopupShownThisVisit=false;
+maybeScheduleLbPopup();
+}else{
+cancelLbPopupTimer();
+}
 }
 
 document.querySelectorAll("[data-goto]").forEach(b=>{
@@ -2308,13 +2386,47 @@ if(!stations.length){
 a.innerHTML='<div class="empty">No stations have been added yet. Check back soon.</div>';
 return;
 }
-a.innerHTML=stations.map(s=>`
+a.innerHTML=stations.map(s=>{
+const img=s.image||"";
+if(img){
+return `
+<button class="station station-image" type="button" data-station-id="${s.id}">
+<img src="${esc(img)}" alt="">
+<h3>${esc(s.name||"Station")}</h3>
+</button>`;
+}
+return `
 <article class="station">
 <h3>${esc(s.name||"Station")}</h3>
 <p>${esc(s.desc||s.description||"")}</p>
-</article>
-`).join("");
+</article>`;
+}).join("");
 }
+
+function openStationPopup(s){
+$("stPopupTitle").textContent=s.name||"Station";
+const img=s.image||"";
+if(img){
+$("stPopupImg").src=img;
+$("stPopupImg").classList.remove("hidden");
+}else{
+$("stPopupImg").classList.add("hidden");
+$("stPopupImg").src="";
+}
+$("stPopupDesc").textContent=s.desc||s.description||"";
+$("stationPopupOverlay").classList.add("open");
+}
+
+$("stationsArea").onclick=e=>{
+const b=e.target.closest("[data-station-id]");
+if(!b)return;
+const s=stations.find(x=>x.id===b.dataset.stationId);
+if(s) openStationPopup(s);
+};
+
+$("closeStationPopup").onclick=()=>{
+$("stationPopupOverlay").classList.remove("open");
+};
 
 
 /* ============ GRAMMAR CHALLENGE ============ */
@@ -2709,6 +2821,67 @@ a.innerHTML=html;
 }
 
 
+let lbPopupTimer=null;
+let lbPopupShownThisVisit=false;
+
+function cancelLbPopupTimer(){
+clearTimeout(lbPopupTimer);
+lbPopupTimer=null;
+}
+
+function maybeScheduleLbPopup(){
+if($("gameplayView").classList.contains("hidden"))return;
+if(gameplayLocked)return;
+if(lbPopupShownThisVisit||lbPopupTimer)return;
+if(!dueDatePassed())return;
+const myKey=profile.name?keyFor(profile.name):null;
+if(!myKey)return;
+const list=[...scores].sort((x,y)=>
+((Number(y.score)||0)-(Number(x.score)||0))
+||String(x.name||"").localeCompare(String(y.name||""))
+);
+const myRank=list.findIndex(p=>p.id===myKey);
+if(myRank<0)return;
+lbPopupTimer=setTimeout(()=>{
+lbPopupTimer=null;
+lbPopupShownThisVisit=true;
+openLeaderboardPopup(myRank+1,list.length);
+},3000);
+}
+
+function spawnConfetti(container,count=26){
+const emojis=["🎉","🎊","🥳","🏅","✨","🎈"];
+for(let i=0;i<count;i++){
+const s=document.createElement("span");
+s.className="confetti-piece";
+s.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+s.style.left=Math.floor(Math.random()*94)+"%";
+s.style.animationDuration=(1.3+Math.random()*1.3)+"s";
+s.style.animationDelay=(Math.random()*.5)+"s";
+container.appendChild(s);
+setTimeout(()=>s.remove(),3200);
+}
+}
+
+function openLeaderboardPopup(rank,total){
+const top5=rank<=5;
+$("lbPopupIcon").textContent=top5?"🏆":"👏";
+$("lbPopupTitle").textContent=top5?"Kudos! 🎉":"Nice work!";
+$("lbPopupMsg").textContent=top5
+?`You finished #${rank} out of ${total} — amazing effort! Kudos on making it into the top 5! 🎉🥳`
+:`You finished #${rank} out of ${total}. Nice work taking part — every round played counts! 💪`;
+$("lbPopupOverlay").classList.add("open");
+spawnConfetti($("lbPopupCard"));
+}
+
+function closeLbPopup(){
+$("lbPopupOverlay").classList.remove("open");
+$("lbPopupCard").querySelectorAll(".confetti-piece").forEach(e=>e.remove());
+}
+
+$("closeLbPopup").onclick=closeLbPopup;
+
+
 function clearQuestionForm(){
 
 [
@@ -3065,6 +3238,30 @@ setStatus(
 }
 
 
+function resetStationForm(){
+$("stName").value="";
+$("stDesc").value="";
+$("stImage").value="";
+$("stImagePreview").classList.add("hidden");
+$("stImagePreview").src="";
+stationImageData="";
+}
+
+$("stImage").onchange=async e=>{
+try{
+const d=await imageData(e.target.files[0],900);
+stationImageData=d||"";
+if(d){
+$("stImagePreview").src=d;
+$("stImagePreview").classList.remove("hidden");
+}else{
+$("stImagePreview").classList.add("hidden");
+}
+}catch(err){
+setStatus("stationStatus",err.message,"error");
+}
+};
+
 async function saveStation(){
 const name=$("stName").value.trim();
 const desc=$("stDesc").value.trim();
@@ -3073,11 +3270,11 @@ try{
 await db.collection("stations").add({
 name,
 desc,
+image:stationImageData||"",
 published:true,
 createdAt:firebase.firestore.FieldValue.serverTimestamp()
 });
-$("stName").value="";
-$("stDesc").value="";
+resetStationForm();
 setStatus("stationStatus","Station published ✓","success");
 }catch(e){
 setStatus("stationStatus","Error: "+e.message,"error");
@@ -3376,8 +3573,7 @@ $("clearPuzzleBtn").onclick=clearPuzzleForm;
 $("saveStationBtn").onclick=saveStation;
 
 $("clearStationBtn").onclick=()=>{
-$("stName").value="";
-$("stDesc").value="";
+resetStationForm();
 setStatus("stationStatus","","");
 };
 
@@ -3685,16 +3881,45 @@ setStatus(
 }
 
 
-$("feedbackFab").onclick=()=>
+$("feedbackFab").onclick=()=>{
 $("feedbackOverlay").classList.add("open");
+$("feedbackNudge").classList.add("hidden");
+};
 
 
-$("closeFeedback").onclick=()=>
+$("closeFeedback").onclick=()=>{
 $("feedbackOverlay").classList.remove("open");
+$("feedbackNudge").classList.remove("hidden");
+};
 
 
 $("submitFeedback").onclick=
 submitFeedback;
+
+
+const nudgeMessages=[
+"Mohnish Kumar is saying — write your feedback!",
+"Mohnish Kumar wants to know how it's going. Share your feedback!",
+"Mohnish Kumar says everyone should drop a review 🙋",
+"Mohnish Kumar is asking — how was your experience? Tell us!",
+"Mohnish Kumar wants your feedback — it only takes a minute!",
+"Mohnish Kumar says don't be shy, write your feedback below 👇"
+];
+
+let nudgeIdx=0;
+
+function rotateNudge(){
+$("nudgeText").textContent=nudgeMessages[nudgeIdx%nudgeMessages.length];
+nudgeIdx++;
+}
+
+rotateNudge();
+setInterval(rotateNudge,4000);
+
+$("feedbackNudge").onclick=()=>{
+$("feedbackOverlay").classList.add("open");
+$("feedbackNudge").classList.add("hidden");
+};
 
 
 function updateLockUI(){
@@ -3893,6 +4118,7 @@ s=>{
 scores=s.docs.map(d=>({id:d.id,...d.data()}));
 renderLeaderboard();
 syncMineFromScores();
+maybeScheduleLbPopup();
 if(currentUser) renderPlayersTable();
 },
 e=>{
@@ -3909,6 +4135,7 @@ dueDate=d.exists?(d.data().dueDate||""):"";
 $("publicDueDate").textContent=fmtDate(dueDate);
 if($("adminDueDate")) $("adminDueDate").value=dueDate;
 renderLeaderboard();
+maybeScheduleLbPopup();
 }
 );
 
