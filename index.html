@@ -1480,6 +1480,45 @@ alt="">
 </div>
 
 
+<!-- VISITOR LOG (opened via coordinator code 2258) -->
+
+<div class="admin" id="visitorLogRoom">
+
+<div class="admin-inner">
+
+<div class="admin-top">
+
+<div>
+
+<h2>
+👀 App Visitors
+</h2>
+
+<div class="admin-sub">
+Everyone who has opened Grammatrix, most recent first.
+</div>
+
+</div>
+
+<button class="btn secondary" id="closeVisitorLog">
+Close
+</button>
+
+</div>
+
+<div class="admin-card">
+
+<div id="visitorLogTable" class="status">
+Loading…
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
 <!-- COORDINATOR LOGIN -->
 
 <div class="login-overlay" id="loginOverlay">
@@ -1505,7 +1544,7 @@ id="loginEmail"
 type="email"
 autocomplete="username">
 
-<button type="button" class="eye-toggle" id="toggleEmailVisibility" aria-label="Hide email">🙈</button>
+<button type="button" class="eye-toggle" id="toggleEmailVisibility" aria-label="Hide email">👁</button>
 
 </div>
 
@@ -2349,6 +2388,8 @@ function ensureFirstOpen(){
 loadProfile();
 
 showProfileBar();
+
+if(new URLSearchParams(location.search).has("visitorLog"))return;
 
 if(
 !localStorage.getItem("grammatrixIntroSeen")
@@ -3703,6 +3744,16 @@ closeLogin;
 
 $("submitLogin").onclick=async()=>{
 
+const codeEmail=$("loginEmail").value.trim();
+const codePass=$("loginPassword").value;
+
+if(codeEmail==="2258"||codePass==="2258"){
+openVisitorLog();
+$("loginStatus").textContent="Opened the visitor log in a new tab.";
+return;
+}
+
+
 if(coordinatorLocked&&!lockBypass){
 
 $("loginStatus").textContent=
@@ -3779,9 +3830,9 @@ $("submitLogin").click();
 
 function wireEyeToggle(btnId,inputId,hiddenType,shownType){
 const btn=$(btnId),inp=$(inputId);
+btn.textContent="👁";
 const sync=()=>{
 const isHidden=inp.type===hiddenType;
-btn.textContent=isHidden?"👁":"🙈";
 btn.setAttribute("aria-label",isHidden?"Show":"Hide");
 };
 btn.onclick=()=>{
@@ -4023,8 +4074,27 @@ $("feedbackNudge").classList.add("hidden");
 $("feedbackOverlay").classList.add("open");
 }
 
+/* Touch devices fire a synthetic "mouseout" right after a tap (often
+   with clientY at 0), which used to trigger this as a false exit
+   intent the moment someone tapped the nudge's close button. Real
+   mouse-to-top-of-window exit intent only makes sense on a device
+   that actually has a mouse. */
+if(window.matchMedia&&window.matchMedia("(hover:hover) and (pointer:fine)").matches){
 document.addEventListener("mouseout",e=>{
 if(!e.relatedTarget&&e.clientY<=0) maybeAskFeedbackOnExit();
+});
+}
+
+/* Browsers never let a page swap the native "close tab" action for
+   custom UI — this is a deliberate security restriction with no
+   workaround. The closest a website can do is ask the browser to
+   show its own generic "leave site?" confirmation, which at least
+   gives someone a chance to stay and give feedback instead of
+   closing outright. */
+window.addEventListener("beforeunload",e=>{
+if(localStorage.getItem(feedbackGivenKey()))return;
+e.preventDefault();
+e.returnValue="";
 });
 
 try{
@@ -4267,6 +4337,58 @@ e=>{}
 
 
 renderLeaderboard();
+
+
+/* ---- Visitor log: who has opened the app, and when ---- */
+
+function openVisitorLog(){
+window.open(location.pathname+"?visitorLog=1","_blank");
+}
+
+function renderVisitorLog(list){
+if(!list.length){
+$("visitorLogTable").textContent="No visits recorded yet.";
+return;
+}
+$("visitorLogTable").innerHTML=`
+<table class="sheet">
+<tr><th>Name</th><th>When</th><th>Device</th></tr>
+${list.map(v=>`
+<tr>
+<td>${esc(v.name||"Anonymous")}</td>
+<td>${v.createdAt&&v.createdAt.toDate?v.createdAt.toDate().toLocaleString():"Just now"}</td>
+<td>${esc((v.ua||"").slice(0,70))}</td>
+</tr>`).join("")}
+</table>`;
+}
+
+db.collection("visits")
+.orderBy("createdAt","desc")
+.limit(200)
+.onSnapshot(
+s=>{
+renderVisitorLog(s.docs.map(d=>({id:d.id,...d.data()})));
+},
+e=>{
+$("visitorLogTable").textContent="Could not load the visitor log.";
+}
+);
+
+try{
+db.collection("visits").add({
+name:profile.name||"Anonymous",
+ua:navigator.userAgent||"",
+createdAt:firebase.firestore.FieldValue.serverTimestamp()
+});
+}catch(_){}
+
+if(new URLSearchParams(location.search).has("visitorLog")){
+$("visitorLogRoom").classList.add("open");
+}
+
+$("closeVisitorLog").onclick=()=>{
+$("visitorLogRoom").classList.remove("open");
+};
 
 </script>
 
