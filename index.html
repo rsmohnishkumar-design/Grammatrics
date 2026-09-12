@@ -1077,6 +1077,7 @@ margin-right:0
 .feedback-nudge:after{content:"";position:absolute;right:22px;bottom:-8px;border:8px solid transparent;border-top-color:#fff}
 .feedback-nudge .nudge-emojis{font-size:1.15rem;margin-bottom:3px}
 .feedback-nudge.hidden{display:none}
+.nudge-close{position:absolute;top:-9px;right:-9px;width:22px;height:22px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:10px;line-height:1;display:grid;place-items:center;padding:0;box-shadow:var(--shadow)}
 @keyframes nudgeFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 
 .modal.lb-modal{text-align:center;overflow:hidden}
@@ -1260,6 +1261,7 @@ The Mega Grammar Learning Fest
 
 
 <div class="feedback-nudge" id="feedbackNudge">
+<button class="nudge-close" id="closeNudge" aria-label="Dismiss">❌</button>
 <div class="nudge-emojis">🙋</div>
 <div id="nudgeText"></div>
 </div>
@@ -2023,6 +2025,8 @@ let currentUser=null;
 let editingQuestionId=null;
 let editingPuzzleId=null;
 let stationImageData="";
+let nudgeInterval=null;
+let exitFeedbackShown=false;
 let lockClicks=0;
 let coordinatorLocked=false;
 let lockBypass=false;
@@ -3813,6 +3817,15 @@ localStorage.setItem(
 
 $("feedbackFab").classList.add("small");
 
+dismissNudge();
+
+}
+
+
+function dismissNudge(){
+$("feedbackNudge").classList.add("hidden");
+localStorage.setItem("grammatrixNudgeDismissed","1");
+clearInterval(nudgeInterval);
 }
 
 
@@ -3889,6 +3902,7 @@ $("feedbackNudge").classList.add("hidden");
 
 $("closeFeedback").onclick=()=>{
 $("feedbackOverlay").classList.remove("open");
+if(!localStorage.getItem("grammatrixNudgeDismissed")&&!localStorage.getItem("grammatrixFeedbackGiven"))
 $("feedbackNudge").classList.remove("hidden");
 };
 
@@ -3913,13 +3927,50 @@ $("nudgeText").textContent=nudgeMessages[nudgeIdx%nudgeMessages.length];
 nudgeIdx++;
 }
 
+if(
+localStorage.getItem("grammatrixNudgeDismissed")||
+localStorage.getItem("grammatrixFeedbackGiven")
+){
+$("feedbackNudge").classList.add("hidden");
+}else{
 rotateNudge();
-setInterval(rotateNudge,4000);
+nudgeInterval=setInterval(rotateNudge,4000);
+}
 
 $("feedbackNudge").onclick=()=>{
 $("feedbackOverlay").classList.add("open");
 $("feedbackNudge").classList.add("hidden");
 };
+
+$("closeNudge").onclick=e=>{
+e.stopPropagation();
+dismissNudge();
+};
+
+
+/* ---- Ask for feedback when someone is about to leave ---- */
+
+function maybeAskFeedbackOnExit(){
+if(exitFeedbackShown)return;
+if(localStorage.getItem("grammatrixFeedbackGiven"))return;
+if($("feedbackOverlay").classList.contains("open"))return;
+exitFeedbackShown=true;
+$("feedbackNudge").classList.add("hidden");
+$("feedbackOverlay").classList.add("open");
+}
+
+document.addEventListener("mouseout",e=>{
+if(!e.relatedTarget&&e.clientY<=0) maybeAskFeedbackOnExit();
+});
+
+try{
+history.pushState({grammatrixGuard:true},"");
+window.addEventListener("popstate",()=>{
+if(localStorage.getItem("grammatrixFeedbackGiven")||exitFeedbackShown)return;
+history.pushState({grammatrixGuard:true},"");
+maybeAskFeedbackOnExit();
+});
+}catch(_){}
 
 
 function updateLockUI(){
