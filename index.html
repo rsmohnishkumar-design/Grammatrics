@@ -3965,6 +3965,12 @@ $("nudgeText").textContent=nudgeMessages[nudgeIdx%nudgeMessages.length];
 nudgeIdx++;
 }
 
+if(new URLSearchParams(location.search).has("resetFeedback")){
+localStorage.removeItem("grammatrixNudgeDismissed");
+localStorage.removeItem("grammatrixFeedbackGiven");
+$("feedbackFab").classList.remove("small");
+}
+
 if(
 localStorage.getItem("grammatrixNudgeDismissed")||
 localStorage.getItem("grammatrixFeedbackGiven")
