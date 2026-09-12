@@ -1082,6 +1082,10 @@ margin-right:0
 .feedback-nudge{max-width:148px;padding:8px 9px;font-size:.68rem;bottom:78px}
 .feedback-nudge .nudge-emojis{font-size:.95rem}
 }
+
+.input-eye-wrap{position:relative}
+.input-eye-wrap input{padding-right:42px}
+.eye-toggle{position:absolute;right:4px;top:50%;transform:translateY(-50%);border:0;background:transparent;font-size:1.05rem;line-height:1;padding:8px;cursor:pointer;color:var(--muted)}
 @keyframes nudgeFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 
 .modal.lb-modal{text-align:center;overflow:hidden}
@@ -1494,10 +1498,16 @@ Authorized coordinator account required.
 
 <label>Coordinator email</label>
 
+<div class="input-eye-wrap">
+
 <input
 id="loginEmail"
 type="email"
 autocomplete="username">
+
+<button type="button" class="eye-toggle" id="toggleEmailVisibility" aria-label="Hide email">🙈</button>
+
+</div>
 
 </div>
 
@@ -1506,10 +1516,16 @@ autocomplete="username">
 
 <label>Password</label>
 
+<div class="input-eye-wrap">
+
 <input
 id="loginPassword"
 type="password"
 autocomplete="current-password">
+
+<button type="button" class="eye-toggle" id="togglePasswordVisibility" aria-label="Show password">👁</button>
+
+</div>
 
 </div>
 
@@ -3757,6 +3773,24 @@ if(e.key==="Enter")
 $("submitLogin").click();
 
 };
+
+
+function wireEyeToggle(btnId,inputId,hiddenType,shownType){
+const btn=$(btnId),inp=$(inputId);
+const sync=()=>{
+const isHidden=inp.type===hiddenType;
+btn.textContent=isHidden?"👁":"🙈";
+btn.setAttribute("aria-label",isHidden?"Show":"Hide");
+};
+btn.onclick=()=>{
+inp.type=(inp.type===hiddenType)?shownType:hiddenType;
+sync();
+};
+sync();
+}
+
+wireEyeToggle("toggleEmailVisibility","loginEmail","password","email");
+wireEyeToggle("togglePasswordVisibility","loginPassword","password","text");
 
 
 $("logoutBtn").onclick=()=>
