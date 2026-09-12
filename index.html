@@ -4065,7 +4065,15 @@ dismissNudge();
 
 /* ---- Ask for feedback when someone is about to leave ---- */
 
+const pageLoadTime=Date.now();
+
 function maybeAskFeedbackOnExit(){
+/* Nobody is legitimately "exiting" within the first couple seconds
+   of the page loading — this filters out browser-specific quirks
+   (a restored history state firing an early popstate, a stray
+   synthetic mouseout during initial load) without needing to chase
+   down which exact mechanism a given browser triggers early. */
+if(Date.now()-pageLoadTime<2500)return;
 if(exitFeedbackShown)return;
 if(localStorage.getItem(feedbackGivenKey()))return;
 if($("feedbackOverlay").classList.contains("open"))return;
